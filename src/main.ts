@@ -3,11 +3,13 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import { CustomExceptionFilter } from './common/filters/global-exception.filter';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const httpAdapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new CustomExceptionFilter(httpAdapterHost));
+  app.use(cookieParser());
 
   const configservice = app.get(ConfigService);
   const PORT = configservice.get<number>('app.port') as number;

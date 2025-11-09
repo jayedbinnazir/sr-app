@@ -5,14 +5,14 @@ import { AppUser } from 'src/app_user/entities/app_user.entity';
 import { FileSystem } from 'src/file-system/entities/file-system.entity';
 
 @Entity('users')
-@Index(['email']) // Index for email lookups
-@Unique(['email']) // Ensure email uniqueness
+@Index(['email'])
+@Unique(['email'])
 export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 30, nullable: false })
   name: string;
 
-  @Column({ type: 'varchar', length: 30, nullable: false })
-  email: string;
+  @Column({ type: 'varchar', length: 150, nullable: true })
+  email: string | null;
 
   @Column({ type: 'varchar', length: 100, nullable: true })
   @Exclude() // Exclude password from responses

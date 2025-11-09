@@ -3,17 +3,23 @@ import { CachingService } from './caching.service';
 import { CachingController } from './caching.controller';
 import { CacheModule } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-ioredis';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     CacheModule.registerAsync({
-      useFactory: () => ({
-        store: redisStore,
-        host: 'redis', // <-- matches the Docker service name
-        port: 6379,
-        ttl: 60, // seconds (1 minute cache)
-        password: 'myStrongPassword',
-      }),
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const ttl = Number(configService.get('RETAILER_CACHE_TTL') ?? 60);
+        return {
+          store: redisStore as unknown,
+          host: configService.get<string>('REDIS_HOST') ?? 'redis',
+          port: Number(configService.get<number>('REDIS_PORT') ?? 6379),
+          password: configService.get<string>('REDIS_PASSWORD') ?? undefined,
+          ttl,
+        };
+      },
     }),
   ],
   controllers: [CachingController],

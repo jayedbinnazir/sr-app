@@ -1,42 +1,52 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
-import { CreateAuthDto } from '../dto/create-auth.dto';
-import { UpdateAuthDto } from '../dto/update-auth.dto';
+import type { CreateAuthDto } from '../dto/create-auth.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { RegisterAdminDto } from '../dto/register-admin.dto';
+import { RegisterSalesRepDto } from '../dto/register-sales-rep.dto';
+import type { Response } from 'express';
 
-@Controller('auth')
+@ApiTags('Auth')
+@Controller({
+  path: 'v1/auth',
+  version: '1',
+})
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
-  create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
+  @Post('register/admin')
+  @HttpCode(HttpStatus.CREATED)
+  async registerAdmin(
+    @Body() dto: RegisterAdminDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const result = await this.authService.registerAdmin(dto);
+    this.authService.attachAuthCookie(res, result.accessToken);
+    this.authService.attachAuthHeader(res, result.accessToken);
+    return result;
   }
 
-  @Get()
-  findAll() {
-    return this.authService.findAll();
+  @Post('register/sales-rep')
+  @HttpCode(HttpStatus.CREATED)
+  async registerSalesRep(
+    @Body() dto: RegisterSalesRepDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const result = await this.authService.registerSalesRep(dto);
+    this.authService.attachAuthCookie(res, result.accessToken);
+    this.authService.attachAuthHeader(res, result.accessToken);
+    return result;
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
+  @Post('login')
+  @HttpCode(HttpStatus.OK)
+  async login(
+    @Body() createAuthDto: CreateAuthDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const result = await this.authService.login(createAuthDto);
+    this.authService.attachAuthCookie(res, result.accessToken);
+    this.authService.attachAuthHeader(res, result.accessToken);
+    return result;
   }
 }
