@@ -42,6 +42,5 @@ export class TerritoryController {
   totalTerritoryCount() {
     return this.territoryService.totalTerritoryCount();
   }
-
 }
 
