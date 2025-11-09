@@ -93,7 +93,7 @@ export class RegionService {
     }
   }
 
-  async searchRegions(search:string,manager?:EntityManager) {
+  async searchRegions(search:string,manager?:EntityManager): Promise<string[]> {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
@@ -101,7 +101,7 @@ export class RegionService {
     }
     try {
       const regions = await em!.find(Region, { where: { name: Like(`%${search}%`) } });
-      return regions;
+      return regions.map(region => region.name);
     } catch(error){
       if (!manager) {
         await queryRunner?.rollbackTransaction();

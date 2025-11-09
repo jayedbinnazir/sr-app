@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsNotEmpty,
   IsString,
@@ -9,6 +10,7 @@ export class CreateAreaDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(120)
+  @Transform(({ value }) => value.trim().toLowerCase())
   name: string;
 
   @IsUUID()
