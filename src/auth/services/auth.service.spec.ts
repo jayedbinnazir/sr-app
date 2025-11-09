@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { DataSource } from 'typeorm';
 import { RoleService } from 'src/role/services/role.service';
 import { AuthRole } from '../types/auth-role.enum';
+import { NotificationService } from 'src/notification/notification.service';
 
 type MockedRepository<T> = Partial<
   Record<keyof Repository<T>, jest.Mock>
@@ -119,6 +120,13 @@ describe('AuthService', () => {
           provide: RoleService,
           useValue: {
             createRole: jest.fn(),
+          },
+        },
+        {
+          provide: NotificationService,
+          useValue: {
+            notifyUser: jest.fn(),
+            broadcast: jest.fn(),
           },
         },
       ],

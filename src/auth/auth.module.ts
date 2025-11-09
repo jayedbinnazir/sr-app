@@ -16,12 +16,14 @@ import { Role } from 'src/role/entities/role.entity';
 import { RoleModule } from 'src/role/role.module';
 import { AdminGuard } from './guards/admin.guard';
 import { SalesRepGuard } from './guards/sales-rep.guard';
+import { NotificationModule } from 'src/notification/notification.module';
 
 @Module({
   imports: [
     ConfigModule,
     PassportModule,
     RoleModule,
+    NotificationModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

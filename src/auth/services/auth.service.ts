@@ -24,6 +24,7 @@ import { AuthRole } from '../types/auth-role.enum';
 import { RegisterAdminDto } from '../dto/register-admin.dto';
 import { RegisterSalesRepDto } from '../dto/register-sales-rep.dto';
 import { parseJwtExpires } from '../utils/jwt-expiration.util';
+import { NotificationService } from 'src/notification/notification.service';
 
 export interface AuthResult {
   accessToken: string;
@@ -48,6 +49,7 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly dataSource: DataSource,
     private readonly roleService: RoleService,
+    private readonly notificationService: NotificationService,
   ) {
     const expires = this.configService.get<string>('app.jwt_expires_in');
     this.jwtExpiresInSeconds = parseJwtExpires(expires);
@@ -126,6 +128,17 @@ export class AuthService {
       }
 
       this.logger.log(`Admin ${savedUser.email} registered successfully`);
+      this.emitNotification(() =>
+        this.notificationService.broadcast(
+          'notifications.admin.registered',
+          {
+            userId: savedUser.id,
+            name: savedUser.name,
+            email: savedUser.email,
+            timestamp: new Date().toISOString(),
+          },
+        ),
+      );
 
       return this.buildAdminAuthResult(savedUser);
     } catch (error) {
@@ -223,6 +236,17 @@ export class AuthService {
       }
 
       this.logger.log(`Sales rep ${savedSalesRep.username} registered`);
+      this.emitNotification(() =>
+        this.notificationService.broadcast(
+          'notifications.sales-rep.registered',
+          {
+            userId: savedUser.id,
+            name: savedSalesRep.name,
+            username: savedSalesRep.username,
+            timestamp: new Date().toISOString(),
+          },
+        ),
+      );
 
       return this.buildSalesRepAuthResult(savedSalesRep, savedUser);
     } catch (error) {
@@ -279,6 +303,13 @@ export class AuthService {
     }
 
     this.logger.log(`Admin ${adminUser.email} logged in successfully`);
+    this.emitNotification(() =>
+      this.notificationService.notifyUser(adminUser.id, 'notifications.login', {
+        userId: adminUser.id,
+        type: AuthRole.Admin,
+        timestamp: new Date().toISOString(),
+      }),
+    );
 
     return this.buildAdminAuthResult(adminUser);
   }
@@ -308,6 +339,19 @@ export class AuthService {
     await this.salesRepRepository.save(salesRep);
 
     this.logger.log(`Sales rep ${salesRep.username} logged in successfully`);
+    const userId = salesRep.user.id;
+    this.emitNotification(() =>
+      this.notificationService.notifyUser(
+        userId,
+        'notifications.login',
+        {
+          userId,
+          type: AuthRole.SalesRep,
+          username: salesRep.username,
+          timestamp: new Date().toISOString(),
+        },
+      ),
+    );
 
     return this.buildSalesRepAuthResult(salesRep, salesRep.user);
   }
@@ -435,5 +479,14 @@ export class AuthService {
       return normalized;
     }
     return 'lax';
+  }
+  private emitNotification(callback: () => void): void {
+    try {
+      callback();
+    } catch (error) {
+      this.logger.warn(
+        `Notification dispatch failed: ${(error as Error)?.message ?? error}`,
+      );
+    }
   }
 }

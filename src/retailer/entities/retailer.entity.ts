@@ -60,6 +60,7 @@ export class Retailer extends BaseEntity {
   // Relations
   // ondeletion of retailor we will not delete the region, area, distributor, territory
   // so onDelete will be SET NULL
+  
   @ManyToOne(() => Region, (region) => region.retailers, {
     onDelete: 'SET NULL',
   })

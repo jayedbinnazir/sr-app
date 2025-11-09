@@ -15,6 +15,7 @@ import { AwsS3Module } from './aws-s3/aws-s3.module';
 import { ChatGatewayModule } from './chat-gateway/chat-gateway.module';
 import { AppUserModule } from './app_user/app_user.module';
 import { SalesRepModule } from './sales_rep/sales_rep.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -63,6 +64,8 @@ import { SalesRepModule } from './sales_rep/sales_rep.module';
     AppUserModule,
 
     SalesRepModule,
+
+    NotificationModule,
   ],
   providers: [AppService],
   controllers: [AppController],
