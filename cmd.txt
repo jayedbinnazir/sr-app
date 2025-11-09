@@ -1,0 +1,60 @@
+"scripts": {
+  // ✅ Generate new migration
+  "mgd": "cross-env NODE_ENV=development npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d ./src/database/typeorm.datasource.ts",
+
+  // ✅ Create an empty migration (no auto-diff)
+  "mc": "cross-env NODE_ENV=development npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create ./migrations",
+
+  // ✅ Run all pending migrations
+  "mr": "cross-env NODE_ENV=development npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./src/database/typeorm.datasource.ts",
+
+  // ✅ Revert last executed migration
+  "mrv": "cross-env NODE_ENV=development npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./src/database/typeorm.datasource.ts",
+
+  // ✅ Show migration status
+  "ms": "cross-env NODE_ENV=development npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:show -d ./src/database/typeorm.datasource.ts"
+}
+
+
+npm run mgd ./migrations/CreateUserTable
+npm run mc ./migrations/ManualChange
+npm run mr
+npm run mrv
+npm run ms
+
+5a. Development
+Build and start dev containers:
+docker-compose -f docker-compose.dev.yml --env-file .env.dev up --build
+The command you wrote is almost correct, but the order of arguments for docker compose down is slightly different. The -f option should come before the down command.
+
+Here’s the correct syntax:
+docker compose -f docker-compose.dev.yml down
+Explanation
+docker compose → the Docker Compose CLI
+-f docker-compose.dev.yml → specifies the Compose file to use (your dev setup)
+down → stops and removes all containers, networks, and optionally volumes created by that Compose file
+Optional flags
+Remove volumes as well (if you want to clean database data):
+docker compose -f docker-compose.dev.yml down -v
+Remove orphan containers (not in the Compose file):
+docker compose -f docker-compose.dev.yml down --remove-orphans
+✅ TL;DR: Use
+docker compose -f docker-compose.dev.yml down
+to stop your dev environment safely.
+If you want, I can also give you a full dev workflow: start → rebuild → stop → clean volumes, optimized for your multi-app NestJS setup.
+
+Do you want me to do that?
+Access services:
+NestJS app: http://localhost:3000
+PGAdmin: http://localhost:5050
+NGINX: http://localhost:8080
+Hot reload is enabled because source is mounted.
+
+
+5b. Production
+Build and start prod containers:
+docker-compose -f docker-compose.yml up --build -d
+Access services:
+NestJS app (direct): http://localhost:3000
+PGAdmin: http://localhost:5050
+NGINX (proxy / main entry): http://localhost:8080

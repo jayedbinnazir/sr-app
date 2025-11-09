@@ -1,0 +1,68 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: myapp-prod
+    restart: always
+    env_file: .env.production
+    ports:
+      - "${PORT}:3000"
+    depends_on:
+      - db
+    networks:
+      - myapp-prod-network
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+
+  db:
+    image: postgres:16
+    container_name: myapp-db-prod
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pgdata_prod:/var/lib/postgresql/data
+    networks:
+      - myapp-prod-network
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "${PGADMIN_PORT}:80"
+    depends_on:
+      - db
+    networks:
+      - myapp-prod-network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-prod
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - app
+    networks:
+      - myapp-prod-network
+
+volumes:
+  pgdata_prod:
+
+networks:
+  myapp-prod-network:
+    driver: bridge

@@ -1,0 +1,64 @@
+services:
+  db:
+    image: postgres:16
+    container_name: myapp-db-dev
+    env_file: 
+      - .env.dev
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pgdata_dev:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - task-network
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: pgadmin-dev
+    env_file: 
+      - .env.dev
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "${PGADMIN_PORT}:80"
+    depends_on:
+      - db
+    networks:
+      - task-network
+  
+  redis:
+    image: redis:7.2
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "myStrongPassword"]
+    networks:
+      - task-network
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: redisinsight
+    ports:
+      - "8082:5540"
+    depends_on:
+      - redis
+    networks:
+      - task-network
+    
+
+volumes:
+  pgdata_dev:
+  redis_data:
+
+
+networks:
+  task-network:
+    driver: bridge

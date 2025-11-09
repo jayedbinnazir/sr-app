@@ -1,0 +1,40 @@
+# .dockerignore
+
+# Node dependencies
+node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Build output
+dist
+coverage
+tmp
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Git and metadata
+.git
+.gitignore
+Dockerfile.dev
+docker-compose.dev.yml
+Dockerfile
+docker-compose.yml
+
+# IDE / editor settings
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS-specific junk
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs
