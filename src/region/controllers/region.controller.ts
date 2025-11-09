@@ -37,11 +37,7 @@ export class RegionController {
   }
 
   @Get(':id/areas')
-  getAreas(
-    @Param('id') regionId: string,
-    @Query(new ValidationPipe({ transform: true, whitelist: true }))
-    pagination: AreasPaginationDto,
-  ) {
+  getAreas(@Param('id') regionId: string, @Query() pagination: AreasPaginationDto) {
     return this.regionService.getAreasByRegionId(regionId, pagination);
   }
 }

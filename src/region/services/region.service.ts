@@ -4,11 +4,7 @@ import { CreateRegionDto } from '../dto/create-region.dto';
 import { Region } from '../entities/region.entity';
 import { UpdateRegionDto } from '../dto/update-region.dto';
 import { Area } from 'src/area/entities/area.entity';
-
-type PaginationOptions = {
-  page?: number;
-  limit?: number;
-};
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 type PaginatedAreas = {
   meta: {
@@ -22,9 +18,6 @@ type PaginatedAreas = {
 
 @Injectable()
 export class RegionService {
-  private static readonly DEFAULT_LIMIT = 20;
-  private static readonly MAX_LIMIT = 100;
-
   constructor(private readonly dataSource: DataSource) {}
 
   async createRegion(
@@ -140,18 +133,9 @@ export class RegionService {
 
   async getAreasByRegionId(
     regionId: string,
-    optionsOrManager?: PaginationOptions | EntityManager,
-    managerMaybe?: EntityManager,
+    options?: PaginationDto,
+    manager?: EntityManager,
   ): Promise<PaginatedAreas> {
-    let options: PaginationOptions | undefined;
-    let manager: EntityManager | undefined;
-
-    if (optionsOrManager instanceof EntityManager) {
-      manager = optionsOrManager;
-    } else {
-      options = optionsOrManager;
-      manager = managerMaybe;
-    }
 
     const queryRunner = manager
       ? undefined
@@ -163,22 +147,29 @@ export class RegionService {
     }
 
     try {
-      const { page, limit } = this.resolvePagination(options);
+      const { page, limit } = PaginationDto.resolve(options, {
+        defaultLimit: 20,
+        maxLimit: 100,
+      });
 
-      const qb = em!
+      const areas = em!
         .createQueryBuilder(Area, 'area')
         .leftJoinAndSelect('area.region', 'region')
         .where('area.region_id = :regionId', { regionId })
         .orderBy('area.name', 'ASC')
         .addOrderBy('area.id', 'ASC');
 
-      const [data, total] = await qb
+      const [data, total] = await areas
         .take(limit)
         .skip((page - 1) * limit)
         .getManyAndCount();
 
       if (total === 0) {
         throw new NotFoundException(`No areas found for region ID ${regionId}`);
+      }
+
+      if (!manager) {
+        await queryRunner?.commitTransaction();
       }
 
       return {
@@ -191,29 +182,14 @@ export class RegionService {
         data,
       };
     } catch (error) {
+      if (!manager) {
+        await queryRunner?.rollbackTransaction();
+      }
       throw error;
     } finally {
       if (!manager) {
         await queryRunner?.release();
       }
     }
-  }
-
-  private resolvePagination(options?: PaginationOptions): {
-    page: number;
-    limit: number;
-  } {
-    const rawPage = Math.floor(options?.page ?? 1);
-    const rawLimit = Math.floor(
-      options?.limit ?? RegionService.DEFAULT_LIMIT,
-    );
-
-    const page = rawPage > 0 ? rawPage : 1;
-    const limit =
-      rawLimit > 0
-        ? Math.min(rawLimit, RegionService.MAX_LIMIT)
-        : RegionService.DEFAULT_LIMIT;
-
-    return { page, limit };
   }
 }
