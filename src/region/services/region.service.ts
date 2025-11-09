@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { DataSource, EntityManager } from 'typeorm';
+import { DataSource, EntityManager, Like } from 'typeorm';
 import { CreateRegionDto } from '../dto/create-region.dto';
 import { Region } from '../entities/region.entity';
 import { UpdateRegionDto } from '../dto/update-region.dto';
@@ -18,7 +18,7 @@ type PaginatedAreas = {
 
 @Injectable()
 export class RegionService {
-  constructor(private readonly dataSource: DataSource) {}
+  constructor(private readonly dataSource: DataSource) { }
 
   async createRegion(
     createRegionDto: CreateRegionDto,
@@ -59,6 +59,60 @@ export class RegionService {
         await queryRunner?.release();
       }
     }
+  }
+
+  async getRegions(options?: PaginationDto, manager?: EntityManager): Promise<Region[]> {
+    const queryRunner = manager
+      ? undefined
+      : this.dataSource.createQueryRunner();
+    const em = manager ?? queryRunner?.manager;
+
+    if (!manager) {
+      await queryRunner?.connect();
+    }
+
+    try {
+      const { page, limit } = PaginationDto.resolve(options, {
+        defaultLimit: 20,
+        maxLimit: 100,
+      });
+
+      return em!.find(Region, {
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+    } catch (error) {
+      if (!manager) {
+        await queryRunner?.rollbackTransaction();
+      }
+      throw error;
+    } finally {
+      if (!manager) {
+        await queryRunner?.release();
+      }
+    }
+  }
+
+  async searchRegions(search:string,manager?:EntityManager) {
+    const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
+    const em = manager ?? queryRunner?.manager;
+    if (!manager) {
+      await queryRunner?.connect();
+    }
+    try {
+      const regions = await em!.find(Region, { where: { name: Like(`%${search}%`) } });
+      return regions;
+    } catch(error){
+      if (!manager) {
+        await queryRunner?.rollbackTransaction();
+      }
+      throw error;
+    } finally {
+      if (!manager) {
+        await queryRunner?.release();
+      }
+    }
+
   }
 
   async updateRegion(
@@ -131,6 +185,34 @@ export class RegionService {
     }
   }
 
+  async regionCount(manager?: EntityManager): Promise<number> {
+    const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
+    const em = manager ?? queryRunner?.manager;
+    if (!manager) {
+      await queryRunner?.connect();
+    }
+    try {
+      const regionCount = await em!.count(Region);
+      if (regionCount === 0) {
+        throw new NotFoundException(`No regions found`);
+      }
+      if (!manager) {
+        await queryRunner?.commitTransaction();
+      }
+      return regionCount;
+
+    } catch(error){
+      if (!manager) {
+        await queryRunner?.rollbackTransaction();
+      }
+      throw error;
+    } finally {
+      if (!manager) {
+        await queryRunner?.release();
+      }
+    }
+  }
+
   async getAreasByRegionId(
     regionId: string,
     options?: PaginationDto,
@@ -192,4 +274,35 @@ export class RegionService {
       }
     }
   }
+
+  async getAreasCountByRegionId(regionId: string, manager?: EntityManager): Promise<number> {
+    const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
+    const em = manager ?? queryRunner?.manager;
+
+    if (!manager) {
+      await queryRunner?.connect();
+    }
+
+    try {
+      const areaCount = await em!.count(Area, { where: { region_id: regionId } });
+      if (areaCount === 0) {
+        throw new NotFoundException(`No areas found for region ID ${regionId}`);
+      }
+      if (!manager) {
+        await queryRunner?.commitTransaction();
+      }
+      return areaCount;
+    } catch (error) {
+      if (!manager) {
+        await queryRunner?.rollbackTransaction();
+      }
+      throw error;
+    } finally {
+      if (!manager) {
+        await queryRunner?.release();
+      }
+    }
+  }
+
+
 }
