@@ -4,7 +4,7 @@ import {
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
-import { CreateAuthDto } from '../dto/create-auth.dto';
+import { CreateAuthAdminDto, CreateAuthSalesRepDto} from '../dto/create-auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, EntityManager, Repository } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
@@ -60,14 +60,20 @@ export class AuthService {
     );
   }
 
-  async login(dto: CreateAuthDto): Promise<AuthResult> {
-    switch (dto.type) {
-      case AuthRole.Admin:
-        return this.loginAdmin(dto);
-      case AuthRole.SalesRep:
-        return this.loginSalesRep(dto);
-      default:
-        throw new UnauthorizedException('Unsupported auth type');
+  async login(dto: CreateAuthAdminDto | CreateAuthSalesRepDto): Promise<AuthResult> {
+    try {
+      switch (dto.type) {
+        case AuthRole.Admin:
+          return await this.loginAdmin(dto as CreateAuthAdminDto);
+        case AuthRole.SalesRep:
+          return await this.loginSalesRep(dto as CreateAuthSalesRepDto);
+        default:
+          throw new UnauthorizedException('Unsupported auth type');
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+      this.logger.error('Login failed', error?.stack ?? String(error));
+      throw error;
     }
   }
 
@@ -142,6 +148,7 @@ export class AuthService {
 
       return this.buildAdminAuthResult(savedUser);
     } catch (error) {
+      this.logger.error('Admin registration failed', error?.stack ?? String(error));
       if (!manager) {
         await queryRunner?.rollbackTransaction();
       }
@@ -169,7 +176,7 @@ export class AuthService {
 
     try {
       const normalizedUsername = dto.username.trim().toLowerCase();
-      const normalizedEmail = dto.email?.trim().toLowerCase() ?? null;
+      const normalizedEmail = dto.username?.trim().toLowerCase() ?? null;
 
       const existingSalesRep = await em!
         .createQueryBuilder(SalesRep, 'salesRep')
@@ -194,7 +201,7 @@ export class AuthService {
 
         if (existingUserWithEmail) {
           throw new ConflictException(
-            `User with email '${dto.email}' already exists`,
+            `User with email '${dto.username}' already exists`,
           );
         }
       }
@@ -250,6 +257,7 @@ export class AuthService {
 
       return this.buildSalesRepAuthResult(savedSalesRep, savedUser);
     } catch (error) {
+      this.logger.error('Sales rep registration failed', error?.stack ?? String(error));
       if (!manager) {
         await queryRunner?.rollbackTransaction();
       }
@@ -277,14 +285,14 @@ export class AuthService {
     response.removeHeader('Authorization');
   }
 
-  private async loginAdmin(dto: CreateAuthDto): Promise<AuthResult> {
-    const identifier = dto.identifier.trim().toLowerCase();
+  private async loginAdmin(dto: CreateAuthAdminDto): Promise<AuthResult> {
+    const email = dto.email.trim().toLowerCase();
 
     const adminUser = await this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.appUsers', 'appUser')
       .leftJoinAndSelect('appUser.role', 'role')
-      .where('LOWER(user.email) = :email', { email: identifier })
+      .where('LOWER(user.email) = :email', { email: email })
       .andWhere('role.name = :roleName', { roleName: AuthRole.Admin })
       .addSelect('user.password')
       .getOne();
@@ -314,13 +322,13 @@ export class AuthService {
     return this.buildAdminAuthResult(adminUser);
   }
 
-  private async loginSalesRep(dto: CreateAuthDto): Promise<AuthResult> {
-    const identifier = dto.identifier.trim().toLowerCase();
+  private async loginSalesRep(dto: CreateAuthSalesRepDto): Promise<AuthResult> {
+    const username = dto.username.trim().toLowerCase();
 
     const salesRep = await this.salesRepRepository
       .createQueryBuilder('salesRep')
       .leftJoinAndSelect('salesRep.user', 'user')
-      .where('LOWER(salesRep.username) = :username', { username: identifier })
+      .where('LOWER(salesRep.username) = :username', { username: username })
       .getOne();
 
     if (!salesRep || !salesRep.user || !salesRep.user.password) {

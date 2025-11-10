@@ -1,10 +1,10 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
-import type { CreateAuthDto } from '../dto/create-auth.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { RegisterAdminDto } from '../dto/register-admin.dto';
 import { RegisterSalesRepDto } from '../dto/register-sales-rep.dto';
 import type { Response } from 'express';
+import { CreateAuthAdminDto, CreateAuthSalesRepDto } from '../dto/create-auth.dto';
 
 @ApiTags('Auth')
 @Controller({
@@ -41,10 +41,11 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(
-    @Body() createAuthDto: CreateAuthDto,
+    @Body() createAuthDto: CreateAuthAdminDto | CreateAuthSalesRepDto,
     @Res({ passthrough: true }) res: Response,
   ) {
     const result = await this.authService.login(createAuthDto);
+    res.statusMessage = 'Logged in successfully';
     this.authService.attachAuthCookie(res, result.accessToken);
     this.authService.attachAuthHeader(res, result.accessToken);
     return result;

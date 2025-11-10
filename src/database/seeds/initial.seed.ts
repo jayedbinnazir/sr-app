@@ -8,6 +8,7 @@ import { SalesRep } from 'src/sales_rep/entities/sales_rep.entity';
 import { Region } from 'src/region/entities/region.entity';
 import { Area } from 'src/area/entities/area.entity';
 import { Territory } from 'src/territory/entities/territory.entity';
+import { Distributor } from 'src/distributor/entities/distributor.entity';
 
 type SeedRole = {
   name: string;
@@ -61,21 +62,14 @@ const salesReps: SeedSalesRep[] = [
   },
 ];
 
-type RegionSeed = {
-  name: string;
-  areas: {
-    name: string;
-    territories: string[];
-  }[];
-};
-
-const regionSeeds: RegionSeed[] = [
+const regionSeeds = [
   {
     name: 'Dhaka',
     areas: [
       { name: 'Gulshan', territories: ['Gulshan 1', 'Gulshan 2'] },
       { name: 'Dhanmondi', territories: ['Dhanmondi Block A', 'Dhanmondi Block B'] },
     ],
+    distributors: ['Dhaka Distributors Ltd', 'Capital Trade Hub'],
   },
   {
     name: 'Rajshahi',
@@ -83,8 +77,13 @@ const regionSeeds: RegionSeed[] = [
       { name: 'Motihar', territories: ['Binodpur', 'Kazla'] },
       { name: 'Boalia', territories: ['Shaheb Bazar', 'Padma Residential'] },
     ],
+    distributors: ['Rajshahi Traders Consortium', 'Northwest Supply Co'],
   },
-];
+] satisfies Array<{
+  name: string;
+  areas: { name: string; territories: string[] }[];
+  distributors: string[];
+}>;
 
 async function ensureRoles(dataSource: DataSource): Promise<Record<string, Role>> {
   const roleRepository = dataSource.getRepository(Role);
@@ -224,6 +223,7 @@ async function ensureRegionsHierarchy(
   const regionRepository = dataSource.getRepository(Region);
   const areaRepository = dataSource.getRepository(Area);
   const territoryRepository = dataSource.getRepository(Territory);
+  const distributorRepository = dataSource.getRepository(Distributor);
 
   for (const regionSeed of regionSeeds) {
     let region = await regionRepository.findOne({
@@ -265,6 +265,25 @@ async function ensureRegionsHierarchy(
             `Created territory '${territoryName}' in area '${areaSeed.name}'`,
           );
         }
+      }
+    }
+
+    for (const distributorName of regionSeed.distributors ?? []) {
+      let distributor = await distributorRepository.findOne({
+        where: { name: distributorName },
+      });
+
+      if (!distributor) {
+        distributor = distributorRepository.create({
+          name: distributorName,
+          region_id: region.id,
+        });
+        await distributorRepository.save(distributor);
+        console.log(`Created distributor '${distributorName}' in region '${regionSeed.name}'`);
+      } else if (distributor.region_id !== region.id) {
+        distributor.region_id = region.id;
+        await distributorRepository.save(distributor);
+        console.log(`Updated distributor '${distributorName}' region to '${regionSeed.name}'`);
       }
     }
   }
