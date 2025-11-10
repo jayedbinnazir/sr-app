@@ -1,35 +1,86 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { SalesRepService } from '../services/sales_rep.service';
-import { CreateSalesRepDto } from '../dto/create-sales_rep.dto';
-import { UpdateSalesRepDto } from '../dto/update-sales_rep.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { UpdateRetailerDto } from 'src/retailer/dto/update-retailer.dto';
 
 
-@Controller('sales-rep')
+@Controller({
+  path: 'v1/sales-reps',
+  version: '1',
+})
 export class SalesRepController {
   constructor(private readonly salesRepService: SalesRepService) {}
 
-  @Post()
-  create(@Body() createSalesRepDto: CreateSalesRepDto) {
-    return this.salesRepService.create(createSalesRepDto);
+  @Get(':id/retailers')
+  listAssignedRetailers(
+    @Param('id') salesRepId: string,
+    @Query() options: PaginationDto,
+  ) {
+    return this.salesRepService.listPaginatedAssignedRetailers(
+      salesRepId,
+      options,
+    );
   }
 
-  @Get()
-  findAll() {
-    return this.salesRepService.findAll();
+  @Get(':id/retailers/search')
+  searchAssignedRetailers(
+    @Param('id') salesRepId: string,
+    @Query('search') search: string,
+    @Query() options: PaginationDto,
+  ) {
+    return this.salesRepService.searchAssignedRetailers(
+      salesRepId,
+      search ?? '',
+      options,
+    );
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.salesRepService.findOne(+id);
+  @Get(':id/retailers/:retailerRef')
+  getAssignedRetailerDetail(
+    @Param('id') salesRepId: string,
+    @Param('retailerRef') retailerRef: string,
+    @Query('by') by: 'id' | 'uid' = 'id',
+  ) {
+    const identifier =
+      by === 'uid'
+        ? { uid: retailerRef }
+        : by === 'id'
+        ? { id: retailerRef }
+        : null;
+
+    if (!identifier) {
+      throw new BadRequestException("Query parameter 'by' must be either 'id' or 'uid'");
+    }
+
+    return this.salesRepService.getAssignedRetailerDetail(
+      salesRepId,
+      identifier,
+    );
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSalesRepDto: UpdateSalesRepDto) {
-    return this.salesRepService.update(+id, updateSalesRepDto);
+  @Patch(':id/retailers/:retailerRef')
+  updateAssignedRetailer(
+    @Param('id') salesRepId: string,
+    @Param('retailerRef') retailerRef: string,
+    @Query('by') by: 'id' | 'uid' = 'id',
+    @Body() dto: UpdateRetailerDto,
+  ) {
+    const identifier =
+      by === 'uid'
+        ? { uid: retailerRef }
+        : by === 'id'
+        ? { id: retailerRef }
+        : null;
+
+    if (!identifier) {
+      throw new BadRequestException("Query parameter 'by' must be either 'id' or 'uid'");
+    }
+
+    return this.salesRepService.updateRetailer(salesRepId, identifier, dto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.salesRepService.remove(+id);
+  @Get(':id/retailers/count')
+  assignedRetailerCount(@Param('id') salesRepId: string) {
+    return this.salesRepService.assignedRetailerCount(salesRepId);
   }
 }

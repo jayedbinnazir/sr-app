@@ -2,6 +2,7 @@ import { Column, Entity, Index, OneToMany, Unique } from 'typeorm';
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { Area } from 'src/area/entities/area.entity';
 import { Retailer } from 'src/retailer/entities/retailer.entity';
+import { Distributor } from 'src/distributor/entities/distributor.entity';
 
 @Entity('regions')
 @Unique('UQ_REGION_NAME', ['name'])
@@ -18,5 +19,10 @@ export class Region extends BaseEntity {
     orphanedRowAction: 'nullify',
   })
   retailers: Retailer[];
+
+  @OneToMany(() => Distributor, (distributor) => distributor.region, {
+    cascade: false,
+  })
+  distributors: Distributor[];
 }
 

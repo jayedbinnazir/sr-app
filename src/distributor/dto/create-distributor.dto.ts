@@ -1,9 +1,13 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
 
 export class CreateDistributorDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(150)
   name: string;
+
+  @IsOptional()
+  @IsUUID('4')
+  region_id?: string | null;
 }
 
