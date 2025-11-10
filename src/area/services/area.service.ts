@@ -5,24 +5,30 @@ import { Area } from "../entities/area.entity";
 import { PaginationDto } from "src/common/dto/pagination.dto";
 import { UpdateAreaDto } from "../dto/update-area.dto";
 import { Territory } from "src/territory/entities/territory.entity";
+import { Region } from "src/region/entities/region.entity";
 
 
 @Injectable()
 export class AreaService {
   constructor(
     private readonly dataSource: DataSource,
-  ) {}
+  ) { }
 
 
-  async createArea(createAreaDto:CreateAreaDto, manager?:EntityManager) {
+  async createArea(createAreaDto: CreateAreaDto, manager?: EntityManager) {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
     try {
+      const region = await em!.findOne(Region, { where: { id: createAreaDto.region_id } });
+      if (!region) {
+        throw new NotFoundException(`Region with ID '${createAreaDto.region_id}' not found`);
+      }
       const existing = await em!.findOne(Area, { where: { name: createAreaDto.name, region_id: createAreaDto.region_id } })
-      if(existing) {
+      if (existing) {
         throw new ConflictException(`Area with name '${createAreaDto.name}' already exists`);
       }
       const area = em!.create(Area, { ...createAreaDto });
@@ -31,7 +37,7 @@ export class AreaService {
         await queryRunner?.commitTransaction();
       }
       return saved;
-    } catch(error){
+    } catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();
       }
@@ -44,11 +50,12 @@ export class AreaService {
   }
 
 
-  async getAreas(options?:PaginationDto, manager?:EntityManager) {
+  async getAreas(options?: PaginationDto, manager?: EntityManager) {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
     try {
       const { page, limit } = PaginationDto.resolve(options, {
@@ -60,7 +67,7 @@ export class AreaService {
         take: limit,
       });
       return areas;
-    } catch(error){
+    } catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();
       }
@@ -73,16 +80,17 @@ export class AreaService {
   }
 
 
-  async searchAreas(search:string, manager?:EntityManager): Promise<string[]> {
+  async searchAreas(search: string, manager?: EntityManager): Promise<string[]> {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
     try {
       const areas = await em!.find(Area, { where: { name: Like(`%${search}%`) } });
       return areas.map(area => area.name);
-    } catch(error){
+    } catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();
       }
@@ -95,23 +103,30 @@ export class AreaService {
   }
 
 
-  async updateArea(id:string, updateAreaDto:UpdateAreaDto, manager?:EntityManager) {
+  async updateArea(id: string, updateAreaDto: UpdateAreaDto, manager?: EntityManager) {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
     try {
       const existing = await em!.findOne(Area, { where: { id } });
       if (!existing) {
         throw new NotFoundException(`Area with ID ${id} not found`);
       }
+      if (updateAreaDto.region_id) {
+        const region = await em!.findOne(Region, { where: { id: updateAreaDto.region_id } });
+        if (!region) {
+          throw new NotFoundException(`Region with ID '${updateAreaDto.region_id}' not found`);
+        }
+      }
       Object.assign(existing, updateAreaDto);
       const updated = await em!.save(existing);
       if (!manager) {
         await queryRunner?.commitTransaction();
       }
-    } catch(error){
+    } catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();
       }
@@ -124,11 +139,12 @@ export class AreaService {
   }
 
 
-  async deleteArea(id:string, manager?:EntityManager) {
+  async deleteArea(id: string, manager?: EntityManager) {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
     try {
       const existing = await em!.findOne(Area, { where: { id } });
@@ -141,7 +157,7 @@ export class AreaService {
       }
       return { message: `Area with ID ${id} deleted successfully` };
     }
-    catch(error){
+    catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();
       }
@@ -151,18 +167,14 @@ export class AreaService {
         await queryRunner?.release();
       }
     }
-    if (!manager) {
-      await queryRunner?.commitTransaction();
-    }
-    return { message: `Area with ID ${id} deleted successfully` };
   }
 
-
-  async totalAreaCount(manager?:EntityManager): Promise<number> {
+  async totalAreaCount(manager?: EntityManager): Promise<number> {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
     try {
       const areaCount = await em!.count(Area);
@@ -174,7 +186,7 @@ export class AreaService {
       }
       return areaCount;
     }
-    catch(error){
+    catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();
       }
@@ -186,11 +198,13 @@ export class AreaService {
     }
   }
 
-  async getTerritoriesByAreaId(areaId:string, options?:PaginationDto, manager?:EntityManager) {
+
+  async getTerritoriesByAreaId(areaId: string, options?: PaginationDto, manager?: EntityManager) {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
     try {
       const { page, limit } = PaginationDto.resolve(options, {
@@ -199,7 +213,7 @@ export class AreaService {
       });
       const territories = await em!.find(Territory, { where: { area_id: areaId }, skip: (page - 1) * limit, take: limit });
       return territories;
-    } catch(error){
+    } catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();
       }
@@ -211,11 +225,12 @@ export class AreaService {
     }
   }
 
-  async getTerritoriesCountByAreaId(areaId:string, manager?:EntityManager): Promise<number> {
+  async getTerritoriesCountByAreaId(areaId: string, manager?: EntityManager): Promise<number> {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
     try {
       const territoryCount = await em!.count(Territory, { where: { area_id: areaId } });
@@ -227,7 +242,7 @@ export class AreaService {
       }
       return territoryCount;
     }
-    catch(error){
+    catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();
       }
@@ -239,4 +254,10 @@ export class AreaService {
     }
   }
 }
+
+
+
+
+
+
 

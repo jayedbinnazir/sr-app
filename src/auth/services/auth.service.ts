@@ -1,10 +1,11 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
-import { CreateAuthAdminDto, CreateAuthSalesRepDto} from '../dto/create-auth.dto';
+import { CreateAuthDto } from '../dto/create-auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, EntityManager, Repository } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
@@ -60,13 +61,13 @@ export class AuthService {
     );
   }
 
-  async login(dto: CreateAuthAdminDto | CreateAuthSalesRepDto): Promise<AuthResult> {
+  async login(dto: CreateAuthDto): Promise<AuthResult> {
     try {
       switch (dto.type) {
         case AuthRole.Admin:
-          return await this.loginAdmin(dto as CreateAuthAdminDto);
+          return await this.loginAdmin(dto);
         case AuthRole.SalesRep:
-          return await this.loginSalesRep(dto as CreateAuthSalesRepDto);
+          return await this.loginSalesRep(dto);
         default:
           throw new UnauthorizedException('Unsupported auth type');
       }
@@ -92,19 +93,36 @@ export class AuthService {
     }
 
     try {
-      const normalizedEmail = dto.email.trim().toLowerCase();
+      const normalizedEmail = dto.email?.trim().toLowerCase() ?? null;
+      const normalizedUsernameInput = dto.username?.trim().toLowerCase() ?? null;
 
-      const existing = await em!
-        .createQueryBuilder(User, 'user')
-        .leftJoin('user.appUsers', 'appUser')
-        .leftJoin('appUser.role', 'role')
-        .where('LOWER(user.email) = :email', { email: normalizedEmail })
-        .getOne();
+      if (!normalizedEmail && !normalizedUsernameInput) {
+        throw new BadRequestException('Email or username is required');
+      }
 
-      if (existing) {
-        throw new ConflictException(
-          `Admin with email '${dto.email}' already exists`,
+      if (normalizedEmail) {
+        const existingEmailUser = await em!
+          .createQueryBuilder(User, 'user')
+          .select(['user.id'])
+          .where('LOWER(user.email) = :email', { email: normalizedEmail })
+          .getOne();
+        if (existingEmailUser) {
+          throw new ConflictException(
+            `Admin with email '${dto.email}' already exists`,
+          );
+        }
+      }
+
+      if (normalizedUsernameInput) {
+        const usernameTaken = await this.isUsernameTaken(
+          normalizedUsernameInput,
+          em!,
         );
+        if (usernameTaken) {
+          throw new ConflictException(
+            `Username '${dto.username}' is already in use`,
+          );
+        }
       }
 
       const role = await this.ensureRole(
@@ -115,9 +133,19 @@ export class AuthService {
 
       const hashedPassword = await bcrypt.hash(dto.password, this.saltRounds);
 
+      const generatedUsername =
+        normalizedUsernameInput ??
+        (normalizedEmail
+          ? await this.generateUniqueUsername(
+              normalizedEmail.split('@')[0],
+              em!,
+            )
+          : await this.generateUniqueUsername(dto.name, em!));
+
       const adminUser = em!.create(User, {
         name: dto.name.trim(),
         email: normalizedEmail,
+        username: generatedUsername,
         phone: dto.phone ?? null,
         password: hashedPassword,
       });
@@ -175,21 +203,11 @@ export class AuthService {
     }
 
     try {
-      const normalizedUsername = dto.username.trim().toLowerCase();
-      const normalizedEmail = dto.username?.trim().toLowerCase() ?? null;
+      const normalizedUsernameInput = dto.username?.trim().toLowerCase() ?? null;
+      const normalizedEmail = dto.email?.trim().toLowerCase() ?? null;
 
-      const existingSalesRep = await em!
-        .createQueryBuilder(SalesRep, 'salesRep')
-        .select(['salesRep.id'])
-        .where('LOWER(salesRep.username) = :username', {
-          username: normalizedUsername,
-        })
-        .getOne();
-
-      if (existingSalesRep) {
-        throw new ConflictException(
-          `Sales rep with username '${dto.username}' already exists`,
-        );
+      if (!normalizedUsernameInput && !normalizedEmail) {
+        throw new BadRequestException('Email or username is required');
       }
 
       if (normalizedEmail) {
@@ -201,7 +219,19 @@ export class AuthService {
 
         if (existingUserWithEmail) {
           throw new ConflictException(
-            `User with email '${dto.username}' already exists`,
+            `User with email '${dto.email}' already exists`,
+          );
+        }
+      }
+
+      if (normalizedUsernameInput) {
+        const usernameTaken = await this.isUsernameTaken(
+          normalizedUsernameInput,
+          em!,
+        );
+        if (usernameTaken) {
+          throw new ConflictException(
+            `Username '${dto.username}' is already in use`,
           );
         }
       }
@@ -214,9 +244,19 @@ export class AuthService {
 
       const hashedPassword = await bcrypt.hash(dto.password, this.saltRounds);
 
+      const username =
+        normalizedUsernameInput ??
+        (normalizedEmail
+          ? await this.generateUniqueUsername(
+              normalizedEmail.split('@')[0],
+              em!,
+            )
+          : await this.generateUniqueUsername(dto.name, em!));
+
       const user = em!.create(User, {
         name: dto.name.trim(),
         email: normalizedEmail,
+        username,
         phone: dto.phone ?? null,
         password: hashedPassword,
       });
@@ -230,7 +270,7 @@ export class AuthService {
 
       const salesRep = em!.create(SalesRep, {
         user_id: savedUser.id,
-        username: normalizedUsername,
+        username,
         name: dto.name.trim(),
         phone: dto.phone ?? null,
         isActive: true,
@@ -285,15 +325,18 @@ export class AuthService {
     response.removeHeader('Authorization');
   }
 
-  private async loginAdmin(dto: CreateAuthAdminDto): Promise<AuthResult> {
-    const email = dto.email.trim().toLowerCase();
+  private async loginAdmin(dto: CreateAuthDto): Promise<AuthResult> {
+    const identifier = dto.identifier.trim().toLowerCase();
 
     const adminUser = await this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.appUsers', 'appUser')
       .leftJoinAndSelect('appUser.role', 'role')
-      .where('LOWER(user.email) = :email', { email: email })
-      .andWhere('role.name = :roleName', { roleName: AuthRole.Admin })
+      .where('role.name = :roleName', { roleName: AuthRole.Admin })
+      .andWhere(
+        '(LOWER(user.email) = :identifier OR LOWER(user.username) = :identifier)',
+        { identifier },
+      )
       .addSelect('user.password')
       .getOne();
 
@@ -310,7 +353,9 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    this.logger.log(`Admin ${adminUser.email} logged in successfully`);
+    this.logger.log(
+      `Admin ${adminUser.username ?? adminUser.email ?? adminUser.id} logged in successfully`,
+    );
     this.emitNotification(() =>
       this.notificationService.notifyUser(adminUser.id, 'notifications.login', {
         userId: adminUser.id,
@@ -322,46 +367,54 @@ export class AuthService {
     return this.buildAdminAuthResult(adminUser);
   }
 
-  private async loginSalesRep(dto: CreateAuthSalesRepDto): Promise<AuthResult> {
-    const username = dto.username.trim().toLowerCase();
+  private async loginSalesRep(dto: CreateAuthDto): Promise<AuthResult> {
+    const identifier = dto.identifier.trim().toLowerCase();
+    console.log(identifier);
 
-    const salesRep = await this.salesRepRepository
-      .createQueryBuilder('salesRep')
-      .leftJoinAndSelect('salesRep.user', 'user')
-      .where('LOWER(salesRep.username) = :username', { username: username })
-      .getOne();
+    try {
+      const salesRep = await this.salesRepRepository
+        .createQueryBuilder('salesRep')
+        .leftJoinAndSelect('salesRep.user', 'user')
+        .where('LOWER(salesRep.username) = :identifier', { identifier })
+        .orWhere('LOWER(user.email) = :identifier', { identifier })
+        .orWhere('LOWER(user.username) = :identifier', { identifier })
+        .getOne();
 
-    if (!salesRep || !salesRep.user || !salesRep.user.password) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
+      if (!salesRep || !salesRep.user || !salesRep.user.password) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
 
-    const passwordMatches = await bcrypt.compare(
-      dto.password,
-      salesRep.user.password,
-    );
-    if (!passwordMatches) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
+      const passwordMatches = await bcrypt.compare(
+        dto.password,
+        salesRep.user.password,
+      );
+      if (!passwordMatches) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
 
-    salesRep.lastLoginAt = new Date();
-    await this.salesRepRepository.save(salesRep);
+      salesRep.lastLoginAt = new Date();
+      await this.salesRepRepository.save(salesRep);
 
-    this.logger.log(`Sales rep ${salesRep.username} logged in successfully`);
-    const userId = salesRep.user.id;
-    this.emitNotification(() =>
-      this.notificationService.notifyUser(
-        userId,
-        'notifications.login',
-        {
+      this.logger.log(`Sales rep ${salesRep.username} logged in successfully`);
+      const userId = salesRep.user.id;
+      this.emitNotification(() =>
+        this.notificationService.notifyUser(
           userId,
-          type: AuthRole.SalesRep,
-          username: salesRep.username,
-          timestamp: new Date().toISOString(),
-        },
-      ),
-    );
+          'notifications.login',
+          {
+            userId,
+            type: AuthRole.SalesRep,
+            username: salesRep.username,
+            timestamp: new Date().toISOString(),
+          },
+        ),
+      );
 
-    return this.buildSalesRepAuthResult(salesRep, salesRep.user);
+      return this.buildSalesRepAuthResult(salesRep, salesRep.user);
+    } catch (error) {
+      this.logger.error('Sales rep login failed', error?.stack ?? String(error));
+      throw error;
+    }
   }
 
   private getJwtSecret(): string {
@@ -409,6 +462,7 @@ export class AuthService {
         name: admin.name,
         email: admin.email ?? null,
         phone: admin.phone ?? null,
+        username: admin.username ?? null,
         role: AuthRole.Admin,
       },
     };
@@ -441,7 +495,8 @@ export class AuthService {
       expiresIn: this.jwtExpiresInSeconds,
       tokenType: 'Bearer',
       user: {
-        id: profileUser.id,
+        id: salesRep.id,
+        user_id: profileUser.id,
         type: AuthRole.SalesRep,
         name: profileUser.name ?? salesRep.name,
         email: profileUser.email ?? null,
@@ -450,6 +505,49 @@ export class AuthService {
         role: AuthRole.SalesRep,
       },
     };
+  }
+
+  private sanitizeUsername(base: string): string {
+    const cleaned = base
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '')
+      .slice(0, 40);
+    return cleaned.length ? cleaned : 'user';
+  }
+
+  private async isUsernameTaken(
+    username: string,
+    manager: EntityManager,
+  ): Promise<boolean> {
+    const existingUser = await manager.count(User, {
+      where: { username },
+    });
+    if (existingUser > 0) {
+      return true;
+    }
+    const existingSalesRep = await manager.count(SalesRep, {
+      where: { username },
+    });
+    return existingSalesRep > 0;
+  }
+
+  private async generateUniqueUsername(
+    base: string,
+    manager: EntityManager,
+  ): Promise<string> {
+    const sanitized = this.sanitizeUsername(base);
+    let candidate = sanitized;
+    let suffix = 0;
+
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      const taken = await this.isUsernameTaken(candidate, manager);
+      if (!taken) {
+        return candidate;
+      }
+      suffix += 1;
+      candidate = `${sanitized}${suffix}`.slice(0, 60);
+    }
   }
 
   private getCookieOptions(): CookieOptions {

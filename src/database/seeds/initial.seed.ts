@@ -17,15 +17,17 @@ type SeedRole = {
 
 type SeedUser = {
   name: string;
-  email: string;
-  phone: string;
+  email?: string | null;
+  username?: string | null;
+  phone?: string | null;
   password: string;
 };
 
 type SeedSalesRep = {
   name: string;
-  username: string;
-  phone: string;
+  username?: string | null;
+  email?: string | null;
+  phone?: string | null;
   password: string;
 };
 
@@ -37,6 +39,7 @@ const roles: SeedRole[] = [
 const adminUser: SeedUser = {
   name: 'Jayed Bin Nazir',
   email: 'jayed.official0158@gmail.com',
+  username: 'jayed.bin.nazir',
   phone: '+8801521323469',
   password: 'Jayed015',
 };
@@ -44,21 +47,24 @@ const adminUser: SeedUser = {
 const salesReps: SeedSalesRep[] = [
   {
     name: 'Abir Rahman',
-    username: 'abir@manush.tech',
+    username: 'abir.rahman',
+    email: 'abir@manush.tech',
     phone: '+8801711355057',
-    password: 'Abir015',
+    password: 'Abir015!',
   },
   {
     name: 'Syed Asim Anwar',
-    username: 'asim.anwar@manush.tech',
+    username: 'asim.anwar',
+    email: 'asim.anwar@manush.tech',
     phone: '+8801864203231',
-    password: 'Abir015',
+    password: 'Asim015!',
   },
   {
     name: 'Imran RS Bhuiyan',
-    username: 'imran@manush.tech',
+    username: 'imran.bhuiyan',
+    email: 'imran@manush.tech',
     phone: '+8801864203231',
-    password: 'Abir015',
+    password: 'Imran015!',
   },
 ];
 
@@ -121,26 +127,48 @@ async function ensureUserWithRole(
   const appUserRepository = dataSource.getRepository(AppUser);
   const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS ?? 10);
 
-  let user = await userRepository.findOne({ where: { email: payload.email } });
+  const normalizedEmail = payload.email?.toLowerCase() ?? null;
+  const normalizedUsername = payload.username?.toLowerCase() ?? null;
+
+  let user: User | null = null;
+  if (normalizedEmail) {
+    user = await userRepository.findOne({ where: { email: normalizedEmail } });
+  }
+  if (!user && normalizedUsername) {
+    user = await userRepository.findOne({ where: { username: normalizedUsername } });
+  }
+
   if (!user) {
     const passwordHash = await bcrypt.hash(payload.password, saltRounds);
+    const fallbackUsername =
+      normalizedUsername ??
+      (normalizedEmail ? normalizedEmail.split('@')[0] : null);
     user = userRepository.create({
       name: payload.name,
-      email: payload.email,
-      phone: payload.phone,
+      email: normalizedEmail,
+      username: fallbackUsername,
+      phone: payload.phone ?? null,
       password: passwordHash,
       provider: 'local',
     });
     await userRepository.save(user);
-    console.log(`Created user '${payload.email}'`);
+    console.log(`Created user '${normalizedEmail ?? normalizedUsername}'`);
   } else {
     let needsUpdate = false;
     if (user.name !== payload.name) {
       user.name = payload.name;
       needsUpdate = true;
     }
-    if (user.phone !== payload.phone) {
+    if (payload.phone !== undefined && user.phone !== payload.phone) {
       user.phone = payload.phone;
+      needsUpdate = true;
+    }
+    if (normalizedUsername && user.username !== normalizedUsername) {
+      user.username = normalizedUsername;
+      needsUpdate = true;
+    }
+    if (normalizedEmail && user.email !== normalizedEmail) {
+      user.email = normalizedEmail;
       needsUpdate = true;
     }
     if (!user.password) {
@@ -149,7 +177,7 @@ async function ensureUserWithRole(
     }
     if (needsUpdate) {
       await userRepository.save(user);
-      console.log(`Updated user '${payload.email}'`);
+      console.log(`Updated user '${normalizedEmail ?? normalizedUsername}'`);
     }
   }
 
@@ -163,7 +191,7 @@ async function ensureUserWithRole(
       role_id: role.id,
     });
     await appUserRepository.save(appUser);
-    console.log(`Linked user '${payload.email}' to role '${role.name}'`);
+    console.log(`Linked user '${normalizedEmail ?? normalizedUsername}' to role '${role.name}'`);
   }
 
   return user;
@@ -175,26 +203,42 @@ async function ensureSalesReps(
 ): Promise<void> {
   const salesRepRepository = dataSource.getRepository(SalesRep);
   for (const rep of salesReps) {
+    const seedUsername = rep.username?.toLowerCase() ?? null;
+    const seedEmail = rep.email?.toLowerCase() ?? null;
     const user = await ensureUserWithRole(dataSource, role, {
       name: rep.name,
-      email: rep.username,
+      email: seedEmail,
+      username: seedUsername,
       phone: rep.phone,
       password: rep.password,
     });
 
+    const whereConditions: Array<{ user_id?: string; username?: string }> = [
+      { user_id: user.id },
+    ];
+    if (seedUsername) {
+      whereConditions.push({ username: seedUsername });
+    }
     let existingSalesRep = await salesRepRepository.findOne({
-      where: [{ user_id: user.id }, { username: rep.username }],
+      where: whereConditions,
     });
+
+    const resolvedUsernameRaw =
+      seedUsername ??
+      (seedEmail ? seedEmail.split('@')[0] : user.username ?? `salesrep_${user.id.slice(0, 8)}`);
+    const resolvedUsername = resolvedUsernameRaw.toLowerCase();
 
     if (!existingSalesRep) {
       existingSalesRep = salesRepRepository.create({
         user_id: user.id,
-        username: rep.username,
+        username: resolvedUsername,
         name: rep.name,
-        phone: rep.phone,
+        phone: rep.phone ?? null,
       });
       await salesRepRepository.save(existingSalesRep);
-      console.log(`Created sales rep '${rep.username}'`);
+      console.log(
+        `Created sales rep '${existingSalesRep.username}'`,
+      );
     } else {
       let needsUpdate = false;
       if (existingSalesRep.name !== rep.name) {
@@ -202,16 +246,17 @@ async function ensureSalesReps(
         needsUpdate = true;
       }
       if (existingSalesRep.phone !== rep.phone) {
-        existingSalesRep.phone = rep.phone;
+        existingSalesRep.phone = rep.phone ?? null;
         needsUpdate = true;
       }
-      if (existingSalesRep.username !== rep.username) {
-        existingSalesRep.username = rep.username;
+      const targetUsername = resolvedUsername;
+      if (existingSalesRep.username !== targetUsername) {
+        existingSalesRep.username = targetUsername;
         needsUpdate = true;
       }
       if (needsUpdate) {
         await salesRepRepository.save(existingSalesRep);
-        console.log(`Updated sales rep '${rep.username}'`);
+        console.log(`Updated sales rep '${existingSalesRep.username}'`);
       }
     }
   }

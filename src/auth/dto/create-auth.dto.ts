@@ -1,41 +1,36 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 import { AuthRole } from '../types/auth-role.enum';
+import { ApiProperty } from '@nestjs/swagger';
 
-
-
-
-export class CreateAuthAdminDto {
-
+export class CreateAuthDto {
+  @ApiProperty({
+    description: 'User role attempting to authenticate',
+    enum: AuthRole,
+    example: AuthRole.SalesRep,
+  })
   @IsString()
   @IsEnum(AuthRole)
   type: AuthRole;
 
-  @IsEmail()
+  @ApiProperty({
+    description: 'Username or email address used to log in',
+    example: 'abir.rahman',
+    maxLength: 150,
+  })
+  @IsString()
+  @IsNotEmpty()
   @MaxLength(150)
-  email: string;
+  identifier: string;
 
-
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(120)
-  password: string;
-}
-
-export class CreateAuthSalesRepDto {
-
-  @IsString()
-  @IsEnum(AuthRole)
-  type: AuthRole;
-
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(60)
-  username: string;
-
+  @ApiProperty({
+    description: 'Account password',
+    example: 'Abir015!',
+    minLength: 8,
+    maxLength: 120,
+  })
   @IsString()
   @IsNotEmpty()
   @MinLength(8)
   @MaxLength(120)
   password: string;
 }
-

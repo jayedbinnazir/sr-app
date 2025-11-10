@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private readonly salesRepRepository: Repository<SalesRep>,
   ) {
     const cookieName =
-      configService.get<string>('AUTH_COOKIE_NAME') ?? 'sr_access_token';
+      configService.get<string>('app.cookie_name') ?? 'sr_access_token';
 
     const cookieExtractor = (request: Request): string | null => {
       if (!request || !request.cookies) {
@@ -39,7 +39,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
       ignoreExpiration: false,
-      secretOrKey: configService.get<string>('JWT_SECRET') ?? 'change-me',
+      secretOrKey: configService.get<string>('app.jwt_secret') ?? 'change-me',
     });
   }
 
@@ -59,6 +59,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         name: user.name,
         email: user.email,
         phone: user.phone ?? null,
+        username: user.username ?? null,
         role: payload.role ?? AuthRole.Admin,
       };
     }
@@ -74,7 +75,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       }
 
       return {
-        id: salesRep.user.id,
+        id: salesRep.id,
+        user_id: salesRep.user.id || null,
         type: AuthRole.SalesRep,
         name: salesRep.user.name ?? salesRep.name,
         email: salesRep.user.email ?? null,

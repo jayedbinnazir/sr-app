@@ -16,6 +16,9 @@ import { ChatGatewayModule } from './chat-gateway/chat-gateway.module';
 import { AppUserModule } from './app_user/app_user.module';
 import { SalesRepModule } from './sales_rep/sales_rep.module';
 import { NotificationModule } from './notification/notification.module';
+import { RegionModule } from './region/region.module';
+import { AreaModule } from './area/area.module';
+import { TerritoryModule } from './territory/territory.module';
 
 @Module({
   imports: [
@@ -66,6 +69,12 @@ import { NotificationModule } from './notification/notification.module';
     SalesRepModule,
 
     NotificationModule,
+
+    RegionModule,
+
+    AreaModule,
+
+    TerritoryModule,
   ],
   providers: [AppService],
   controllers: [AppController],

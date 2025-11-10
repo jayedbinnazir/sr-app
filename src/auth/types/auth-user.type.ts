@@ -10,6 +10,7 @@ export interface AuthJwtPayload {
 
 export interface AuthenticatedUser {
   id: string;
+  user_id?: string | null;
   type: AuthRole;
   name: string;
   email?: string | null;
