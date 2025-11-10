@@ -23,6 +23,8 @@
     "mr": "cross-env NODE_ENV=dev npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./src/database/typeorm.datasource.ts",
     "mrv": "cross-env NODE_ENV=dev npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./src/database/typeorm.datasource.ts",
     "ms": "cross-env NODE_ENV=dev npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:show -d ./src/database/typeorm.datasource.ts",
+    "seed": "cross-env NODE_ENV=dev ts-node -r tsconfig-paths/register src/database/seeds/initial.seed.ts",
+    "seed:docker": "docker exec -it --env-file .env.dev myapp-dev-1 npm run seed",
     "docker:build": "docker-compose -f docker-compose.dev.yml --env-file .env.dev up --build",
     "docker:service": "docker-compose -f docker-compose.service.yml --env-file .env.dev up -d",
     "docker:kafka": "docker-compose -f docker-compose.kafka.yml --env-file .env.dev up --build",
