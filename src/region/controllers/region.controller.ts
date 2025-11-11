@@ -7,7 +7,7 @@ import {
   Patch,
   Post,
   Query,
-  ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -21,6 +21,10 @@ import { RegionService } from '../services/region.service';
 import { CreateRegionDto } from '../dto/create-region.dto';
 import { UpdateRegionDto } from '../dto/update-region.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { AdminGuard } from 'src/auth/guards/admin.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { AuthRole } from 'src/auth/types/auth-role.enum';
 
 @ApiTags('Regions')
 @Controller({
@@ -31,6 +35,8 @@ export class RegionController {
   constructor(private readonly regionService: RegionService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @Roles(AuthRole.Admin)
   @ApiOperation({ summary: 'Create a new region' })
   @ApiBody({
     type: CreateRegionDto,
@@ -92,11 +98,15 @@ export class RegionController {
       },
     },
   })
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @Roles(AuthRole.Admin)
   update(@Param('id') id: string, @Body() dto: UpdateRegionDto) {
     return this.regionService.updateRegion(id, dto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @Roles(AuthRole.Admin)
   @ApiOperation({ summary: 'Delete a region' })
   @ApiParam({
     name: 'id',

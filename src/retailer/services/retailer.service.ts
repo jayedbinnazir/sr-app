@@ -56,6 +56,12 @@ export class RetailerService {
   private readonly retailerCacheTtl =
     Number(process.env.RETAILER_CACHE_TTL ?? 60);
 
+    //Todo-->
+    //-->1. listAssignedRetailers {id , name}
+    //-->2. getRetailerDetailForSalesRep{whole}
+    //-->3. updateRetailerBySalesRep {points, routes, notes}
+    //-->4. adminListAllRetailers {id , name}
+
   constructor(
     @InjectRepository(Retailer)
     private readonly retailerRepository: Repository<Retailer>,

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { TerritoryService } from "../services/territory.service";
 import { CreateTerritoryDto } from "../dto/create-territory.dto";
 import { PaginationDto } from "src/common/dto/pagination.dto";
@@ -10,6 +10,10 @@ import {
   ApiQuery,
   ApiTags,
 } from "@nestjs/swagger";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { AdminGuard } from "src/auth/guards/admin.guard";
+import { Roles } from "src/auth/decorators/roles.decorator";
+import { AuthRole } from "src/auth/types/auth-role.enum";
 
 @ApiTags('Territories')
 @Controller({
@@ -20,6 +24,8 @@ export class TerritoryController {
   constructor(private readonly territoryService: TerritoryService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @Roles(AuthRole.Admin)
   @ApiOperation({ summary: 'Create a new territory' })
   @ApiBody({
     type: CreateTerritoryDto,
@@ -57,6 +63,8 @@ export class TerritoryController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @Roles(AuthRole.Admin)
   @ApiOperation({ summary: 'Update territory details' })
   @ApiParam({
     name: 'id',
@@ -77,6 +85,8 @@ export class TerritoryController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @Roles(AuthRole.Admin)
   @ApiOperation({ summary: 'Delete a territory' })
   @ApiParam({
     name: 'id',

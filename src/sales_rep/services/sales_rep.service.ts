@@ -137,6 +137,8 @@ export class SalesRepService {
   }
 
 
+
+  //Search & Filter: Search by name/code/phone; filter by region/area/distributor/territory.
   async searchAssignedRetailers(
     salesRepId: string,
     search: string,

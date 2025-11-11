@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
-import { DataSource, EntityManager, Like } from "typeorm";
+import { DataSource, EntityManager } from "typeorm";
 import { CreateAreaDto } from "../dto/create-area.dto";
 import { Area } from "../entities/area.entity";
 import { PaginationDto } from "src/common/dto/pagination.dto";
@@ -7,6 +7,26 @@ import { UpdateAreaDto } from "../dto/update-area.dto";
 import { Territory } from "src/territory/entities/territory.entity";
 import { Region } from "src/region/entities/region.entity";
 
+
+type PaginatedAreas = {
+  data: Area[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    hasNext: boolean;
+  };
+};
+
+type PaginatedTerritories = {
+  data: Territory[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    hasNext: boolean;
+  };
+};
 
 @Injectable()
 export class AreaService {
@@ -50,23 +70,37 @@ export class AreaService {
   }
 
 
-  async getAreas(options?: PaginationDto, manager?: EntityManager) {
+  async getAreas(
+    options?: PaginationDto,
+    manager?: EntityManager,
+  ): Promise<PaginatedAreas> {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
-      await queryRunner?.startTransaction();
     }
     try {
       const { page, limit } = PaginationDto.resolve(options, {
         defaultLimit: 20,
         maxLimit: 100,
       });
-      const areas = await em!.find(Area, {
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-      return areas;
+      const qb = em!
+        .createQueryBuilder(Area, "area")
+        .leftJoinAndSelect("area.region", "region")
+        .orderBy("area.name", "ASC")
+        .addOrderBy("area.id", "ASC")
+        .skip((page - 1) * limit)
+        .take(limit);
+      const [data, total] = await qb.getManyAndCount();
+      return {
+        data,
+        meta: {
+          total,
+          page,
+          limit,
+          hasNext: page * limit < total,
+        },
+      };
     } catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();
@@ -80,16 +114,50 @@ export class AreaService {
   }
 
 
-  async searchAreas(search: string, manager?: EntityManager): Promise<string[]> {
+  async searchAreas(
+    search: string,
+    options?: PaginationDto,
+    manager?: EntityManager,
+  ): Promise<PaginatedAreas> {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
-      await queryRunner?.startTransaction();
     }
     try {
-      const areas = await em!.find(Area, { where: { name: Like(`%${search}%`) } });
-      return areas.map(area => area.name);
+      const { page, limit } = PaginationDto.resolve(options, {
+        defaultLimit: 20,
+        maxLimit: 100,
+      });
+      const trimmed = (search ?? "").trim();
+      if (!trimmed) {
+        return {
+          data: [],
+          meta: {
+            total: 0,
+            page,
+            limit,
+            hasNext: false,
+          },
+        };
+      }
+      const pattern = `%${trimmed.replace(/[%_]/g, "\\$&")}%`;
+      const qb = em!
+        .createQueryBuilder(Area, "area")
+        .where("area.name ILIKE :pattern", { pattern })
+        .orderBy("area.name", "ASC")
+        .skip((page - 1) * limit)
+        .take(limit);
+      const [data, total] = await qb.getManyAndCount();
+      return {
+        data,
+        meta: {
+          total,
+          page,
+          limit,
+          hasNext: page * limit < total,
+        },
+      };
     } catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();
@@ -199,20 +267,42 @@ export class AreaService {
   }
 
 
-  async getTerritoriesByAreaId(areaId: string, options?: PaginationDto, manager?: EntityManager) {
+  async getTerritoriesByAreaId(
+    areaId: string,
+    options?: PaginationDto,
+    manager?: EntityManager,
+  ): Promise<PaginatedTerritories> {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
-      await queryRunner?.startTransaction();
     }
     try {
       const { page, limit } = PaginationDto.resolve(options, {
         defaultLimit: 20,
         maxLimit: 100,
       });
-      const territories = await em!.find(Territory, { where: { area_id: areaId }, skip: (page - 1) * limit, take: limit });
-      return territories;
+      const qb = em!
+        .createQueryBuilder(Territory, "territory")
+        .leftJoinAndSelect("territory.area", "area")
+        .where("territory.area_id = :areaId", { areaId })
+        .orderBy("territory.name", "ASC")
+        .addOrderBy("territory.id", "ASC")
+        .skip((page - 1) * limit)
+        .take(limit);
+      const [data, total] = await qb.getManyAndCount();
+      if (total === 0) {
+        throw new NotFoundException(`No territories found for area ID ${areaId}`);
+      }
+      return {
+        data,
+        meta: {
+          total,
+          page,
+          limit,
+          hasNext: page * limit < total,
+        },
+      };
     } catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();

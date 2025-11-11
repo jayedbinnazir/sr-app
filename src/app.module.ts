@@ -19,6 +19,8 @@ import { NotificationModule } from './notification/notification.module';
 import { RegionModule } from './region/region.module';
 import { AreaModule } from './area/area.module';
 import { TerritoryModule } from './territory/territory.module';
+import { ImportModule } from './import/import.module';
+import { ImportWorkerModule } from './import-worker/import-worker.module';
 
 @Module({
   imports: [
@@ -75,6 +77,10 @@ import { TerritoryModule } from './territory/territory.module';
     AreaModule,
 
     TerritoryModule,
+
+    ImportModule,
+
+    ImportWorkerModule,
   ],
   providers: [AppService],
   controllers: [AppController],

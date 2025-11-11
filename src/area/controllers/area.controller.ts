@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { AreaService } from "../services/area.service";
 import { CreateAreaDto } from "../dto/create-area.dto";
 import { PaginationDto } from "src/common/dto/pagination.dto";
@@ -11,6 +11,10 @@ import {
   ApiQuery,
   ApiTags,
 } from "@nestjs/swagger";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { AdminGuard } from "src/auth/guards/admin.guard";
+import { Roles } from "src/auth/decorators/roles.decorator";
+import { AuthRole } from "src/auth/types/auth-role.enum";
 
 @ApiTags('Areas')
 @Controller({
@@ -21,6 +25,8 @@ export class AreaController {
   constructor(private readonly areaService: AreaService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @Roles(AuthRole.Admin)
   @ApiOperation({ summary: 'Create a new area' })
   @ApiBody({
     type: CreateAreaDto,
@@ -58,6 +64,8 @@ export class AreaController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @Roles(AuthRole.Admin)
   @ApiOperation({ summary: 'Update area information' })
   @ApiParam({
     name: 'id',
@@ -78,6 +86,8 @@ export class AreaController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @Roles(AuthRole.Admin)
   @ApiOperation({ summary: 'Delete an area' })
   @ApiParam({
     name: 'id',

@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { DataSource, EntityManager, Like } from 'typeorm';
+import { DataSource, EntityManager } from 'typeorm';
 import { CreateRegionDto } from '../dto/create-region.dto';
 import { Region } from '../entities/region.entity';
 import { UpdateRegionDto } from '../dto/update-region.dto';
@@ -14,6 +14,21 @@ type PaginatedAreas = {
     hasNext: boolean;
   };
   data: Area[];
+};
+
+type AreaFilters = {
+  distributorId?: string;
+  territoryId?: string;
+};
+
+type PaginatedRegions = {
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    hasNext: boolean;
+  };
+  data: Region[];
 };
 
 @Injectable()
@@ -61,7 +76,10 @@ export class RegionService {
     }
   }
 
-  async getRegions(options?: PaginationDto, manager?: EntityManager): Promise<Region[]> {
+  async getRegions(
+    options?: PaginationDto,
+    manager?: EntityManager,
+  ): Promise<PaginatedRegions> {
     const queryRunner = manager
       ? undefined
       : this.dataSource.createQueryRunner();
@@ -77,10 +95,23 @@ export class RegionService {
         maxLimit: 100,
       });
 
-      return em!.find(Region, {
-        skip: (page - 1) * limit,
-        take: limit,
-      });
+      const qb = em!
+        .createQueryBuilder(Region, 'region')
+        .orderBy('region.name', 'ASC')
+        .skip((page - 1) * limit)
+        .take(limit);
+
+      const [data, total] = await qb.getManyAndCount();
+
+      return {
+        data,
+        meta: {
+          total,
+          page,
+          limit,
+          hasNext: page * limit < total,
+        },
+      };
     } catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();
@@ -93,16 +124,51 @@ export class RegionService {
     }
   }
 
-  async searchRegions(search:string,manager?:EntityManager): Promise<string[]> {
+  async searchRegions(
+    search: string,
+    options?: PaginationDto,
+    manager?: EntityManager,
+  ): Promise<PaginatedRegions> {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
     }
     try {
-      const regions = await em!.find(Region, { where: { name: Like(`%${search}%`) } });
-      return regions.map(region => region.name);
-    } catch(error){
+      const { page, limit } = PaginationDto.resolve(options, {
+        defaultLimit: 20,
+        maxLimit: 100,
+      });
+      const trimmed = (search ?? '').trim();
+      if (!trimmed) {
+        return {
+          data: [],
+          meta: {
+            total: 0,
+            page,
+            limit,
+            hasNext: false,
+          },
+        };
+      }
+      const pattern = `%${trimmed.replace(/[%_]/g, '\\$&')}%`;
+      const qb = em!
+        .createQueryBuilder(Region, 'region')
+        .where('region.name ILIKE :pattern', { pattern })
+        .orderBy('region.name', 'ASC')
+        .skip((page - 1) * limit)
+        .take(limit);
+      const [data, total] = await qb.getManyAndCount();
+      return {
+        data,
+        meta: {
+          total,
+          page,
+          limit,
+          hasNext: page * limit < total,
+        },
+      };
+    } catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();
       }
@@ -112,7 +178,6 @@ export class RegionService {
         await queryRunner?.release();
       }
     }
-
   }
 
   async updateRegion(
@@ -216,9 +281,9 @@ export class RegionService {
   async getAreasByRegionId(
     regionId: string,
     options?: PaginationDto,
+    filters?: AreaFilters,
     manager?: EntityManager,
   ): Promise<PaginatedAreas> {
-
     const queryRunner = manager
       ? undefined
       : this.dataSource.createQueryRunner();
@@ -234,24 +299,33 @@ export class RegionService {
         maxLimit: 100,
       });
 
-      const areas = em!
+      const qb = em!
         .createQueryBuilder(Area, 'area')
         .leftJoinAndSelect('area.region', 'region')
+        .leftJoinAndSelect('area.territory', 'territory')
+        .leftJoinAndSelect('area.distributor', 'distributor')
         .where('area.region_id = :regionId', { regionId })
         .orderBy('area.name', 'ASC')
         .addOrderBy('area.id', 'ASC');
 
-      const [data, total] = await areas
-        .take(limit)
+      if (filters?.distributorId) {
+        qb.andWhere('area.distributor_id = :distributorId', {
+          distributorId: filters.distributorId,
+        });
+      }
+      if (filters?.territoryId) {
+        qb.andWhere('area.territory_id = :territoryId', {
+          territoryId: filters.territoryId,
+        });
+      }
+
+      const [data, total] = await qb
         .skip((page - 1) * limit)
+        .take(limit)
         .getManyAndCount();
 
       if (total === 0) {
         throw new NotFoundException(`No areas found for region ID ${regionId}`);
-      }
-
-      if (!manager) {
-        await queryRunner?.commitTransaction();
       }
 
       return {
