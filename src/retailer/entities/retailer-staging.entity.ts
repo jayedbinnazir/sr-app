@@ -20,16 +20,16 @@ export class RetailerStaging {
   @Column({ type: 'varchar', length: 20, nullable: true })
   phone: string | null;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ type: 'varchar', length: 36, nullable: true })
   region_id: string | null;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ type: 'varchar', length: 36, nullable: true })
   area_id: string | null;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ type: 'varchar', length: 36, nullable: true })
   distributor_id: string | null;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ type: 'varchar', length: 36, nullable: true })
   territory_id: string | null;
 
   @Column({ type: 'integer', nullable: true })

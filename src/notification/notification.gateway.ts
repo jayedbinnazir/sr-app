@@ -39,21 +39,26 @@ export class NotificationGateway
       const host = this.configService.get<string>('db.redis_host') ?? 'redis';
       const port = Number(this.configService.get<number>('db.redis_port') ?? 6379);
       const password = this.configService.get<string>('db.redis_password') ?? '';
-      const useTls = this.configService.get<string>('db.redis_tls') === 'true';
 
       const url = password
         ? `redis://:${password}@${host}:${port}`
         : `redis://${host}:${port}`;
 
-      const pubClient = createClient({
-        url,
-        socket: useTls ? { tls: true, rejectUnauthorized: false } : undefined,
-      });
+      const pubClient = createClient({ url });
       const subClient = pubClient.duplicate();
 
       await Promise.all([pubClient.connect(), subClient.connect()]);
-      server.adapter(createAdapter(pubClient, subClient));
-      this.logger.log('Notification gateway connected to Redis');
+      const redisAdapter = createAdapter(pubClient, subClient);
+      const ioServer: Server =
+        (server as unknown as { server?: Server }).server ?? server;
+      if (typeof (ioServer as any).adapter === 'function') {
+        (ioServer as any).adapter(redisAdapter);
+        this.logger.log('Notification gateway connected to Redis');
+      } else {
+        this.logger.warn(
+          'Socket server adapter() method unavailable; Redis adapter not applied',
+        );
+      }
     } catch (error) {
       this.logger.error('Failed to initialise Redis adapter', error as Error);
     }

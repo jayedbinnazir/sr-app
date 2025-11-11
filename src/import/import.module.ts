@@ -18,16 +18,13 @@ import { RetailerImportJob } from './types/retailer-import-job.interface';
     {
       provide: RETAILER_IMPORT_QUEUE,
       useFactory: (configService: ConfigService) => {
-        const dbConfig = configService.get('db') as Record<string, unknown>;
+      
+        console.log('dbConfig------bla bla bla--->', configService.get<string>('db.redis_host'));
         return new Queue<RetailerImportJob>(RETAILER_IMPORT_QUEUE_NAME, {
           connection: {
-            host: dbConfig?.redis_host as string,
-            port: Number(dbConfig?.redis_port ?? 6379),
-            password: (dbConfig?.redis_password as string) || undefined,
-            tls:
-              dbConfig?.redis_tls && dbConfig.redis_tls === 'true'
-                ? {}
-                : undefined,
+            host: configService.get<string>('db.redis_host') ?? 'redis',
+            port: Number(configService.get<number>('db.redis_port')) || 6379,
+            password: configService.get<string>('db.redis_password') || 'myStrongPassword',
           },
           defaultJobOptions: {
             removeOnComplete: {

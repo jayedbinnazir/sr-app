@@ -9,6 +9,7 @@ import { Area } from 'src/area/entities/area.entity';
 import { Distributor } from 'src/distributor/entities/distributor.entity';
 import { Territory } from 'src/territory/entities/territory.entity';
 import { RetailerStaging } from './entities/retailer-staging.entity';
+import { RetailerError } from './entities/retailer-error.entity';
 import { CachingModule } from 'src/caching/caching.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { SalesRep } from 'src/sales_rep/entities/sales_rep.entity';
@@ -26,6 +27,7 @@ import { RetailerService } from './services/retailer.service';
       Distributor,
       Territory,
       RetailerStaging,
+      RetailerError,
     ]),
     CachingModule,
     AuthModule,

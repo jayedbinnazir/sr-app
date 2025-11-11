@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -23,6 +24,9 @@ async function bootstrap() {
     }),
   );
   app.useGlobalInterceptors(new ResponseInterceptor());
+  app.useStaticAssets(join(process.cwd(), 'public'), {
+    prefix: '/static/',
+  });
 
   const configservice = app.get(ConfigService);
   const PORT = configservice.get<number>('app.port') as number;
