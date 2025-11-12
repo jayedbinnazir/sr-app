@@ -1,98 +1,69 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# SR App - Local Development Setup
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This guide explains how to start the **SR App** project locally with all dependencies, including Docker services, Kafka, and PostgreSQL.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
+## 1. Clone the repository
 
 ```bash
-$ npm install
-```
+git clone https://github.com/jayedbinnazir/sr-app.git
+cd sr-app
+2. Install dependencies
+bash
+Copy code
+npm install
+⚠️ If installation fails due to dependency conflicts, run:
 
-## Compile and run the project
+bash
+Copy code
+npm install --force
+3. Open Docker Desktop
+Make sure Docker Desktop is running on your system.
 
-```bash
-# development
-$ npm run start
+This project uses PostgreSQL, Kafka, and other containers.
 
-# watch mode
-$ npm run start:dev
+4. Start required Docker services
+4.1 Start project services
+bash
+Copy code
+npm run docker:service
+Use a separate terminal/cmd and keep it running in the background.
 
-# production mode
-$ npm run start:prod
-```
+4.2 Start Kafka
+bash
+Copy code
+npm run docker:kafka
+Use another terminal/cmd for Kafka, running in the background.
 
-## Run tests
+⚠️ Ensure both database and Kafka containers are created and running before building the project.
 
-```bash
-# unit tests
-$ npm run test
+5. Build and run the project
+In VS Code terminal:
 
-# e2e tests
-$ npm run test:e2e
+bash
+Copy code
+npm run docker:build
+This will build and run the project.
 
-# test coverage
-$ npm run test:cov
-```
+It will automatically connect to Kafka and PostgreSQL.
 
-## Deployment
+6. Access the API
+Base URL: http://localhost:8080/api/v1
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Swagger Documentation
+Access API docs at: http://localhost:8080/docs
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+7. PostgreSQL Admin (pgAdmin)
+Access pgAdmin at: http://localhost:5050
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+Ensure the database container is running before accessing pgAdmin.
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+8. Notes / Tips
+Keep Docker terminals for services and Kafka running while working.
 
-## Resources
+If you restart Docker, make sure containers are up before building the project.
 
-Check out a few resources that may come in handy when working with NestJS:
+Use VS Code terminal for running project commands.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Always check that Kafka and database containers are healthy before starting the app.
