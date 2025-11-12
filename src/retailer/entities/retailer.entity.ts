@@ -25,6 +25,8 @@ import { SalesRepRetailer } from 'src/sales_rep/entities/sales-rep-retailer.enti
 @Index('IDX_RETAILER_DISTRIBUTOR', ['distributor_id'])
 @Index('IDX_RETAILER_TERRITORY', ['territory_id'])
 @Check(`"points" >= 0`)
+
+
 export class Retailer extends BaseEntity {
   @Column({ type: 'varchar', length: 50 })
   uid: string;

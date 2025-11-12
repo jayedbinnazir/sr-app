@@ -1,9 +1,22 @@
-import { BadRequestException, Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
-import { SalesRepService } from '../services/sales_rep.service';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { UpdateRetailerDto } from 'src/retailer/dto/update-retailer.dto';
 import {
-  ApiBadRequestResponse,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import { SalesRepService } from '../services/sales_rep.service';
+import { UpdateRetailerDto } from 'src/retailer/dto/update-retailer.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { SalesRepGuard } from 'src/auth/guards/sales-rep.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { AuthRole } from 'src/auth/types/auth-role.enum';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+import type { AuthenticatedUser } from 'src/auth/types/auth-user.type';
+import {
+  ApiBearerAuth,
   ApiBody,
   ApiOkResponse,
   ApiOperation,
@@ -11,22 +24,29 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import {
+  RetailerFilterQueryDto,
+  RetailerPaginationQueryDto,
+  RetailerSearchQueryDto,
+} from '../dto/retailer-query.dto';
 
-@ApiTags('Sales Representative Assignments')
+type AssignedRetailerList = Awaited<
+  ReturnType<SalesRepService['listPaginatedAssignedRetailers']>
+>;
+
+@ApiTags('Sales Rep Retailers')
+@ApiBearerAuth()
 @Controller({
-  path: 'v1/sales-reps',
+  path: 'v1/sales-reps/retailers',
   version: '1',
 })
+@UseGuards(JwtAuthGuard, SalesRepGuard)
+@Roles(AuthRole.SalesRep)
 export class SalesRepController {
   constructor(private readonly salesRepService: SalesRepService) {}
 
-  @Get(':id/retailers')
-  @ApiOperation({ summary: 'List retailers assigned to a sales representative' })
-  @ApiParam({
-    name: 'id',
-    description: 'Sales representative identifier',
-    example: 'f3dcf094-982f-4c65-8ab8-2a9e8ac75a74',
-  })
+  @Get()
+  @ApiOperation({ summary: 'List assigned retailers for the current sales rep' })
   @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
   @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
   @ApiOkResponse({
@@ -35,13 +55,50 @@ export class SalesRepController {
       example: {
         data: [
           {
-            id: '9eab40c2-ffb1-46c8-8fa1-79b9bcb63d6e',
-            uid: 'RTL-0001',
-            name: 'Elite Super Shop',
+            id: '0c9d2be8-2d40-4315-9d35-640ebd4ad9cd',
+            uid: 'RT-2025-0001',
+            name: 'Abir General Store',
             phone: '+8801711000000',
-            points: 1250,
-            routes: 'Route A',
-            notes: 'Top performing retailer',
+          },
+        ],
+        meta: {
+          total: 42,
+          page: 1,
+          limit: 20,
+          hasNext: true,
+        },
+      } as AssignedRetailerList,
+    },
+  })
+  listAssignedRetailers(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() query: RetailerPaginationQueryDto,
+  ): Promise<AssignedRetailerList> {
+    return this.salesRepService.listPaginatedAssignedRetailers(
+      user.id,
+      query,
+    );
+  }
+
+  @Get('search')
+  @ApiOperation({ summary: 'Search within assigned retailers' })
+  @ApiQuery({
+    name: 'search',
+    description: 'Search by retailer name, phone, or UID',
+    example: 'abir',
+  })
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
+  @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
+  @ApiOkResponse({
+    description: 'Paginated search results from assigned retailers',
+    schema: {
+      example: {
+        data: [
+          {
+            id: '0c9d2be8-2d40-4315-9d35-640ebd4ad9cd',
+            uid: 'RT-2025-0001',
+            name: 'Abir General Store',
+            phone: '+8801711000000',
           },
         ],
         meta: {
@@ -50,167 +107,155 @@ export class SalesRepController {
           limit: 20,
           hasNext: false,
         },
-      },
+      } as AssignedRetailerList,
     },
   })
-  listAssignedRetailers(
-    @Param('id') salesRepId: string,
-    @Query() options: PaginationDto,
-  ) {
-    return this.salesRepService.listPaginatedAssignedRetailers(
-      salesRepId,
-      options,
+  searchAssignedRetailers(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() query: RetailerSearchQueryDto,
+  ): Promise<AssignedRetailerList> {
+    return this.salesRepService.searchAssignedRetailers(
+      user.id,
+      query.search ?? '',
+      query,
     );
   }
 
-  @Get(':id/retailers/search')
-  @ApiOperation({ summary: 'Search assigned retailers by name, phone, or UID' })
-  @ApiParam({
-    name: 'id',
-    description: 'Sales representative identifier',
-    example: 'f3dcf094-982f-4c65-8ab8-2a9e8ac75a74',
-  })
+  @Get('filter')
+  @ApiOperation({ summary: 'Filter assigned retailers by hierarchy' })
   @ApiQuery({
-    name: 'search',
-    description: 'Search keyword (name, phone, UID, points, routes, notes)',
-    example: 'Elite',
+    name: 'filter',
+    required: false,
+    description:
+      'JSON string describing filters. Example: {"regionId":"7d1d0c03-4c7f-4a3f-a4c1-4c6e4d15ef99"}',
+    example: '{"regionId":"7d1d0c03-4c7f-4a3f-a4c1-4c6e4d15ef99"}',
   })
   @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
   @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
-  searchAssignedRetailers(
-    @Param('id') salesRepId: string,
-    @Query('search') search: string,
-    @Query() options: PaginationDto,
-  ) {
-    return this.salesRepService.searchAssignedRetailers(
-      salesRepId,
-      search ?? '',
-      options,
+  @ApiOkResponse({
+    description: 'Paginated, filtered list of assigned retailers',
+    schema: {
+      example: {
+        data: [
+          {
+            id: '0c9d2be8-2d40-4315-9d35-640ebd4ad9cd',
+            uid: 'RT-2025-0001',
+            name: 'Abir General Store',
+            phone: '+8801711000000',
+            region: { name: 'Dhaka Region' },
+            area: { name: 'Gulshan' },
+            distributor: { name: 'ABC Distributors' },
+            territory: { name: 'Gulshan North' },
+          },
+        ],
+        meta: {
+          total: 3,
+          page: 1,
+          limit: 20,
+          hasNext: false,
+        },
+      } as AssignedRetailerList,
+    },
+  })
+  filterAssignedRetailers(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() query: RetailerFilterQueryDto,
+  ): Promise<AssignedRetailerList> {
+    return this.salesRepService.filterAssignedRetailers(
+      user.id,
+      query,
+      query.filter,
     );
   }
 
-  @Get(':id/retailers/:retailerRef')
-  @ApiOperation({ summary: 'Get details of an assigned retailer' })
-  @ApiParam({
-    name: 'id',
-    description: 'Sales representative identifier',
-    example: 'f3dcf094-982f-4c65-8ab8-2a9e8ac75a74',
+  @Get('count')
+  @ApiOperation({ summary: 'Get total assigned retailer count' })
+  @ApiOkResponse({
+    description: 'Total count of active assignments',
+    schema: { example: 42 },
   })
+  assignedRetailerCount(
+    @CurrentUser() user: AuthenticatedUser,
+  ): Promise<number> {
+    return this.salesRepService.assignedRetailerCount(user.id);
+  }
+
+  @Get(':retailerId')
+  @ApiOperation({ summary: 'Get retailer details' })
   @ApiParam({
-    name: 'retailerRef',
-    description: 'Retailer identifier or UID based on "by" query parameter',
-    example: '9eab40c2-ffb1-46c8-8fa1-79b9bcb63d6e',
-  })
-  @ApiQuery({
-    name: 'by',
-    description: 'Interpretation of retailerRef',
-    required: false,
-    enum: ['id', 'uid'],
-    example: 'id',
+    name: 'retailerId',
+    description: 'Retailer identifier',
+    example: '0c9d2be8-2d40-4315-9d35-640ebd4ad9cd',
   })
   @ApiOkResponse({
-    description: 'Retailer details',
+    description: 'Retailer profile',
     schema: {
       example: {
-        id: '9eab40c2-ffb1-46c8-8fa1-79b9bcb63d6e',
-        uid: 'RTL-0001',
-        name: 'Elite Super Shop',
+        id: '0c9d2be8-2d40-4315-9d35-640ebd4ad9cd',
+        uid: 'RT-2025-0001',
+        name: 'Abir General Store',
         phone: '+8801711000000',
-        points: 1250,
-        routes: 'Route A',
-        notes: 'Top performing retailer',
-        region: { id: 'd2b4b327-56a9-4b34-8b73-8a6232af5dec', name: 'Dhaka' },
+        region: { name: 'Dhaka Region' },
+        area: { name: 'Gulshan' },
+        distributor: { name: 'ABC Distributors' },
+        territory: { name: 'Gulshan North' },
       },
     },
   })
-  @ApiBadRequestResponse({
-    description: 'Invalid "by" parameter supplied',
-  })
-  getAssignedRetailerDetail(
-    @Param('id') salesRepId: string,
-    @Param('retailerRef') retailerRef: string,
-    @Query('by') by: 'id' | 'uid' = 'id',
-  ) {
-    const identifier =
-      by === 'uid'
-        ? { uid: retailerRef }
-        : by === 'id'
-        ? { id: retailerRef }
-        : null;
-
-    if (!identifier) {
-      throw new BadRequestException("Query parameter 'by' must be either 'id' or 'uid'");
-    }
-
-    return this.salesRepService.getAssignedRetailerDetail(
-      salesRepId,
-      identifier,
-    );
+  getRetailerDetail(@Param('retailerId') retailerId: string) {
+    return this.salesRepService.getRetailerDetail(retailerId);
   }
 
-  @Patch(':id/retailers/:retailerRef')
-  @ApiOperation({ summary: 'Update points, routes, or notes for an assigned retailer' })
-  @ApiParam({
-    name: 'id',
-    description: 'Sales representative identifier',
-    example: 'f3dcf094-982f-4c65-8ab8-2a9e8ac75a74',
+  @Patch(':retailerId')
+  @ApiOperation({
+    summary: 'Update points, routes, or notes for an assigned retailer',
   })
   @ApiParam({
-    name: 'retailerRef',
-    description: 'Retailer identifier or UID based on "by" query parameter',
-    example: 'RTL-0001',
-  })
-  @ApiQuery({
-    name: 'by',
-    description: 'Interpretation of retailerRef',
-    required: false,
-    enum: ['id', 'uid'],
-    example: 'uid',
+    name: 'retailerId',
+    description: 'Retailer identifier',
+    example: '0c9d2be8-2d40-4315-9d35-640ebd4ad9cd',
   })
   @ApiBody({
     type: UpdateRetailerDto,
     examples: {
-      default: {
-        summary: 'Update retailer points and notes',
-        value: {
-          points: 1400,
-          routes: 'Route B',
-          notes: 'Promised higher monthly quota',
-        },
+      updatePoints: {
+        summary: 'Update retailer points',
+        value: { points: 120 },
+      },
+      updateRoutes: {
+        summary: 'Update retailer route information',
+        value: { routes: 'Route-A > Route-B' },
+      },
+      updateNotes: {
+        summary: 'Add a note for the retailer',
+        value: { notes: 'Follow up next Monday' },
       },
     },
   })
-  @ApiBadRequestResponse({
-    description: 'Invalid "by" parameter supplied',
+  @ApiOkResponse({
+    description: 'Updated retailer record',
+    schema: {
+      example: {
+        id: '0c9d2be8-2d40-4315-9d35-640ebd4ad9cd',
+        uid: 'RT-2025-0001',
+        name: 'Abir General Store',
+        points: 120,
+        routes: 'Route-A > Route-B',
+        notes: 'Follow up next Monday',
+      },
+    },
   })
   updateAssignedRetailer(
-    @Param('id') salesRepId: string,
-    @Param('retailerRef') retailerRef: string,
-    @Query('by') by: 'id' | 'uid' = 'id',
-    @Body() dto: UpdateRetailerDto,
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('retailerId') retailerId: string,
+    @Body() updateRetailerDto: UpdateRetailerDto,
   ) {
-    const identifier =
-      by === 'uid'
-        ? { uid: retailerRef }
-        : by === 'id'
-        ? { id: retailerRef }
-        : null;
-
-    if (!identifier) {
-      throw new BadRequestException("Query parameter 'by' must be either 'id' or 'uid'");
-    }
-
-    return this.salesRepService.updateRetailer(salesRepId, identifier, dto);
-  }
-
-  @Get(':id/retailers/count')
-  @ApiOperation({ summary: 'Count retailers assigned to a sales representative' })
-  @ApiParam({
-    name: 'id',
-    description: 'Sales representative identifier',
-    example: 'f3dcf094-982f-4c65-8ab8-2a9e8ac75a74',
-  })
-  assignedRetailerCount(@Param('id') salesRepId: string) {
-    return this.salesRepService.assignedRetailerCount(salesRepId);
+    return this.salesRepService.updateRetailer(
+      user.id,
+      { id: retailerId },
+      updateRetailerDto,
+    );
   }
 }
+
+
