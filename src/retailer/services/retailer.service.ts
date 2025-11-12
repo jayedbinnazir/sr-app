@@ -289,6 +289,7 @@ export class RetailerService {
         where: {
           sales_rep_id: dto.salesRepId,
           retailer_id: In(dto.retailerIds),
+          isActive: true,
         },
       });
 
@@ -308,6 +309,12 @@ export class RetailerService {
 
       if (newAssignments.length) {
         await manager.save(newAssignments);
+        await manager
+          .createQueryBuilder()
+          .update(Retailer)
+          .set({ isAssigned: true })
+          .whereInIds(newAssignments.map((item) => item.retailer_id))
+          .execute();
       }
     });
 
@@ -317,9 +324,48 @@ export class RetailerService {
   async bulkUnassign(dto: BulkUnassignDto): Promise<void> {
     await this.ensureSalesRepExists(dto.salesRepId);
 
-    await this.assignmentRepository.delete({
-      sales_rep_id: dto.salesRepId,
-      retailer_id: In(dto.retailerIds),
+    await this.dataSource.transaction(async (manager) => {
+      const assignments = await manager.find(SalesRepRetailer, {
+        where: {
+          sales_rep_id: dto.salesRepId,
+          retailer_id: In(dto.retailerIds),
+        },
+      });
+
+      if (!assignments.length) {
+        return;
+      }
+
+      const retailerIds = assignments.map((assignment) => assignment.retailer_id);
+
+      await manager.delete(SalesRepRetailer, {
+        sales_rep_id: dto.salesRepId,
+        retailer_id: In(retailerIds),
+      });
+
+      const stillAssigned = await manager
+        .createQueryBuilder(SalesRepRetailer, 'assignment')
+        .select('assignment.retailer_id', 'retailer_id')
+        .where('assignment.retailer_id IN (:...ids)', { ids: retailerIds })
+        .andWhere('assignment.is_active = TRUE')
+        .getRawMany();
+
+      const stillAssignedSet = new Set(
+        stillAssigned.map((row: { retailer_id: string }) => row.retailer_id),
+      );
+
+      const toMarkUnassigned = retailerIds.filter(
+        (id) => !stillAssignedSet.has(id),
+      );
+
+      if (toMarkUnassigned.length) {
+        await manager
+          .createQueryBuilder()
+          .update(Retailer)
+          .set({ isAssigned: false })
+          .whereInIds(toMarkUnassigned)
+          .execute();
+      }
     });
 
     await this.invalidateSalesRepCache(dto.salesRepId);

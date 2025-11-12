@@ -58,6 +58,9 @@ export class Retailer extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   notes: string | null;
 
+  @Column({ type: 'boolean', name: 'is_assigned', default: false })
+  isAssigned: boolean;
+
 
   // Relations
   // ondeletion of retailor we will not delete the region, area, distributor, territory

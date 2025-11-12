@@ -39,6 +39,9 @@ type AssignmentSummary = Awaited<
 type AssignRetailerResponse = Awaited<
   ReturnType<SalesRepService['assignRetailerToSalesRep']>
 >;
+type UnassignmentSummary = Awaited<
+  ReturnType<SalesRepService['unassignRetailersFromSalesRep']>
+>;
 
 @ApiTags('Admin Sales Reps')
 @ApiBearerAuth()
@@ -397,6 +400,54 @@ export class SalesRepAdminController {
       (item) => item.retailer_id,
     );
     return this.salesRepService.assignRetailersToSalesRep(
+      salesRepId,
+      retailerIds,
+      user.id,
+    );
+  }
+
+  @Post(':salesRepId/retailers/unassign')
+  @ApiOperation({ summary: 'Bulk unassign retailers from a sales rep' })
+  @ApiParam({
+    name: 'salesRepId',
+    description: 'Sales representative identifier',
+    example: '9f0e35a6-6c2c-4ad1-bc8c-86a130c97b6b',
+  })
+  @ApiBody({
+    type: BulkAssignRetailersDto,
+    examples: {
+      default: {
+        summary: 'Bulk unassignment payload',
+        value: {
+          retailers: [
+            { retailer_id: '0c9d2be8-2d40-4315-9d35-640ebd4ad9cd' },
+            { retailer_id: '23974db4-9804-43f5-b361-5cc9af43e993' },
+          ],
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: 'Bulk unassignment summary',
+    schema: {
+      example: {
+        salesRepId: '9f0e35a6-6c2c-4ad1-bc8c-86a130c97b6b',
+        requested: 2,
+        unassigned: 2,
+        skipped: 0,
+        missing: [],
+      } as UnassignmentSummary,
+    },
+  })
+  bulkUnassignRetailers(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('salesRepId') salesRepId: string,
+    @Body() bulkUnassignRetailersDto: BulkAssignRetailersDto,
+  ): Promise<UnassignmentSummary> {
+    const retailerIds = bulkUnassignRetailersDto.retailers.map(
+      (item) => item.retailer_id,
+    );
+    return this.salesRepService.unassignRetailersFromSalesRep(
       salesRepId,
       retailerIds,
       user.id,

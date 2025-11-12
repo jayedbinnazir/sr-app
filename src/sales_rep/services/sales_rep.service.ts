@@ -12,6 +12,13 @@ type AssignmentSummary = {
   skipped: number;
   missing: string[];
 };
+type UnassignmentSummary = {
+  salesRepId: string;
+  requested: number;
+  unassigned: number;
+  skipped: number;
+  missing: string[];
+};
 import { Retailer } from 'src/retailer/entities/retailer.entity';
 
 type RetailerIdentifier = { id?: string; uid?: string };
@@ -83,6 +90,7 @@ export class SalesRepService {
           'retailer.uid',
           'retailer.name',
           'retailer.phone',
+          'retailer.isAssigned',
         ])
         .orderBy('retailer.name', 'ASC')
         .skip((page - 1) * limit)
@@ -134,12 +142,13 @@ export class SalesRepService {
       });
       const qb = em!.createQueryBuilder(Retailer, 'retailer')
         .where('retailer.deleted_at IS NULL')
-        .andWhere('retailer.id NOT IN (SELECT retailer_id FROM sales_rep_retailers WHERE is_active = TRUE)')
+        .andWhere('retailer.isAssigned = FALSE')
         .select([
           'retailer.id',
           'retailer.uid',
           'retailer.name',
           'retailer.phone',
+          'retailer.isAssigned',
         ])
         .orderBy('retailer.name', 'ASC')
         .skip((page - 1) * limit)
@@ -185,7 +194,7 @@ export class SalesRepService {
         .leftJoinAndSelect('retailer.area', 'area')
         .leftJoinAndSelect('retailer.distributor', 'distributor')
         .leftJoinAndSelect('retailer.territory', 'territory')
-        .select(['retailer.id', 'retailer.uid', 'retailer.name', 'retailer.phone', 'region.name', 'area.name', 'distributor.name', 'territory.name'])
+        .select(['retailer.id', 'retailer.uid', 'retailer.name', 'retailer.phone', 'retailer.isAssigned', 'region.name', 'area.name', 'distributor.name', 'territory.name'])
         .where('retailer.id = :retailerId', { retailerId })
         .getOne();
       if (!retailer) {
@@ -214,7 +223,7 @@ export class SalesRepService {
     }
     try {
       const retailer = await em!.createQueryBuilder(Retailer, 'retailer')
-        .select(['retailer.id', 'retailer.uid', 'retailer.name', 'retailer.points', 'retailer.routes', 'retailer.notes'])
+        .select(['retailer.id', 'retailer.uid', 'retailer.name', 'retailer.points', 'retailer.routes', 'retailer.notes', 'retailer.isAssigned'])
         .where('retailer.id = :retailerId', { retailerId: identifier.id })
         .getOne();
       if (!retailer) {
@@ -321,6 +330,7 @@ export class SalesRepService {
           'retailer.uid',
           'retailer.name',
           'retailer.phone',
+          'retailer.isAssigned',
 
         ])
         .where(
@@ -397,6 +407,7 @@ export class SalesRepService {
           'retailer.uid',
           'retailer.name',
           'retailer.phone',
+          'retailer.isAssigned',
         ])
         .where(
           new Brackets((qbWhere) => {
@@ -463,6 +474,7 @@ export class SalesRepService {
           'retailer.uid',
           'retailer.name',
           'retailer.phone',
+          'retailer.isAssigned',
           'region.name',
           'area.name',
           'distributor.name',
@@ -540,6 +552,7 @@ export class SalesRepService {
           'retailer.uid',
           'retailer.name',
           'retailer.phone',
+          'retailer.isAssigned',
           'region.name',
           'area.name',
           'distributor.name',
@@ -640,6 +653,8 @@ export class SalesRepService {
 
     return { summary: result };
   }
+
+  
   async assignRetailersToSalesRep(
     salesRepId: string,
     retailerIds: string[],
@@ -742,12 +757,20 @@ export class SalesRepService {
                 assignedBy,
               })),
             )
-            .onConflict('("sales_rep_id", "retailer_id") DO NOTHING')
             .returning('retailer_id')
             .execute();
 
           totalInserted += result.raw.length;
         }
+      }
+
+      if (assignable.length) {
+        await em!
+          .createQueryBuilder()
+          .update(Retailer)
+          .set({ isAssigned: true })
+          .whereInIds(assignable)
+          .execute();
       }
 
       const summary: AssignmentSummary = {
@@ -775,7 +798,131 @@ export class SalesRepService {
     }
   }
 
+  async unassignRetailersFromSalesRep(
+    salesRepId: string,
+    retailerIds: string[],
+    unassignedBy?: string | null,
+    manager?: EntityManager,
+  ): Promise<UnassignmentSummary> {
+    const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
+    const em = manager ?? queryRunner?.manager;
+    if (!manager) {
+      await queryRunner?.connect();
+      await queryRunner?.startTransaction();
+    }
 
+    try {
+      await this.ensureSalesRepExists(salesRepId, em!);
+
+      const uniqueRetailerIds = Array.from(
+        new Set(
+          retailerIds.filter(
+            (id): id is string => typeof id === 'string' && id.trim().length > 0,
+          ),
+        ),
+      );
+
+      if (!uniqueRetailerIds.length) {
+        if (!manager) {
+          await queryRunner?.commitTransaction();
+        }
+        return {
+          salesRepId,
+          requested: 0,
+          unassigned: 0,
+          skipped: 0,
+          missing: [],
+        };
+      }
+
+      if (uniqueRetailerIds.length > 70) {
+        throw new BadRequestException(
+          'Bulk unassignment is limited to a maximum of 70 retailers at once',
+        );
+      }
+
+      const activeAssignments = await em!
+        .createQueryBuilder(SalesRepRetailer, 'assignment')
+        .where('assignment.sales_rep_id = :salesRepId', { salesRepId })
+        .andWhere('assignment.retailer_id IN (:...ids)', {
+          ids: uniqueRetailerIds,
+        })
+        .andWhere('assignment.is_active = TRUE')
+        .getMany();
+
+      const activeIds = new Set(
+        activeAssignments.map((assignment) => assignment.retailer_id),
+      );
+
+      const missing = uniqueRetailerIds.filter((id) => !activeIds.has(id));
+
+      if (activeAssignments.length) {
+        await em!
+          .createQueryBuilder()
+          .update(SalesRepRetailer)
+          .set({
+            isActive: false,
+            unassignedAt: () => 'NOW()',
+            unassignedBy: unassignedBy ?? null,
+          })
+          .where('sales_rep_id = :salesRepId', { salesRepId })
+          .andWhere('retailer_id IN (:...ids)', {
+            ids: Array.from(activeIds),
+          })
+          .andWhere('is_active = TRUE')
+          .execute();
+
+        const stillAssigned = await em!
+          .createQueryBuilder(SalesRepRetailer, 'assignment')
+          .select('assignment.retailer_id', 'retailer_id')
+          .where('assignment.retailer_id IN (:...ids)', {
+            ids: Array.from(activeIds),
+          })
+          .andWhere('assignment.is_active = TRUE')
+          .getRawMany();
+
+        const stillAssignedSet = new Set(
+          stillAssigned.map((row: { retailer_id: string }) => row.retailer_id),
+        );
+
+        const toMarkUnassigned = Array.from(activeIds).filter(
+          (id) => !stillAssignedSet.has(id),
+        );
+
+        if (toMarkUnassigned.length) {
+          await em!
+            .createQueryBuilder()
+            .update(Retailer)
+            .set({ isAssigned: false })
+            .whereInIds(toMarkUnassigned)
+            .execute();
+        }
+      }
+
+      const summary: UnassignmentSummary = {
+        salesRepId,
+        requested: uniqueRetailerIds.length,
+        unassigned: activeAssignments.length,
+        skipped: 0,
+        missing,
+      };
+
+      if (!manager) {
+        await queryRunner?.commitTransaction();
+      }
+
+      return summary;
+    } catch (error) {
+      if (!manager) {
+        await queryRunner?.rollbackTransaction();
+      }
+      throw error;
+    } finally {
+      if (!manager) {
+        await queryRunner?.release();
+      }
+    }
+  }
 
   private async ensureSalesRepExists(
     salesRepId: string,
