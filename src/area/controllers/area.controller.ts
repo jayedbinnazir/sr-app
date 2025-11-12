@@ -113,8 +113,25 @@ export class AreaController {
   })
   @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
   @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
-  getTerritoriesByAreaId(@Param('id') id: string, @Query() options: PaginationDto) {
-    return this.areaService.getTerritoriesByAreaId(id, options);
+  @ApiQuery({
+    name: 'distributorId',
+    required: false,
+    type: String,
+    description: 'Filter territories by distributor',
+    example: 'c9e4b8b2-64db-4df5-b8f5-ffb1f4f56f9d',
+  })
+  getFilteredTerritoriesByAreaId(
+    @Param('id') id: string,
+    @Query() options: PaginationDto,
+    @Query('distributorId') distributorId?: string,
+  ) {
+    return this.areaService.getFilteredTerritoriesByAreaId(
+      id,
+      options,
+      {
+        distributorId,
+      },
+    );
   }
 
   @Get(':id/territories/total-count')

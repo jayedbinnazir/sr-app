@@ -16,6 +16,10 @@ type PaginatedTerritories = {
   };
 };
 
+type TerritorySearchFilters = {
+  distributorId?: string;
+};
+
 @Injectable()
 export class TerritoryService {
   constructor(
@@ -27,6 +31,7 @@ export class TerritoryService {
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
     try {
       const existing = await em!.findOne(Territory, { where: { name: createTerritoryDto.name, area_id: createTerritoryDto.area_id } });
@@ -60,6 +65,7 @@ export class TerritoryService {
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
     try {
       const { page, limit } = PaginationDto.resolve(options, {
@@ -94,15 +100,17 @@ export class TerritoryService {
     }
   }
 
-  async searchTerritories(
+  async searchFilteredTerritories(
     search: string,
     options?: PaginationDto,
+    filters?: TerritorySearchFilters,
     manager?: EntityManager,
   ): Promise<PaginatedTerritories> {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
     try {
       const { page, limit } = PaginationDto.resolve(options, {
@@ -124,11 +132,19 @@ export class TerritoryService {
       const pattern = `%${trimmed.replace(/[%_]/g, "\\$&")}%`;
       const qb = em!
         .createQueryBuilder(Territory, "territory")
-        .where("territory.name ILIKE :pattern", { pattern })
+        .where("territory.name ILIKE :pattern", { pattern });
+
+      if (filters?.distributorId) {
+        qb.andWhere("territory.distributor_id = :distributorId", {
+          distributorId: filters.distributorId,
+        });
+      }
+
+      const [data, total] = await qb
         .orderBy("territory.name", "ASC")
         .skip((page - 1) * limit)
-        .take(limit);
-      const [data, total] = await qb.getManyAndCount();
+        .take(limit)
+        .getManyAndCount();
       return {
         data,
         meta: {

@@ -58,8 +58,25 @@ export class TerritoryController {
     description: 'Search keyword',
     example: 'Gulshan',
   })
-  searchTerritories(@Query('search') search: string) {
-    return this.territoryService.searchTerritories(search);
+  @ApiQuery({
+    name: 'distributorId',
+    required: false,
+    type: String,
+    description: 'Filter territories by distributor',
+    example: '5f189af2-983f-4122-8f87-d47b1d1bcd9e',
+  })
+  searchFilteredTerritories(
+    @Query('search') search: string,
+    @Query() options: PaginationDto,
+    @Query('distributorId') distributorId?: string,
+  ) {
+    return this.territoryService.searchFilteredTerritories(
+      search,
+      options,
+      {
+        distributorId,
+      },
+    );
   }
 
   @Patch(':id')

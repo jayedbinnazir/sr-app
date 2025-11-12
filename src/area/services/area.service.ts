@@ -28,6 +28,10 @@ type PaginatedTerritories = {
   };
 };
 
+type TerritoryFilters = {
+  distributorId?: string;
+};
+
 @Injectable()
 export class AreaService {
   constructor(
@@ -78,6 +82,7 @@ export class AreaService {
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
     try {
       const { page, limit } = PaginationDto.resolve(options, {
@@ -123,6 +128,7 @@ export class AreaService {
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
     try {
       const { page, limit } = PaginationDto.resolve(options, {
@@ -267,9 +273,10 @@ export class AreaService {
   }
 
 
-  async getTerritoriesByAreaId(
+  async getFilteredTerritoriesByAreaId(
     areaId: string,
     options?: PaginationDto,
+    filters?: TerritoryFilters,
     manager?: EntityManager,
   ): Promise<PaginatedTerritories> {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
@@ -285,12 +292,21 @@ export class AreaService {
       const qb = em!
         .createQueryBuilder(Territory, "territory")
         .leftJoinAndSelect("territory.area", "area")
-        .where("territory.area_id = :areaId", { areaId })
+        .where("territory.area_id = :areaId", { areaId });
+
+      if (filters?.distributorId) {
+        qb.andWhere("territory.distributor_id = :distributorId", {
+          distributorId: filters.distributorId,
+        });
+      }
+
+      const [data, total] = await qb
         .orderBy("territory.name", "ASC")
         .addOrderBy("territory.id", "ASC")
         .skip((page - 1) * limit)
-        .take(limit);
-      const [data, total] = await qb.getManyAndCount();
+        .orderBy("territory.name", "ASC")
+        .take(limit)
+        .getManyAndCount();
       if (total === 0) {
         throw new NotFoundException(`No territories found for area ID ${areaId}`);
       }

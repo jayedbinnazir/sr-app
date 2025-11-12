@@ -25,6 +25,31 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AdminGuard } from 'src/auth/guards/admin.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthRole } from 'src/auth/types/auth-role.enum';
+import { IsOptional, IsUUID } from 'class-validator';
+import { Type } from 'class-transformer';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+
+class RegionAreaFilterQueryDto extends PaginationDto {
+  @ApiPropertyOptional({
+    description: 'Filter by distributor ID',
+    example: '2a7d9bc3-ae6b-4fbb-8e74-b4b9953d8f52',
+    type: String,
+  })
+  @IsOptional()
+  @IsUUID()
+  @Type(() => String)
+  distributorId?: string;
+
+  @ApiPropertyOptional({
+    description: 'Filter by territory ID',
+    example: '9bf9f1e4-8a34-4980-9dba-2bcb67688423',
+    type: String,
+  })
+  @IsOptional()
+  @IsUUID()
+  @Type(() => String)
+  territoryId?: string;
+}
 
 @ApiTags('Regions')
 @Controller({
@@ -124,20 +149,34 @@ export class RegionController {
     description: 'Region identifier',
     example: 'd2b4b327-56a9-4b34-8b73-8a6232af5dec',
   })
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
+  @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
   @ApiQuery({
-    name: 'page',
+    name: 'distributorId',
     required: false,
-    type: Number,
-    example: 1,
+    type: String,
+    description: 'Filter areas by distributor',
+    example: '2a7d9bc3-ae6b-4fbb-8e74-b4b9953d8f52',
   })
   @ApiQuery({
-    name: 'limit',
+    name: 'territoryId',
     required: false,
-    type: Number,
-    example: 20,
+    type: String,
+    description: 'Filter areas by territory',
+    example: '9bf9f1e4-8a34-4980-9dba-2bcb67688423',
   })
-  getAreas(@Param('id') regionId: string, @Query() pagination: PaginationDto) {
-    return this.regionService.getAreasByRegionId(regionId, pagination);
+  getAreas(
+    @Param('id') regionId: string,
+    @Query() query: RegionAreaFilterQueryDto,
+  ) {
+    return this.regionService.getAreaFilteredByRegionId(
+      regionId,
+      query,
+      {
+        distributorId: query.distributorId,
+        territoryId: query.territoryId,
+      },
+    );
   }
 
   @Get('count')

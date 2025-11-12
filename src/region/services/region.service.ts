@@ -35,6 +35,8 @@ type PaginatedRegions = {
 export class RegionService {
   constructor(private readonly dataSource: DataSource) { }
 
+
+  //Create Region
   async createRegion(
     createRegionDto: CreateRegionDto,
     manager?: EntityManager,
@@ -76,6 +78,8 @@ export class RegionService {
     }
   }
 
+
+  //Get Paginated Regions
   async getRegions(
     options?: PaginationDto,
     manager?: EntityManager,
@@ -124,6 +128,7 @@ export class RegionService {
     }
   }
 
+  //Search Regions Paginated
   async searchRegions(
     search: string,
     options?: PaginationDto,
@@ -180,6 +185,8 @@ export class RegionService {
     }
   }
 
+
+  //Update Region 
   async updateRegion(
     id: string,
     updateRegionDto: UpdateRegionDto,
@@ -218,6 +225,8 @@ export class RegionService {
     }
   }
 
+
+  //Delete Region
   async deleteRegion(id: string, manager?: EntityManager): Promise<void> {
     const queryRunner = manager
       ? undefined
@@ -250,11 +259,14 @@ export class RegionService {
     }
   }
 
+
+  //Get Region Count
   async regionCount(manager?: EntityManager): Promise<number> {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
     try {
       const regionCount = await em!.count(Region);
@@ -278,7 +290,10 @@ export class RegionService {
     }
   }
 
-  async getAreasByRegionId(
+
+
+  //Get Areas Filtered by Region ID
+  async getAreaFilteredByRegionId(
     regionId: string,
     options?: PaginationDto,
     filters?: AreaFilters,
@@ -291,6 +306,7 @@ export class RegionService {
 
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
 
     try {
@@ -349,12 +365,15 @@ export class RegionService {
     }
   }
 
+
+  //Get Areas Count by Region ID
   async getAreasCountByRegionId(regionId: string, manager?: EntityManager): Promise<number> {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
     const em = manager ?? queryRunner?.manager;
 
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
 
     try {
