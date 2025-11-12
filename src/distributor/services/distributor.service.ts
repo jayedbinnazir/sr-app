@@ -1,6 +1,8 @@
+import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 import {
   BadRequestException,
   ConflictException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -9,7 +11,7 @@ import { CreateDistributorDto } from '../dto/create-distributor.dto';
 import { UpdateDistributorDto } from '../dto/update-distributor.dto';
 import { Distributor } from '../entities/distributor.entity';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { Region } from 'src/region/entities/region.entity';
+import { Area } from 'src/area/entities/area.entity';
 
 type DistributorListResult = {
   data: Distributor[];
@@ -24,6 +26,8 @@ type DistributorListResult = {
 type DistributorSearchItem = {
   id: string;
   name: string;
+  areaId: string | null;
+  areaName: string | null;
   regionId: string | null;
   regionName: string | null;
 };
@@ -40,7 +44,37 @@ type DistributorSearchResult = {
 
 @Injectable()
 export class DistributorService {
-  constructor(private readonly dataSource: DataSource) {}
+  private readonly cacheKeys = new Set<string>();
+  private readonly cacheTtl = 300;
+
+  constructor(
+    private readonly dataSource: DataSource,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+  ) {}
+
+  private buildCacheKey(parts: Array<string | number | null | undefined>): string {
+    return ['distributor-service', ...parts.map((part) => (part ?? 'null').toString())].join(':');
+  }
+
+  private async getFromCache<T>(key: string): Promise<T | null> {
+    const cached = await this.cacheManager.get<T>(key);
+    return cached ?? null;
+  }
+
+  private async setCache<T>(key: string, value: T): Promise<void> {
+    await this.cacheManager.set(key, value, this.cacheTtl);
+    this.cacheKeys.add(key);
+  }
+
+  private async invalidateCache(): Promise<void> {
+    if (!this.cacheKeys.size) {
+      return;
+    }
+    await Promise.all(
+      Array.from(this.cacheKeys).map(async (key) => this.cacheManager.del(key)),
+    );
+    this.cacheKeys.clear();
+  }
 
   async createDistributor(
     createDistributorDto: CreateDistributorDto,
@@ -57,7 +91,10 @@ export class DistributorService {
     }
 
     try {
-      await this.ensureRegionExists(createDistributorDto.region_id, em);
+      const area = await this.ensureAreaExists(
+        createDistributorDto.area_id,
+        em,
+      );
 
       const existing = await em!.findOne(Distributor, {
         where: { name: createDistributorDto.name },
@@ -70,8 +107,8 @@ export class DistributorService {
       }
 
       const distributor = em!.create(Distributor, {
-        ...createDistributorDto,
-        region_id: createDistributorDto.region_id ?? null,
+        name: createDistributorDto.name,
+        area_id: createDistributorDto.area_id ?? null,
       });
 
       const saved = await em!.save(distributor);
@@ -79,6 +116,12 @@ export class DistributorService {
       if (!manager) {
         await queryRunner?.commitTransaction();
       }
+
+      if (area) {
+        saved.area = area;
+      }
+
+      await this.invalidateCache();
 
       return saved;
     } catch (error) {
@@ -111,10 +154,16 @@ export class DistributorService {
         defaultLimit: 20,
         maxLimit: 100,
       });
+      const cacheKey = this.buildCacheKey(['distributors', page, limit]);
+      const cached = await this.getFromCache<DistributorListResult>(cacheKey);
+      if (cached) {
+        return cached;
+      }
 
       const qb = em!
         .createQueryBuilder(Distributor, 'distributor')
-        .leftJoinAndSelect('distributor.region', 'region')
+        .leftJoinAndSelect('distributor.area', 'area')
+        .leftJoinAndSelect('area.region', 'region')
         .orderBy('distributor.name', 'ASC')
         .addOrderBy('distributor.id', 'ASC')
         .skip((page - 1) * limit)
@@ -122,7 +171,7 @@ export class DistributorService {
 
       const [data, total] = await qb.getManyAndCount();
 
-      return {
+      const result: DistributorListResult = {
         data,
         meta: {
           total,
@@ -131,6 +180,10 @@ export class DistributorService {
           hasNext: page * limit < total,
         },
       };
+
+      await this.setCache(cacheKey, result);
+
+      return result;
     } catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();
@@ -157,15 +210,24 @@ export class DistributorService {
     }
 
     try {
+      const cacheKey = this.buildCacheKey(['distributor', id]);
+      const cached = await this.getFromCache<Distributor>(cacheKey);
+      if (cached) {
+        return cached;
+      }
+
       const distributor = await em!
         .createQueryBuilder(Distributor, 'distributor')
-        .leftJoinAndSelect('distributor.region', 'region')
+        .leftJoinAndSelect('distributor.area', 'area')
+        .leftJoinAndSelect('area.region', 'region')
         .where('distributor.id = :id', { id })
         .getOne();
 
       if (!distributor) {
         throw new NotFoundException(`Distributor with ID ${id} not found`);
       }
+
+      await this.setCache(cacheKey, distributor);
 
       return distributor;
     } catch (error) {
@@ -217,9 +279,10 @@ export class DistributorService {
         }
       }
 
-      if (updateDistributorDto.region_id !== undefined) {
-        await this.ensureRegionExists(updateDistributorDto.region_id, em);
-        distributor.region_id = updateDistributorDto.region_id ?? null;
+      if (updateDistributorDto.area_id !== undefined) {
+        const area = await this.ensureAreaExists(updateDistributorDto.area_id, em);
+        distributor.area_id = updateDistributorDto.area_id ?? null;
+        distributor.area = area ?? null;
       }
 
       if (updateDistributorDto.name) {
@@ -231,6 +294,7 @@ export class DistributorService {
       if (!manager) {
         await queryRunner?.commitTransaction();
       }
+      await this.invalidateCache();
 
       return updated;
     } catch (error) {
@@ -268,6 +332,7 @@ export class DistributorService {
       if (!manager) {
         await queryRunner?.commitTransaction();
       }
+      await this.invalidateCache();
     } catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();
@@ -340,10 +405,16 @@ export class DistributorService {
       }
 
       const pattern = `%${trimmed.replace(/[%_]/g, '\\$&')}%`;
+      const cacheKey = this.buildCacheKey(['distributors-search', trimmed, page, limit]);
+      const cached = await this.getFromCache<DistributorSearchResult>(cacheKey);
+      if (cached) {
+        return cached;
+      }
 
       const qb = em!
         .createQueryBuilder(Distributor, 'distributor')
-        .leftJoinAndSelect('distributor.region', 'region')
+        .leftJoinAndSelect('distributor.area', 'area')
+        .leftJoinAndSelect('area.region', 'region')
         .where('distributor.name ILIKE :pattern', { pattern })
         .orderBy('distributor.name', 'ASC')
         .addOrderBy('distributor.id', 'ASC')
@@ -355,11 +426,13 @@ export class DistributorService {
       const data = entities.map<DistributorSearchItem>((entity) => ({
         id: entity.id,
         name: entity.name,
-        regionId: entity.region_id ?? null,
-        regionName: entity.region?.name ?? null,
+        areaId: entity.area_id ?? null,
+        areaName: entity.area?.name ?? null,
+        regionId: entity.area?.region?.id ?? null,
+        regionName: entity.area?.region?.name ?? null,
       }));
 
-      return {
+      const result: DistributorSearchResult = {
         data,
         meta: {
           total,
@@ -368,6 +441,10 @@ export class DistributorService {
           hasNext: page * limit < total,
         },
       };
+
+      await this.setCache(cacheKey, result);
+
+      return result;
     } catch (error) {
       if (!manager) {
         await queryRunner?.rollbackTransaction();
@@ -380,19 +457,24 @@ export class DistributorService {
     }
   }
 
-  private async ensureRegionExists(
-    regionId: string | null | undefined,
+  private async ensureAreaExists(
+    areaId: string | null | undefined,
     manager?: EntityManager,
-  ): Promise<void> {
-    if (!regionId) {
-      return;
+  ): Promise<Area | null> {
+    if (!areaId) {
+      return null;
     }
 
-    const exists = await manager!.findOne(Region, { where: { id: regionId } });
+    const area = await manager!.findOne(Area, {
+      where: { id: areaId },
+      relations: ['region'],
+    });
 
-    if (!exists) {
-      throw new BadRequestException(`Region with ID ${regionId} not found`);
+    if (!area) {
+      throw new BadRequestException(`Area with ID ${areaId} not found`);
     }
+
+    return area;
   }
 }
 

@@ -1,4 +1,5 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { Cache, CACHE_MANAGER } from "@nestjs/cache-manager";
+import { ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { DataSource, EntityManager } from "typeorm";
 import { CreateTerritoryDto } from "../dto/create-territory.dto";
 import { Territory } from "../entities/territory.entity";
@@ -22,9 +23,37 @@ type TerritorySearchFilters = {
 
 @Injectable()
 export class TerritoryService {
+  private readonly cacheKeys = new Set<string>();
+  private readonly cacheTtl = 300;
+
   constructor(
     private readonly dataSource: DataSource,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) { }
+
+  private buildCacheKey(parts: Array<string | number | null | undefined>): string {
+    return ['territory-service', ...parts.map((part) => (part ?? 'null').toString())].join(':');
+  }
+
+  private async getFromCache<T>(key: string): Promise<T | null> {
+    const cached = await this.cacheManager.get<T>(key);
+    return cached ?? null;
+  }
+
+  private async setCache<T>(key: string, value: T): Promise<void> {
+    await this.cacheManager.set(key, value, this.cacheTtl);
+    this.cacheKeys.add(key);
+  }
+
+  private async invalidateCache(): Promise<void> {
+    if (!this.cacheKeys.size) {
+      return;
+    }
+    await Promise.all(
+      Array.from(this.cacheKeys).map(async (key) => this.cacheManager.del(key)),
+    );
+    this.cacheKeys.clear();
+  }
 
   async createTerritory(createTerritoryDto: CreateTerritoryDto, manager?: EntityManager) {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
@@ -43,6 +72,7 @@ export class TerritoryService {
       if (!manager) {
         await queryRunner?.commitTransaction();
       }
+      await this.invalidateCache();
       return saved;
     } catch (error) {
       if (!manager) {
@@ -72,6 +102,11 @@ export class TerritoryService {
         defaultLimit: 20,
         maxLimit: 100,
       });
+      const cacheKey = this.buildCacheKey(['territories', page, limit]);
+      const cached = await this.getFromCache<PaginatedTerritories>(cacheKey);
+      if (cached) {
+        return cached;
+      }
       const qb = em!
         .createQueryBuilder(Territory, "territory")
         .orderBy("territory.name", "ASC")
@@ -79,7 +114,7 @@ export class TerritoryService {
         .skip((page - 1) * limit)
         .take(limit);
       const [data, total] = await qb.getManyAndCount();
-      return {
+      const result: PaginatedTerritories = {
         data,
         meta: {
           total,
@@ -88,6 +123,8 @@ export class TerritoryService {
           hasNext: page * limit < total,
         },
       };
+      await this.setCache(cacheKey, result);
+      return result;
     } catch(error){
       if (!manager) {
         await queryRunner?.rollbackTransaction();
@@ -130,6 +167,18 @@ export class TerritoryService {
         };
       }
       const pattern = `%${trimmed.replace(/[%_]/g, "\\$&")}%`;
+      const cacheKey = this.buildCacheKey([
+        'territories-search',
+        trimmed,
+        page,
+        limit,
+        filters?.distributorId ?? null,
+      ]);
+      const cached = await this.getFromCache<PaginatedTerritories>(cacheKey);
+      if (cached) {
+        return cached;
+      }
+
       const qb = em!
         .createQueryBuilder(Territory, "territory")
         .where("territory.name ILIKE :pattern", { pattern });
@@ -142,10 +191,11 @@ export class TerritoryService {
 
       const [data, total] = await qb
         .orderBy("territory.name", "ASC")
+        .addOrderBy("territory.id", "ASC")
         .skip((page - 1) * limit)
         .take(limit)
         .getManyAndCount();
-      return {
+      const result: PaginatedTerritories = {
         data,
         meta: {
           total,
@@ -154,6 +204,8 @@ export class TerritoryService {
           hasNext: page * limit < total,
         },
       };
+      await this.setCache(cacheKey, result);
+      return result;
     } catch(error){
       if (!manager) {
         await queryRunner?.rollbackTransaction();
@@ -183,7 +235,8 @@ export class TerritoryService {
       if (!manager) {
         await queryRunner?.commitTransaction();
       }
-
+      await this.invalidateCache();
+      return updated;
     }catch(error){
       if (!manager) {
         await queryRunner?.rollbackTransaction();
@@ -211,6 +264,7 @@ export class TerritoryService {
       if (!manager) {
         await queryRunner?.commitTransaction();
       }
+      await this.invalidateCache();
       return { message: `Territory with ID ${id} deleted successfully` };
     }
     catch(error){

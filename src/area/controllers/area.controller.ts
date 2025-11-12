@@ -15,6 +15,8 @@ import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { AdminGuard } from "src/auth/guards/admin.guard";
 import { Roles } from "src/auth/decorators/roles.decorator";
 import { AuthRole } from "src/auth/types/auth-role.enum";
+import { BulkAssignTerritoriesDto } from "../dto/bulk-assign-territories.dto";
+import { BulkUnassignTerritoriesDto } from "../dto/bulk-unassign-territories.dto";
 
 @ApiTags('Areas')
 @Controller({
@@ -143,5 +145,93 @@ export class AreaController {
   })
   getTerritoriesCountByAreaId(@Param('id') id: string) {
     return this.areaService.getTerritoriesCountByAreaId(id);
+  }
+
+  @Post(':id/territories/assign')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @Roles(AuthRole.Admin)
+  @ApiOperation({ summary: 'Assign multiple territories to an area' })
+  @ApiParam({
+    name: 'id',
+    description: 'Area identifier',
+    example: '7f531df6-7899-4d9b-9a25-44d5aa5c9bda',
+  })
+  @ApiBody({
+    type: BulkAssignTerritoriesDto,
+    examples: {
+      default: {
+        summary: 'Assign territories to area',
+        value: {
+          territoryIds: [
+            'bf98c716-bf37-4c2b-9d49-1b30c5c0cf1e',
+            '3a760e41-1c7d-4b0a-8a88-0fb9bc4a27c3',
+          ],
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: 'Summary of bulk territory assignment',
+    schema: {
+      example: {
+        areaId: '7f531df6-7899-4d9b-9a25-44d5aa5c9bda',
+        requested: 2,
+        assigned: 1,
+        alreadyAssigned: ['bf98c716-bf37-4c2b-9d49-1b30c5c0cf1e'],
+        conflicting: ['4c5f4d61-1d41-4f1b-87d3-e2f5ce7a0b1a'],
+        missing: [],
+      },
+    },
+  })
+  assignTerritoriesToArea(
+    @Param('id') areaId: string,
+    @Body() dto: BulkAssignTerritoriesDto,
+  ) {
+    return this.areaService.assignTerritoriesToArea(areaId, dto.territoryIds);
+  }
+
+  @Post(':id/territories/unassign')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @Roles(AuthRole.Admin)
+  @ApiOperation({ summary: 'Unassign multiple territories from an area' })
+  @ApiParam({
+    name: 'id',
+    description: 'Area identifier',
+    example: '7f531df6-7899-4d9b-9a25-44d5aa5c9bda',
+  })
+  @ApiBody({
+    type: BulkUnassignTerritoriesDto,
+    examples: {
+      default: {
+        summary: 'Unassign territories from area',
+        value: {
+          territoryIds: [
+            'bf98c716-bf37-4c2b-9d49-1b30c5c0cf1e',
+            '3a760e41-1c7d-4b0a-8a88-0fb9bc4a27c3',
+          ],
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: 'Summary of bulk territory unassignment',
+    schema: {
+      example: {
+        areaId: '7f531df6-7899-4d9b-9a25-44d5aa5c9bda',
+        requested: 2,
+        unassigned: 1,
+        skipped: ['3a760e41-1c7d-4b0a-8a88-0fb9bc4a27c3'],
+        missing: [],
+      },
+    },
+  })
+  unassignTerritoriesFromArea(
+    @Param('id') areaId: string,
+    @Body() dto: BulkUnassignTerritoriesDto,
+  ) {
+    return this.areaService.unassignTerritoriesFromArea(
+      areaId,
+      dto.territoryIds,
+    );
   }
 }

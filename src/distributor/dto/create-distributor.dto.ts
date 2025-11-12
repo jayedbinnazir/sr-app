@@ -8,6 +8,6 @@ export class CreateDistributorDto {
 
   @IsOptional()
   @IsUUID('4')
-  region_id?: string | null;
+  area_id?: string | null;
 }
 

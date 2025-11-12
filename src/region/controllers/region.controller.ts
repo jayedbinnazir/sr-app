@@ -28,6 +28,8 @@ import { AuthRole } from 'src/auth/types/auth-role.enum';
 import { IsOptional, IsUUID } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import { BulkAssignAreasDto } from '../dto/bulk-assign-areas.dto';
+import { BulkUnassignAreasDto } from '../dto/bulk-unassign-areas.dto';
 
 class RegionAreaFilterQueryDto extends PaginationDto {
   @ApiPropertyOptional({
@@ -177,6 +179,91 @@ export class RegionController {
         territoryId: query.territoryId,
       },
     );
+  }
+
+  @Post(':id/areas/assign')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @Roles(AuthRole.Admin)
+  @ApiOperation({ summary: 'Assign multiple areas to a region' })
+  @ApiParam({
+    name: 'id',
+    description: 'Region identifier',
+    example: 'd2b4b327-56a9-4b34-8b73-8a6232af5dec',
+  })
+  @ApiBody({
+    type: BulkAssignAreasDto,
+    examples: {
+      default: {
+        summary: 'Assign areas to region',
+        value: {
+          areaIds: [
+            '7f531df6-7899-4d9b-9a25-44d5aa5c9bda',
+            '3c8e5b2d-98ab-4a6f-9bfa-9ae4f9d8c1c4',
+          ],
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: 'Summary of bulk area assignment',
+    schema: {
+      example: {
+        regionId: 'd2b4b327-56a9-4b34-8b73-8a6232af5dec',
+        requested: 3,
+        assigned: 2,
+        alreadyAssigned: ['7f531df6-7899-4d9b-9a25-44d5aa5c9bda'],
+        conflicting: ['d1a6efb9-38e7-48bf-8c1a-3d0d2f22a9b4'],
+        missing: ['3c8e5b2d-98ab-4a6f-9bfa-9ae4f9d8c1c4'],
+      },
+    },
+  })
+  assignAreasToRegion(
+    @Param('id') regionId: string,
+    @Body() dto: BulkAssignAreasDto,
+  ) {
+    return this.regionService.assignAreasToRegion(regionId, dto.areaIds);
+  }
+
+  @Post(':id/areas/unassign')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @Roles(AuthRole.Admin)
+  @ApiOperation({ summary: 'Unassign multiple areas from a region' })
+  @ApiParam({
+    name: 'id',
+    description: 'Region identifier',
+    example: 'd2b4b327-56a9-4b34-8b73-8a6232af5dec',
+  })
+  @ApiBody({
+    type: BulkUnassignAreasDto,
+    examples: {
+      default: {
+        summary: 'Unassign areas from region',
+        value: {
+          areaIds: [
+            '7f531df6-7899-4d9b-9a25-44d5aa5c9bda',
+            '3c8e5b2d-98ab-4a6f-9bfa-9ae4f9d8c1c4',
+          ],
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: 'Summary of bulk area unassignment',
+    schema: {
+      example: {
+        regionId: 'd2b4b327-56a9-4b34-8b73-8a6232af5dec',
+        requested: 2,
+        unassigned: 2,
+        skipped: [],
+        missing: ['3c8e5b2d-98ab-4a6f-9bfa-9ae4f9d8c1c4'],
+      },
+    },
+  })
+  unassignAreasFromRegion(
+    @Param('id') regionId: string,
+    @Body() dto: BulkUnassignAreasDto,
+  ) {
+    return this.regionService.unassignAreasFromRegion(regionId, dto.areaIds);
   }
 
   @Get('count')

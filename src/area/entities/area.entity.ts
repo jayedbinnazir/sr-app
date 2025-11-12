@@ -11,6 +11,7 @@ import { BaseEntity } from 'src/common/entities/base.entity';
 import { Region } from 'src/region/entities/region.entity';
 import { Territory } from 'src/territory/entities/territory.entity';
 import { Retailer } from 'src/retailer/entities/retailer.entity';
+import { Distributor } from 'src/distributor/entities/distributor.entity';
 
 @Entity('areas')
 @Unique('UQ_AREA_REGION_NAME', ['name', 'region_id'])
@@ -34,5 +35,10 @@ export class Area extends BaseEntity {
 
   @OneToMany(() => Retailer, (retailer) => retailer.area, { cascade: false })
   retailers: Retailer[];
+
+  @OneToMany(() => Distributor, (distributor) => distributor.area, {
+    cascade: false,
+  })
+  distributors: Distributor[];
 }
 

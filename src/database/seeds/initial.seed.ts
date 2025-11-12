@@ -9,6 +9,7 @@ import { Region } from 'src/region/entities/region.entity';
 import { Area } from 'src/area/entities/area.entity';
 import { Territory } from 'src/territory/entities/territory.entity';
 import { Distributor } from 'src/distributor/entities/distributor.entity';
+import { Retailer } from 'src/retailer/entities/retailer.entity';
 
 type SeedRole = {
   name: string;
@@ -25,11 +26,18 @@ type SeedUser = {
 
 type SeedSalesRep = {
   name: string;
-  username?: string | null;
-  email?: string | null;
-  phone?: string | null;
+  username: string;
+  email: string;
+  phone: string;
   password: string;
 };
+
+const REGION_COUNT = 5;
+const AREAS_PER_REGION = 10;
+const TERRITORIES_PER_AREA = 10;
+const DISTRIBUTORS_PER_AREA = 3;
+const RETAILERS_PER_TERRITORY = 3;
+const SALES_REP_COUNT = 30;
 
 const roles: SeedRole[] = [
   { name: 'admin', description: 'Administrator with full access' },
@@ -43,53 +51,6 @@ const adminUser: SeedUser = {
   phone: '+8801521323469',
   password: 'Jayed015',
 };
-
-const salesReps: SeedSalesRep[] = [
-  {
-    name: 'Abir Rahman',
-    username: 'abir.rahman',
-    email: 'abir@manush.tech',
-    phone: '+8801711355057',
-    password: 'Abir015!',
-  },
-  {
-    name: 'Syed Asim Anwar',
-    username: 'asim.anwar',
-    email: 'asim.anwar@manush.tech',
-    phone: '+8801864203231',
-    password: 'Asim015!',
-  },
-  {
-    name: 'Imran RS Bhuiyan',
-    username: 'imran.bhuiyan',
-    email: 'imran@manush.tech',
-    phone: '+8801864203231',
-    password: 'Imran015!',
-  },
-];
-
-const regionSeeds = [
-  {
-    name: 'Dhaka',
-    areas: [
-      { name: 'Gulshan', territories: ['Gulshan 1', 'Gulshan 2'] },
-      { name: 'Dhanmondi', territories: ['Dhanmondi Block A', 'Dhanmondi Block B'] },
-    ],
-    distributors: ['Dhaka Distributors Ltd', 'Capital Trade Hub'],
-  },
-  {
-    name: 'Rajshahi',
-    areas: [
-      { name: 'Motihar', territories: ['Binodpur', 'Kazla'] },
-      { name: 'Boalia', territories: ['Shaheb Bazar', 'Padma Residential'] },
-    ],
-    distributors: ['Rajshahi Traders Consortium', 'Northwest Supply Co'],
-  },
-] satisfies Array<{
-  name: string;
-  areas: { name: string; territories: string[] }[];
-  distributors: string[];
-}>;
 
 async function ensureRoles(dataSource: DataSource): Promise<Record<string, Role>> {
   const roleRepository = dataSource.getRepository(Role);
@@ -197,14 +158,28 @@ async function ensureUserWithRole(
   return user;
 }
 
+function generateSalesRepSeeds(count: number): SeedSalesRep[] {
+  return Array.from({ length: count }, (_, index) => {
+    const i = index + 1;
+    return {
+      name: `Sales Rep ${i}`,
+      username: `salesrep${i}`,
+      email: `salesrep${i}@example.com`,
+      phone: `+8801700${i.toString().padStart(6, '0')}`,
+      password: `SalesRep${i}!`,
+    };
+  });
+}
+
 async function ensureSalesReps(
   dataSource: DataSource,
   role: Role,
 ): Promise<void> {
   const salesRepRepository = dataSource.getRepository(SalesRep);
-  for (const rep of salesReps) {
-    const seedUsername = rep.username?.toLowerCase() ?? null;
-    const seedEmail = rep.email?.toLowerCase() ?? null;
+  const salesRepSeeds = generateSalesRepSeeds(SALES_REP_COUNT);
+  for (const rep of salesRepSeeds) {
+    const seedUsername = rep.username.toLowerCase();
+    const seedEmail = rep.email.toLowerCase();
     const user = await ensureUserWithRole(dataSource, role, {
       name: rep.name,
       email: seedEmail,
@@ -216,17 +191,12 @@ async function ensureSalesReps(
     const whereConditions: Array<{ user_id?: string; username?: string }> = [
       { user_id: user.id },
     ];
-    if (seedUsername) {
-      whereConditions.push({ username: seedUsername });
-    }
+    whereConditions.push({ username: seedUsername });
     let existingSalesRep = await salesRepRepository.findOne({
       where: whereConditions,
     });
 
-    const resolvedUsernameRaw =
-      seedUsername ??
-      (seedEmail ? seedEmail.split('@')[0] : user.username ?? `salesrep_${user.id.slice(0, 8)}`);
-    const resolvedUsername = resolvedUsernameRaw.toLowerCase();
+    const resolvedUsername = seedUsername;
 
     if (!existingSalesRep) {
       existingSalesRep = salesRepRepository.create({
@@ -269,33 +239,68 @@ async function ensureRegionsHierarchy(
   const areaRepository = dataSource.getRepository(Area);
   const territoryRepository = dataSource.getRepository(Territory);
   const distributorRepository = dataSource.getRepository(Distributor);
+  const retailerRepository = dataSource.getRepository(Retailer);
 
-  for (const regionSeed of regionSeeds) {
+  for (let regionIndex = 1; regionIndex <= REGION_COUNT; regionIndex += 1) {
+    const regionName = `Region ${regionIndex}`;
     let region = await regionRepository.findOne({
-      where: { name: regionSeed.name },
+      where: { name: regionName },
     });
 
     if (!region) {
-      region = regionRepository.create({ name: regionSeed.name });
+      region = regionRepository.create({ name: regionName });
       region = await regionRepository.save(region);
-      console.log(`Created region '${regionSeed.name}'`);
+      console.log(`Created region '${regionName}'`);
     }
 
-    for (const areaSeed of regionSeed.areas) {
+    for (let areaIndex = 1; areaIndex <= AREAS_PER_REGION; areaIndex += 1) {
+      const areaName = `Region ${regionIndex} Area ${areaIndex}`;
       let area = await areaRepository.findOne({
-        where: { name: areaSeed.name, region_id: region.id },
+        where: { name: areaName, region_id: region.id },
       });
 
       if (!area) {
         area = areaRepository.create({
-          name: areaSeed.name,
+          name: areaName,
           region_id: region.id,
         });
         area = await areaRepository.save(area);
-        console.log(`Created area '${areaSeed.name}' in region '${regionSeed.name}'`);
+        console.log(`Created area '${areaName}' in region '${regionName}'`);
       }
 
-      for (const territoryName of areaSeed.territories) {
+      const areaDistributors: Distributor[] = [];
+      for (
+        let distributorIndex = 1;
+        distributorIndex <= DISTRIBUTORS_PER_AREA;
+        distributorIndex += 1
+      ) {
+        const distributorName = `${areaName} Distributor ${distributorIndex}`;
+        let distributor = await distributorRepository.findOne({
+          where: { name: distributorName },
+        });
+
+        if (!distributor) {
+          distributor = distributorRepository.create({
+            name: distributorName,
+            area_id: area.id,
+          });
+          distributor = await distributorRepository.save(distributor);
+          console.log(`Created distributor '${distributorName}'`);
+        } else if (distributor.area_id !== area.id) {
+          distributor.area_id = area.id;
+          distributor = await distributorRepository.save(distributor);
+          console.log(`Updated distributor '${distributorName}' area to '${areaName}'`);
+        }
+
+        areaDistributors.push(distributor);
+      }
+
+      for (
+        let territoryIndex = 1;
+        territoryIndex <= TERRITORIES_PER_AREA;
+        territoryIndex += 1
+      ) {
+        const territoryName = `${areaName} Territory ${territoryIndex}`;
         let territory = await territoryRepository.findOne({
           where: { name: territoryName, area_id: area.id },
         });
@@ -305,30 +310,77 @@ async function ensureRegionsHierarchy(
             name: territoryName,
             area_id: area.id,
           });
-          await territoryRepository.save(territory);
-          console.log(
-            `Created territory '${territoryName}' in area '${areaSeed.name}'`,
-          );
+          territory = await territoryRepository.save(territory);
+          console.log(`Created territory '${territoryName}' in area '${areaName}'`);
         }
-      }
-    }
 
-    for (const distributorName of regionSeed.distributors ?? []) {
-      let distributor = await distributorRepository.findOne({
-        where: { name: distributorName },
-      });
+        for (
+          let retailerIndex = 1;
+          retailerIndex <= RETAILERS_PER_TERRITORY;
+          retailerIndex += 1
+        ) {
+          const retailerUid = `RT-${regionIndex}-${areaIndex}-${territoryIndex}-${retailerIndex}`;
+          let retailer = await retailerRepository.findOne({
+            where: { uid: retailerUid },
+          });
 
-      if (!distributor) {
-        distributor = distributorRepository.create({
-          name: distributorName,
-          region_id: region.id,
-        });
-        await distributorRepository.save(distributor);
-        console.log(`Created distributor '${distributorName}' in region '${regionSeed.name}'`);
-      } else if (distributor.region_id !== region.id) {
-        distributor.region_id = region.id;
-        await distributorRepository.save(distributor);
-        console.log(`Updated distributor '${distributorName}' region to '${regionSeed.name}'`);
+          const retailerName = `Retailer ${regionIndex}-${areaIndex}-${territoryIndex}-${retailerIndex}`;
+          const phone = `+880180${(regionIndex * 100000 + areaIndex * 1000 + territoryIndex * 10 + retailerIndex)
+            .toString()
+            .padStart(6, '0')}`;
+          const assignedDistributor =
+            areaDistributors[
+              (retailerIndex - 1) % areaDistributors.length
+            ] ?? null;
+
+          if (!retailer) {
+            retailer = retailerRepository.create({
+              uid: retailerUid,
+              name: retailerName,
+              phone,
+              region_id: region.id,
+              area_id: area.id,
+              distributor_id: assignedDistributor?.id ?? null,
+              territory_id: territory.id,
+              points: 0,
+              routes: null,
+              notes: null,
+            });
+            await retailerRepository.save(retailer);
+            console.log(`Created retailer '${retailerName}'`);
+          } else {
+            let needsUpdate = false;
+            if (retailer.name !== retailerName) {
+              retailer.name = retailerName;
+              needsUpdate = true;
+            }
+            if (retailer.phone !== phone) {
+              retailer.phone = phone;
+              needsUpdate = true;
+            }
+            if (retailer.region_id !== region.id) {
+              retailer.region_id = region.id;
+              needsUpdate = true;
+            }
+            if (retailer.area_id !== area.id) {
+              retailer.area_id = area.id;
+              needsUpdate = true;
+            }
+            if (retailer.territory_id !== territory.id) {
+              retailer.territory_id = territory.id;
+              needsUpdate = true;
+            }
+            const targetDistributorId = assignedDistributor?.id ?? null;
+            if (retailer.distributor_id !== targetDistributorId) {
+              retailer.distributor_id = targetDistributorId;
+              needsUpdate = true;
+            }
+            if (needsUpdate) {
+              await retailerRepository.save(retailer);
+              console.log(`Updated retailer '${retailer.uid}' associations`);
+            }
+          }
+        }
       }
     }
   }
@@ -343,7 +395,7 @@ async function seed(): Promise<void> {
     await ensureSalesReps(AppDataSource, ensuredRoles.sales_rep);
     console.log('Sales reps seeded');
     await ensureRegionsHierarchy(AppDataSource);
-    console.log('Regions, areas, and territories seeded');
+    console.log('Regions, areas, territories, distributors, and retailers seeded');
   } finally {
     await AppDataSource.destroy();
   }

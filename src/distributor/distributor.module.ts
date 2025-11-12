@@ -5,9 +5,10 @@ import { DistributorController } from './controllers/distributor.controller';
 import { DistributorSalesRepController } from './controllers/distributor-sales-rep.controller';
 import { DistributorService } from './services/distributor.service';
 import { AuthModule } from 'src/auth/auth.module';
+import { CachingModule } from 'src/caching/caching.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Distributor]), AuthModule],
+  imports: [TypeOrmModule.forFeature([Distributor]), AuthModule, CachingModule],
   controllers: [DistributorController, DistributorSalesRepController],
   providers: [DistributorService],
   exports: [DistributorService],
