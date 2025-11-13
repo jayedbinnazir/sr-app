@@ -23,6 +23,8 @@ import { BulkUnassignTerritoriesDto } from "../dto/bulk-unassign-territories.dto
   path: 'v1/admin/areas',
   version: '1',
 })
+@UseGuards(JwtAuthGuard, AdminGuard)
+@Roles(AuthRole.Admin)
 export class AreaController {
   constructor(private readonly areaService: AreaService) {}
 

@@ -147,6 +147,7 @@ export class RegionService {
 
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
 
     try {
@@ -168,6 +169,9 @@ export class RegionService {
         .take(limit);
 
       const [data, total] = await qb.getManyAndCount();
+      if (!manager) {
+        await queryRunner?.commitTransaction();
+      }
 
       const result: PaginatedRegions = {
         data,

@@ -47,6 +47,12 @@ export class ImportWorkerService implements OnModuleInit, OnModuleDestroy {
   private static readonly BATCH_SIZE = Number(
     process.env.RETAILER_IMPORT_BATCH_SIZE ?? 5000,
   );
+  private static readonly CONCURRENCY = Number(
+    process.env.RETAILER_IMPORT_WORKER_CONCURRENCY ?? 4,
+  );
+  private static readonly CHUNK_SIZE = Number(
+    process.env.RETAILER_IMPORT_UPSERT_CHUNK ?? 2000,
+  );
 
   constructor(private readonly configService: ConfigService) {
     const db = this.configService.get('db') as Record<string, unknown>;
@@ -74,7 +80,7 @@ export class ImportWorkerService implements OnModuleInit, OnModuleDestroy {
       RETAILER_IMPORT_QUEUE_NAME,
       (job) => this.handleRetailerImport(job),
       {
-        concurrency: 1,
+        concurrency: ImportWorkerService.CONCURRENCY,
         connection,
       },
     );
@@ -150,17 +156,21 @@ export class ImportWorkerService implements OnModuleInit, OnModuleDestroy {
         }
 
         if (validRows.length) {
-          const { inserted, updated } = await this.upsertRetailers(
-            client,
-            validRows,
-          );
-          insertedCount += inserted;
-          updatedCount += updated;
+          for (let i = 0; i < validRows.length; i += ImportWorkerService.CHUNK_SIZE) {
+            const chunk = validRows.slice(
+              i,
+              i + ImportWorkerService.CHUNK_SIZE,
+            );
 
-          await this.clearResolvedErrors(
-            client,
-            validRows.map((row) => row.uid),
-          );
+            const { inserted, updated } = await this.upsertRetailers(client, chunk);
+            insertedCount += inserted;
+            updatedCount += updated;
+
+            await this.clearResolvedErrors(
+              client,
+              chunk.map((row) => row.uid),
+            );
+          }
         }
 
         const processedIds = rows.map((row) => row.id);

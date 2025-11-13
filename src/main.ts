@@ -8,12 +8,14 @@ import { ValidationPipe } from '@nestjs/common';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
+import { json, urlencoded } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const httpAdapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new CustomExceptionFilter(httpAdapterHost));
   app.use(cookieParser());
+
 
   app.useGlobalPipes(
     new ValidationPipe({

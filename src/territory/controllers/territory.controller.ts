@@ -20,6 +20,8 @@ import { AuthRole } from "src/auth/types/auth-role.enum";
   path: 'v1/admin/territories',
   version: '1',
 })
+@UseGuards(JwtAuthGuard, AdminGuard)
+@Roles(AuthRole.Admin)
 export class TerritoryController {
   constructor(private readonly territoryService: TerritoryService) {}
 

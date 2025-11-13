@@ -58,6 +58,8 @@ class RegionAreaFilterQueryDto extends PaginationDto {
   path: 'v1/admin/regions',
   version: '1',
 })
+@UseGuards(JwtAuthGuard, AdminGuard)
+@Roles(AuthRole.Admin)
 export class RegionController {
   constructor(private readonly regionService: RegionService) {}
 
