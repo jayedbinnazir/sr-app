@@ -1,3 +1,12 @@
+## Backend Scaling Approach
+
+The stack is built to scale horizontally without major refactoring:
+
+- **Containerisation & Load Balancing:** The NestJS API runs as multiple replicas behind Nginx; Docker Compose manages Postgres, Redis, Kafka, and the app tier so new instances can be added quickly. In production, this translates to autoscaling containers or Kubernetes pods behind the same proxy pattern.
+- **Async Workflows:** Heavy tasks (CSV imports, notifications) run through BullMQ and Redis, decoupling them from request latency. We can scale workers independently, and queues absorb spikes in traffic.
+- **Database Strategy:** PostgreSQL is fronted by read/write transactions with strict entity validation. Indexes exist on filtered columns (region/area/territory/distributor), and TypeORM transactions make it straightforward to adopt read replicas or partitioning later.
+- **Caching Layer:** Redis sits in front of read-heavy endpoints. Cache keys are invalidated on relevant writes, keeping latency low while safeguarding consistency. Caching is optional per module, so we can dial it up where it delivers real wins.
+- **Streaming Imports:** CSV ingest leverages Node streams, `fast-csv`, and `pg-copy-streams` to keep memory flat and push large batches straight to Postgres. The same pipeline can fan out across workers or be moved into a dedicated ETL service if throughput or isolation become concerns.
 # SR App - Local Development Setup
 
 ## Key Features
@@ -60,6 +69,11 @@ This guide explains how to start the **SR App** project locally with all depende
    - 30 sales representatives
 
    Bulk retailer uploads (up to ~1 million rows) are supported via the importer interface at `http://localhost:8080/static/import.html`.
+
+7. **Run region unit tests**
+   ```bash
+   npm run test:region
+   ```
 
 6. **Operational tips**
    - Keep the `docker:service` and `docker:kafka` terminals running while you work.
