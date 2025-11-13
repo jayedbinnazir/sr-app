@@ -72,6 +72,13 @@ This guide explains how to start the **SR App** project locally with all depende
      Credentials: `admin@local.dev / admin` (see `.env.dev` for overrides)
    - RedisInsight: `http://localhost:5540`
 
+   Look-up reference of docker files:
+   - `docker-compose.dev.yml` → app (API + Nginx)
+   - `docker-compose.service.yml` → all database services
+   - `docker-compose.kafka.yml` → Kafka stack
+   - `Dockerfile.dev` → builds the application environment
+   - `.env.dev` → primary environment configuration
+
 5. **Seed demo data**
    ```bash
    npm run seed:docker
