@@ -1,8 +1,17 @@
+## Backend Scaling Approach
+
+The stack is built to scale horizontally without major refactoring:
+
+- **Containerisation & Load Balancing:** The NestJS API runs as multiple replicas behind Nginx; Docker Compose manages Postgres, Redis, Kafka, and the app tier so new instances can be added quickly. In production, this translates to autoscaling containers or Kubernetes pods behind the same proxy pattern.
+- **Async Workflows:** Heavy tasks (CSV imports, notifications) run through BullMQ and Redis, decoupling them from request latency. We can scale workers independently, and queues absorb spikes in traffic.
+- **Database Strategy:** PostgreSQL is fronted by read/write transactions with strict entity validation. Indexes exist on filtered columns (region/area/territory/distributor), and TypeORM transactions make it straightforward to adopt read replicas or partitioning later.
+- **Caching Layer:** Redis sits in front of read-heavy endpoints. Cache keys are invalidated on relevant writes, keeping latency low while safeguarding consistency. Caching is optional per module, so we can dial it up where it delivers real wins.
+- **Streaming Imports:** CSV ingest leverages Node streams, `fast-csv`, and `pg-copy-streams` to keep memory flat and push large batches straight to Postgres. The same pipeline can fan out across workers or be moved into a dedicated ETL service if throughput or isolation become concerns.
 # SR App - Local Development Setup
 
 ## Key Features
 
-- Bulk ETL importer handles up to ~1 million retailer rows via [`http://localhost:8080/static/import.html`](http://localhost:8080/static/import.html); upload the generated CSV and the pipeline (streams + `fast-csv` + `pg-copy-streams`) finishes in ~3–4 minutes.
+- Bulk ETL importer handles up to ~1 million retailer rows via [`http://localhost:8080/static/import.html`](http://localhost:8080/static/import.html); upload the generated CSV and the pipeline (streams + `fast-csv` + `pg-copy-streams`) finishes in ~3–4 minutes. Ready-made datasets live in `./csv_zip/retailers_1million.rar` and `./csv_zip/retailers_100.rar`, or regenerate them anytime from the project root with `npm run million` and `npm run hundred`.
 - Hierarchical bulk operations: assign ≤70 retailers to a sales rep per request and perform area→region or territory→area assignments with conflict checks, indexing, and consistent search/filter support.
 - Data performance layer: reusable transactional query helpers, strategic indexing, Redis caching on hot endpoints, BullMQ job queues on Redis, and socket-based notifications using the Redis adapter.
 - Container-first runtime: `docker-compose` manages Postgres, Redis, Kafka, and Nginx; the API runs as three replicas behind the bundled Nginx load balancer for local HA testing.
@@ -60,6 +69,11 @@ This guide explains how to start the **SR App** project locally with all depende
    - 30 sales representatives
 
    Bulk retailer uploads (up to ~1 million rows) are supported via the importer interface at `http://localhost:8080/static/import.html`.
+
+7. **Run region unit tests**
+   ```bash
+   npm run test:region
+   ```
 
 6. **Operational tips**
    - Keep the `docker:service` and `docker:kafka` terminals running while you work.
