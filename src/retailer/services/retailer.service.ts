@@ -81,6 +81,7 @@ export class RetailerService {
 
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
 
     try {
@@ -96,6 +97,9 @@ export class RetailerService {
         .take(limit);
 
       const [data, total] = await qb.getManyAndCount();
+      if (!manager) {
+        await queryRunner?.commitTransaction();
+      }
 
       return {
         data,
@@ -106,7 +110,13 @@ export class RetailerService {
           hasNext: page * limit < total,
         },
       };
-    } finally {
+    } catch (error) {
+      if (!manager) {
+        await queryRunner?.rollbackTransaction();
+      }
+      throw error;
+    }
+    finally {
       if (!manager) {
         await queryRunner?.release();
       }
@@ -123,6 +133,7 @@ export class RetailerService {
 
     if (!manager) {
       await queryRunner?.connect();
+      await queryRunner?.startTransaction();
     }
 
     try {
@@ -157,6 +168,9 @@ export class RetailerService {
         .take(limit);
 
       const [data, total] = await qb.getManyAndCount();
+      if (!manager) {
+        await queryRunner?.commitTransaction();
+      }
 
       return {
         data,
@@ -167,6 +181,11 @@ export class RetailerService {
           hasNext: page * limit < total,
         },
       };
+    } catch (error) {
+      if (!manager) {
+        await queryRunner?.rollbackTransaction();
+      }
+      throw error;
     } finally {
       if (!manager) {
         await queryRunner?.release();
