@@ -73,7 +73,8 @@ This guide explains how to start the **SR App** project locally with all depende
    - Swagger UI: `http://localhost:8080/docs`
    - Direct container port (if you need it): `http://localhost:5000`
    - pgAdmin: `http://localhost:5050`  
-     Credentials: `admin@local.dev / admin` (see `.env.dev` for overrides)
+      Credentials: `admin@local.dev / admin` (see `.env.dev` for overrides)  
+      Database connection: host `db` (container name), port `5432`, database `my_app_dev`, user `postgres`, password `postgres`
    - RedisInsight: `http://localhost:5540`
 
    Look-up reference of docker files:
