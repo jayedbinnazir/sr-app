@@ -98,6 +98,8 @@ This guide explains how to start the **SR App** project locally with all depende
 
    Bulk retailer uploads (up to ~1 million rows) are supported via the importer interface at `http://localhost:8080/static/import.html`.
 
+   Pre-bundled datasets live in `./csv_zip/retailers_1million.rar` and `./csv_zip/retailers_100.rar`. Extract the archive you need and upload the resulting CSV through the Import UI; the pipeline comfortably handles the 1 million-row file.
+
    After seeding completes, use these starter credentials:
    - Admin: email `jayed.official1998@gmail.com`, password `Jayed015`
    - Sales rep (example): email `salesrep1@example.com`, password `SalesRep1!`  

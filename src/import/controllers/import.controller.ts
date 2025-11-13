@@ -19,7 +19,11 @@ export class ImportController {
   @Post('csv/retailers')
   @UseGuards(JwtAuthGuard, AdminGuard)
   @Roles(AuthRole.Admin)
-  @ApiOperation({ summary: 'Import retailers from a CSV file' })
+  @ApiOperation({
+    summary: 'Import retailers from a CSV file',
+    description:
+      'Upload a CSV generated from the project dataset. The pipeline is tuned for large imports and comfortably handles the 1 million-row file bundled at ./csv_zip/retailers_1million.rar (extract before uploading).',
+  })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
