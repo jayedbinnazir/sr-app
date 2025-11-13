@@ -35,7 +35,7 @@
 
 This guide explains how to start the **SR App** project locally with all dependencies, including Docker services, Kafka, PostgreSQL, and Redis.
 
-**Database model reference:** [https://app.eraser.io/workspace/6FoRUT8hsNqWraJpHwno?origin=share](https://app.eraser.io/workspace/6FoRUT8hsNqWraJpHwno?origin=share)
+**Simple Database model Overview:** [https://app.eraser.io/workspace/6FoRUT8hsNqWraJpHwno?origin=share](https://app.eraser.io/workspace/6FoRUT8hsNqWraJpHwno?origin=share)
 
 ---
 
