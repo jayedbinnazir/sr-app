@@ -1,12 +1,28 @@
-## Backend Scaling Approach
+## Backend Scaling Approach (Simplified)
 
-The stack is built to scale horizontally without major refactoring:
+### Containerization & Load Balancing
+- The backend API runs in multiple containers behind a single Nginx server.
+- Using Docker Compose, we can quickly add more containers for the API.
+- This setup allows the system to handle more traffic by distributing requests across multiple containers.
 
-- **Containerisation & Load Balancing:** The NestJS API runs as multiple replicas behind Nginx; Docker Compose manages Postgres, Redis, Kafka, and the app tier so new instances can be added quickly. In production, this translates to autoscaling containers or Kubernetes pods behind the same proxy pattern.
-- **Async Workflows:** Heavy tasks (CSV imports, notifications) run through BullMQ and Redis, decoupling them from request latency. We can scale workers independently, and queues absorb spikes in traffic.
-- **Database Strategy:** PostgreSQL is fronted by read/write transactions with strict entity validation. Indexes exist on filtered columns (region/area/territory/distributor), and TypeORM transactions make it straightforward to adopt read replicas or partitioning later.
-- **Caching Layer:** Redis sits in front of read-heavy endpoints. Cache keys are invalidated on relevant writes, keeping latency low while safeguarding consistency. Caching is optional per module, so we can dial it up where it delivers real wins.
-- **Streaming Imports:** CSV ingest leverages Node streams, `fast-csv`, and `pg-copy-streams` to keep memory flat and push large batches straight to Postgres. The same pipeline can fan out across workers or be moved into a dedicated ETL service if throughput or isolation become concerns.
+### Asynchronous Workflows
+- Heavy tasks, like importing large CSV files or sending notifications, run in the background using queues (BullMQ + Redis).
+- This keeps the API fast for users while still handling heavy workloads.
+- Workers can be scaled separately if more processing power is needed.
+
+### Database Strategy
+- PostgreSQL stores all the data with proper validation and transactional safety.
+- Important columns (region, area, territory, distributor) are indexed for fast lookups.
+- The system can later be extended to use read replicas or partitioning to handle more data efficiently.
+
+### Caching Layer
+- Redis caches frequently read data to reduce database load and improve response times.
+- Cached data is updated whenever relevant information changes, keeping it accurate.
+
+### Streaming Imports
+- Large CSV files are processed using streams and pushed directly into PostgreSQL.
+- This keeps memory usage low and allows the system to handle millions of records.
+- The pipeline can be split across multiple workers if needed for higher throughput.
 # SR App - Local Development Setup
 
 ## Key Features
@@ -154,6 +170,15 @@ Swagger UI (with auth-aware examples) is available at [`http://localhost:8080/do
 - `POST /v1/admin/sales-reps/:salesRepId/retailers`
 - `POST /v1/admin/sales-reps/:salesRepId/retailers/bulk`
 - `POST /v1/admin/sales-reps/:salesRepId/retailers/unassign`
+
+### Retailer Management (admin)
+- `GET /v1/admin/retailers`
+- `GET /v1/admin/retailers/search`
+- `GET /v1/admin/retailers/count/total`
+- `GET /v1/admin/retailers/:id`
+- `POST /v1/admin/retailers`
+- `PATCH /v1/admin/retailers/:id`
+- `DELETE /v1/admin/retailers/:id`
 
 ### Utility
 - `GET /caching` – Redis connectivity & caching test endpoint (non-versioned; dev-only)
