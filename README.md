@@ -67,6 +67,8 @@ This guide explains how to start the **SR App** project locally with all depende
    npm run docker:build
    ```
    This spins up nginx as a load balancer plus three replicas of the NestJS application.
+   in docker-compose.dev.yml u can cpy paste the the service make another service name the container, to check load balancer
+    at nginx.conf.dev edit upstream blocks , include the new service container name how the previous one is defined
 
 4. **Access points**
    - API base URL (via reverse proxy): `http://localhost:8080/api/v1`
