@@ -1,98 +1,137 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# SR App - Local Development Setup
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This guide explains how to start the **SR App** project locally with all dependencies, including Docker services, Kafka, PostgreSQL, and Redis.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## Setup (Desktop)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/jayedbinnazir/sr-app.git
+   cd sr-app
+   ```
 
-## Project setup
+2. **Start Dockerized dependencies**
+   - Ensure Docker Desktop is running.
+   - In one terminal:
+     ```bash
+     npm run docker:service
+     ```
+     This launches PostgreSQL, pgAdmin, Redis, and RedisInsight.
+   - In a second terminal:
+     ```bash
+     npm run docker:kafka
+     ```
+     This brings up the Kafka brokers. Give the containers a moment and verify they’re all healthy.
 
-```bash
-$ npm install
-```
+3. **Build and run the API stack**
+   ```bash
+   npm run docker:build
+   ```
+   This spins up nginx as a load balancer plus three replicas of the NestJS application.
 
-## Compile and run the project
+4. **Access points**
+   - API base URL (via reverse proxy): `http://localhost:8080/api/v1`
+   - Swagger UI: `http://localhost:8080/docs`
+   - Direct container port (if you need it): `http://localhost:5000`
+   - pgAdmin: `http://localhost:5050`  
+     Credentials: `admin@local.dev / admin` (see `.env.dev` for overrides)
+   - RedisInsight: `http://localhost:5540`
 
-```bash
-# development
-$ npm run start
+5. **Seed demo data**
+   ```bash
+   npm run seed:docker
+   ```
+   The seeder provisions:
+   - 5 regions
+   - 10 areas per region (50 total)
+   - 10 territories per area (500 total)
+   - 3 distributors per area (150 total)
+   - 3 retailers per territory (1,500 total) linked to their area/region/distributor
+   - 30 sales representatives
 
-# watch mode
-$ npm run start:dev
+   Bulk retailer uploads (up to ~1 million rows) are supported via the importer interface at `http://localhost:8080/static/import.html`.
 
-# production mode
-$ npm run start:prod
-```
+6. **Operational tips**
+   - Keep the `docker:service` and `docker:kafka` terminals running while you work.
+   - If Docker restarts, rerun those scripts before rebuilding.
+   - Use the Swagger UI for endpoint exploration and example payloads.
 
-## Run tests
+---
 
-```bash
-# unit tests
-$ npm run test
+## API Reference
 
-# e2e tests
-$ npm run test:e2e
+Swagger UI (with auth-aware examples) is available at [`http://localhost:8080/docs`](http://localhost:8080/docs). The backend is versioned under the `/api/v1` prefix unless explicitly stated.
 
-# test coverage
-$ npm run test:cov
-```
+### Region Management (admin)
+- `POST /v1/admin/regions`
+- `GET /v1/admin/regions`
+- `GET /v1/admin/regions/search`
+- `GET /v1/admin/regions/count`
+- `GET /v1/admin/regions/:id/areas`
+- `GET /v1/admin/regions/:id/areas/count`
+- `POST /v1/admin/regions/:id/areas/assign`
+- `POST /v1/admin/regions/:id/areas/unassign`
+- `POST /v1/admin/sales-reps/:salesRepId/retailers`
+- `POST /v1/admin/sales-reps/:salesRepId/retailers/bulk`
+- `POST /v1/admin/sales-reps/:salesRepId/retailers/unassign`
+- `PATCH /v1/admin/regions/:id`
+- `DELETE /v1/admin/regions/:id`
 
-## Deployment
+### Area Management (admin)
+- `POST /v1/admin/areas`
+- `GET /v1/admin/areas`
+- `GET /v1/admin/areas/search`
+- `GET /v1/admin/areas/total-count`
+- `GET /v1/admin/areas/:id/territories`
+- `GET /v1/admin/areas/:id/territories/total-count`
+- `POST /v1/admin/areas/:id/territories/assign`
+- `POST /v1/admin/areas/:id/territories/unassign`
+- `PATCH /v1/admin/areas/:id`
+- `DELETE /v1/admin/areas/:id`
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### Territory Management (admin)
+- `POST /v1/admin/territories`
+- `GET /v1/admin/territories`
+- `GET /v1/admin/territories/search`
+- `GET /v1/admin/territories/total-count`
+- `PATCH /v1/admin/territories/:id`
+- `DELETE /v1/admin/territories/:id`
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Distributor Management (admin)
+- `POST /v1/admin/distributors`
+- `GET /v1/admin/distributors`
+- `GET /v1/admin/distributors/search`
+- `GET /v1/admin/distributors/count`
+- `GET /v1/admin/distributors/:id`
+- `PATCH /v1/admin/distributors/:id`
+- `DELETE /v1/admin/distributors/:id`
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+### Distributor Lookup (sales rep)
+- `GET /v1/sales-reps/distributors/search`
+- `GET /v1/sales-reps/distributors/count`
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Sales Rep Self-Service (requires sales_rep role)
+- `GET /v1/sales-reps/retailers`
+- `GET /v1/sales-reps/retailers/search`
+- `GET /v1/sales-reps/retailers/filter`
+- `GET /v1/sales-reps/retailers/count`
+- `GET /v1/sales-reps/retailers/:retailerId`
+- `PATCH /v1/sales-reps/retailers/:retailerId`
 
-## Resources
+### Sales Rep Administration (admin)
+- `GET /v1/admin/sales-reps/:salesRepId/retailers`
+- `GET /v1/admin/sales-reps/:salesRepId/retailers/filter`
+- `GET /v1/admin/sales-reps/:salesRepId/retailers/count`
+- `GET /v1/admin/sales-reps/retailers/unassigned`
+- `GET /v1/admin/sales-reps/retailers/search`
+- `GET /v1/admin/sales-reps/retailers/filter`
+- `GET /v1/admin/sales-reps/retailers/total-count`
+- `GET /v1/admin/sales-reps/retailers/:retailerId`
+- `POST /v1/admin/sales-reps/:salesRepId/retailers`
+- `POST /v1/admin/sales-reps/:salesRepId/retailers/bulk`
+- `POST /v1/admin/sales-reps/:salesRepId/retailers/unassign`
 
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Utility
+- `GET /caching` – Redis connectivity & caching test endpoint (non-versioned; dev-only)

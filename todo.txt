@@ -1,0 +1,106 @@
+export const RETAILER_IMPORT_QUEUE = Symbol('RETAILER_IMPORT_QUEUE');
+export const RETAILER_IMPORT_QUEUE_NAME = 'retailer-import';
+export const RETAILER_IMPORT_JOB_NAME = 'retailer-import-job';
+
+
+export interface RetailerImportJob {
+  fileId: string;
+  filePath: string;
+  originalName: string;
+  mimeType: string;
+  size: number;
+}
+
+by this ,
+
+ provide: RETAILER_IMPORT_QUEUE,
+      useFactory: (configService: ConfigService) => {
+        const dbConfig = configService.get('db') as Record<string, unknown>;
+        return new Queue<RetailerImportJob>(RETAILER_IMPORT_QUEUE_NAME, {
+          connection: {
+            host: dbConfig?.redis_host as string,
+            port: Number(dbConfig?.redis_port ?? 6379),
+            password: (dbConfig?.redis_password as string) || undefined,
+            tls:
+              dbConfig?.redis_tls && dbConfig.redis_tls === 'true'
+                ? {}
+                : undefined,
+          },
+          defaultJobOptions: {
+            removeOnComplete: {
+              age: 60 * 60, // 1 hour
+              count: 1000,
+            },
+            attempts: 1,
+          },
+        });
+
+we connect to the redis database and create a queue() named retailer-import
+and we set the default job options to remove the job after 1 hour and 1000 jobs
+this returns the queue  ,  and by inject-->RETAILER_IMPORT_QUEUE we can use the queue to add jobs to the queue
+i imagine the queue is lookslike
+{
+  "fileId": "123",
+  "filePath": "https://example.com/file.csv",
+  "originalName": "file.csv",
+  "mimeType": "text/csv",
+  "size": 1000,
+}
+
+
+
+in service 
+ async importRetailersFromCsv(file: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('CSV file is required');
+    }
+    if (!file.mimetype.toLowerCase().includes('csv')) {
+      throw new BadRequestException('Only CSV files are supported');
+    }
+
+    const savedFile: FileSystem =
+      await this.fileSystemService.createFileFromMulter(file);
+
+
+and we define the job as a class with the following properties
+and the job is lookslike
+{
+  "fileId": "123",
+  "filePath": "https://example.com/file.csv",
+  "originalName": "file.csv",
+  "mimeType": "text/csv",
+  "size": 1000,
+}
+
+    const job = await this.retailerImportQueue.add( ---> and this publishes events named RETAILER_IMPORT_JOB_NAME to the queue
+      RETAILER_IMPORT_JOB_NAME,
+      {
+        fileId: savedFile.id,
+        filePath: savedFile.path,
+        originalName: savedFile.originalName,
+        mimeType: savedFile.mimetype,
+        size: savedFile.size,
+      },
+      {
+        removeOnComplete: {
+          age: 60 * 60,
+          count: 500,
+        },
+        removeOnFail: false,
+      },
+    );
+
+    return {
+      jobId: job.id,
+      fileId: savedFile.id,
+      message:
+        'Retailer CSV queued for import. The background worker will process it shortly.',
+    };
+  }
+
+
+  in worker service
+
+  redis and  db get connected 
+
+ 

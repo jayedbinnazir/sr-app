@@ -14,6 +14,13 @@ import { FileSystemModule } from './file-system/file-system.module';
 import { AwsS3Module } from './aws-s3/aws-s3.module';
 import { ChatGatewayModule } from './chat-gateway/chat-gateway.module';
 import { AppUserModule } from './app_user/app_user.module';
+import { SalesRepModule } from './sales_rep/sales_rep.module';
+import { NotificationModule } from './notification/notification.module';
+import { RegionModule } from './region/region.module';
+import { AreaModule } from './area/area.module';
+import { TerritoryModule } from './territory/territory.module';
+import { ImportModule } from './import/import.module';
+import { ImportWorkerModule } from './import-worker/import-worker.module';
 
 @Module({
   imports: [
@@ -60,6 +67,20 @@ import { AppUserModule } from './app_user/app_user.module';
     ChatGatewayModule,
 
     AppUserModule,
+
+    SalesRepModule,
+
+    NotificationModule,
+
+    RegionModule,
+
+    AreaModule,
+
+    TerritoryModule,
+
+    ImportModule,
+
+    ImportWorkerModule,
   ],
   providers: [AppService],
   controllers: [AppController],

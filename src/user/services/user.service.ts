@@ -8,8 +8,8 @@ import { DataSource, EntityManager } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { AppUser } from 'src/app_user/entities/app_user.entity';
 import { Role } from 'src/role/entities/role.entity';
-import { RoleService } from 'src/role/role.service';
 import { FileSystemService } from 'src/file-system/services/file-system.service';
+import { RoleService } from 'src/role/services/role.service';
 @Injectable()
 export class UserService {
   constructor(
@@ -35,7 +35,7 @@ export class UserService {
       await queryRunner?.connect();
       await queryRunner?.startTransaction();
     }
-
+    
     try {
       // 1️⃣ Ensure email is unique (optimized raw query)
       const existing = await em!
@@ -71,6 +71,9 @@ export class UserService {
       await this.fileService.createFileFromMulter(file!, savedUser.id, em);
 
       // 4️⃣ Create AppUser record linking the user with the default role
+      if (!role) {
+        throw new HttpException('Default role not found or created', 500);
+      }
       const appUser = em!.create(AppUser, {
         user_id: savedUser.id,
         role_id: role.id,
@@ -184,15 +187,19 @@ export class UserService {
         );
       }
 
+      if (!role) {
+        throw new NotFoundException(`Role '${roleName}' not found`);
+      }
+
       const existingAppUser = await em!.findOne(AppUser, {
         where: { user_id: userId, role_id: role.id },
       });
+
       if (existingAppUser) {
         throw new ConflictException(
-          `User already has the '${roleName}' role assigned`,
+          `User already has the '${roleName}' role assigned`
         );
       }
-
       const appUser = em!.create(AppUser, {
         user_id: userId,
         role_id: role.id,

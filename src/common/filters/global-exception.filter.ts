@@ -14,6 +14,7 @@ export interface ErrorData {
   message: string;
   timestamp: string;
   path: string;
+  details?: unknown;
 }
 
 @Catch()
@@ -29,7 +30,25 @@ export class CustomExceptionFilter implements ExceptionFilter {
     // Handle different transport types
     if (exception instanceof HttpException) {
       status = exception.getStatus();
-      message = exception.message;
+      const responsePayload = exception.getResponse();
+      if (typeof responsePayload === 'string') {
+        message = responsePayload;
+      } else if (
+        responsePayload &&
+        typeof responsePayload === 'object' &&
+        'message' in responsePayload
+      ) {
+        const payloadMessage = (responsePayload as Record<string, unknown>)['message'];
+        if (Array.isArray(payloadMessage)) {
+          message = payloadMessage.join('; ');
+        } else if (typeof payloadMessage === 'string') {
+          message = payloadMessage;
+        } else {
+          message = exception.message;
+        }
+      } else {
+        message = exception.message;
+      }
     } else if (exception instanceof Error) {
       message = exception.message; // Handle non-HttpException errors
     }
@@ -47,6 +66,11 @@ export class CustomExceptionFilter implements ExceptionFilter {
         timestamp: new Date().toISOString(),
         path,
       };
+
+      const responsePayload = exception instanceof HttpException ? exception.getResponse() : undefined;
+      if (responsePayload && typeof responsePayload === 'object') {
+        body.details = responsePayload;
+      }
 
       // Log the error
       void this.writeHttpLog(body);
