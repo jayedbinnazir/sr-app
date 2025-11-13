@@ -400,38 +400,29 @@ export class RegionService {
 
       const qb = em!
         .createQueryBuilder(Area, 'area')
-        .leftJoin(Region, 'region', 'region.id = area.region_id')
-        .select([
-          'area.id',
-          'area.name',
-          'area.region_id',
-          'region.id',
-          'region.name',
-        ])
+        .select(['area.id', 'area.name', 'area.region_id'])
         .distinct(true)
         .where('area.region_id = :regionId', { regionId })
         .orderBy('area.name', 'ASC')
         .addOrderBy('area.id', 'ASC');
 
       if (filters?.distributorId) {
-        qb.andWhere('distributors.id = :distributorId', {
-          distributorId: filters.distributorId,
-        });
+        qb.leftJoin('area.distributors', 'distributors')
+          .andWhere('distributors.id = :distributorId', {
+            distributorId: filters.distributorId,
+          });
       }
       if (filters?.territoryId) {
-        qb.andWhere('territories.id = :territoryId', {
-          territoryId: filters.territoryId,
-        });
+        qb.leftJoin('area.territories', 'territories')
+          .andWhere('territories.id = :territoryId', {
+            territoryId: filters.territoryId,
+          });
       }
 
       const [data, total] = await qb
         .skip((page - 1) * limit)
         .take(limit)
         .getManyAndCount();
-
-      if (total === 0) {
-        throw new NotFoundException(`No areas found for region ID ${regionId}`);
-      }
 
       return {
         meta: {
@@ -684,3 +675,4 @@ export class RegionService {
 
 
 }
+
