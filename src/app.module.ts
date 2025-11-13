@@ -19,6 +19,7 @@ import { NotificationModule } from './notification/notification.module';
 import { RegionModule } from './region/region.module';
 import { AreaModule } from './area/area.module';
 import { TerritoryModule } from './territory/territory.module';
+import { RetailerModule } from './retailer/retailer.module';
 import { ImportModule } from './import/import.module';
 import { ImportWorkerModule } from './import-worker/import-worker.module';
 
@@ -81,6 +82,8 @@ import { ImportWorkerModule } from './import-worker/import-worker.module';
     ImportModule,
 
     ImportWorkerModule,
+
+    RetailerModule,
   ],
   providers: [AppService],
   controllers: [AppController],
