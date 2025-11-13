@@ -35,9 +35,13 @@
 
 This guide explains how to start the **SR App** project locally with all dependencies, including Docker services, Kafka, PostgreSQL, and Redis.
 
+**Database model reference:** [https://app.eraser.io/workspace/6FoRUT8hsNqWraJpHwno?origin=share](https://app.eraser.io/workspace/6FoRUT8hsNqWraJpHwno?origin=share)
+
 ---
 
 ## Setup (Desktop)
+
+> **Note:** The project was last verified with `npm` version **11.6.1**.
 
 1. **Clone the repository**
    ```bash
