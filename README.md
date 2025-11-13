@@ -98,6 +98,11 @@ This guide explains how to start the **SR App** project locally with all depende
 
    Bulk retailer uploads (up to ~1 million rows) are supported via the importer interface at `http://localhost:8080/static/import.html`.
 
+   After seeding completes, use these starter credentials:
+   - Admin: email `jayed.official1998@gmail.com`, password `Jayed015`
+   - Sales rep (example): email `salesrep1@example.com`, password `SalesRep1!`  
+     Additional sales reps follow the pattern `salesrepN@example.com` / `SalesRepN!`.
+
 7. **Run region unit tests**
    ```bash
    npm run test:region

@@ -140,16 +140,16 @@ export class AuthController {
         summary: 'Sales representative login',
         value: {
           type: 'sales_rep',
-          identifier: 'abir.rahman',
-          password: 'Abir015!',
+          identifier: 'salesrep1@example.com',
+          password: 'SalesRep1!',
         },
       },
       admin: {
         summary: 'Admin login',
         value: {
           type: 'admin',
-          identifier: 'admin@example.com',
-          password: 'Admin123!',
+          identifier: 'jayed.official1998@gmail.com',
+          password: 'Jayed015',
         },
       },
     },

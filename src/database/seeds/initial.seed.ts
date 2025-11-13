@@ -46,7 +46,7 @@ const roles: SeedRole[] = [
 
 const adminUser: SeedUser = {
   name: 'Jayed Bin Nazir',
-  email: 'jayed.official0158@gmail.com',
+  email: 'jayed.official1998@gmail.com',
   username: 'jayed.bin.nazir',
   phone: '+8801521323469',
   password: 'Jayed015',
