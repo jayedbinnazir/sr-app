@@ -27,7 +27,7 @@ import { AdminGuard } from 'src/auth/guards/admin.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthRole } from 'src/auth/types/auth-role.enum';
 
-@ApiTags('Retailers')
+@ApiTags('Retailers (Admin CRUD Only) - Other operatins u can maintain by sales and salesadmin route')
 @ApiBearerAuth()
 @Controller({
   path: 'v1/admin/retailers',
