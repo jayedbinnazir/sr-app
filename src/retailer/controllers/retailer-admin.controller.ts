@@ -75,43 +75,7 @@ export class RetailerAdminController {
     return this.retailerService.getRetailers(query);
   }
 
-  @Get('search')
-  @ApiOperation({ summary: 'Search retailers by name, UID, or phone' })
-  @ApiQuery({
-    name: 'search',
-    description: 'Search keyword',
-    example: 'Gulshan',
-  })
-  @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
-  @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
-  @ApiOkResponse({
-    description: 'Paginated search results',
-    schema: {
-      example: {
-        meta: {
-          total: 1,
-          page: 1,
-          limit: 20,
-          hasNext: false,
-        },
-        data: [
-          {
-            id: '0c9d2be8-2d40-4315-9d35-640ebd4ad9cd',
-            uid: 'RT-2025-0001',
-            name: 'Abir General Store',
-            phone: '+8801711000000',
-            points: 120,
-          },
-        ],
-      },
-    },
-  })
-  searchRetailers(
-    @Query('search') search: string,
-    @Query() query: PaginationDto,
-  ) {
-    return this.retailerService.searchRetailers(search, query);
-  }
+
 
   @Get('count/total')
   @ApiOperation({ summary: 'Get total retailer count' })

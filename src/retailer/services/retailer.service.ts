@@ -123,75 +123,7 @@ export class RetailerService {
     }
   }
 
-  async searchRetailers(
-    search: string,
-    options?: PaginationDto,
-    manager?: EntityManager,
-  ): Promise<PaginatedRetailers> {
-    const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
-    const em = manager ?? queryRunner?.manager;
 
-    if (!manager) {
-      await queryRunner?.connect();
-      await queryRunner?.startTransaction();
-    }
-
-    try {
-      const trimmed = (search ?? '').trim();
-      const { page, limit } = PaginationDto.resolve(options, {
-        defaultLimit: 20,
-        maxLimit: 100,
-      });
-
-      if (!trimmed) {
-        return {
-          data: [],
-          meta: {
-            total: 0,
-            page,
-            limit,
-            hasNext: false,
-          },
-        };
-      }
-
-      const pattern = `%${trimmed.replace(/[%_]/g, '\\$&')}%`;
-
-      const qb = em!
-        .createQueryBuilder(Retailer, 'retailer')
-        .where(
-          'retailer.name ILIKE :pattern OR retailer.uid ILIKE :pattern OR retailer.phone ILIKE :pattern',
-          { pattern },
-        )
-        .orderBy('retailer.name', 'ASC')
-        .skip((page - 1) * limit)
-        .take(limit);
-
-      const [data, total] = await qb.getManyAndCount();
-      if (!manager) {
-        await queryRunner?.commitTransaction();
-      }
-
-      return {
-        data,
-        meta: {
-          total,
-          page,
-          limit,
-          hasNext: page * limit < total,
-        },
-      };
-    } catch (error) {
-      if (!manager) {
-        await queryRunner?.rollbackTransaction();
-      }
-      throw error;
-    } finally {
-      if (!manager) {
-        await queryRunner?.release();
-      }
-    }
-  }
 
   async getRetailerDetail(id: string, manager?: EntityManager): Promise<Retailer> {
     const queryRunner = manager ? undefined : this.dataSource.createQueryRunner();
