@@ -83,6 +83,8 @@ export class RetailerAdminController {
   totalRetailers() {
     return this.retailerService.retailerCount();
   }
+
+  
   @Post()
   @ApiOperation({ summary: 'Create a retailer' })
   @ApiBody({
