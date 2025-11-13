@@ -35,7 +35,8 @@
     "docker:db:mr": "docker-compose -f docker-compose.dev.yml --env-file .env.dev exec app1 npm run mr",
     "docker:db:mgd": "docker-compose -f docker-compose.dev.yml --env-file .env.dev exec app1 npm run mgd",
     "docker:db:mrv": "docker-compose -f docker-compose.dev.yml --env-file .env.dev exec app1 npm run mrv",
-    "docker:db:ms": "docker-compose -f docker-compose.dev.yml --env-file .env.dev exec app1 npm run ms"
+    "docker:db:ms": "docker-compose -f docker-compose.dev.yml --env-file .env.dev exec app1 npm run ms",
+    "test:region": "npx jest src/region/services/region.service.spec.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.922.0",

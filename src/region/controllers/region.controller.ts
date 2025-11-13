@@ -173,7 +173,7 @@ export class RegionController {
     @Param('id') regionId: string,
     @Query() query: RegionAreaFilterQueryDto,
   ) {
-    return this.regionService.getAreaFilteredByRegionId(
+    return this.regionService.getFilteredAreasByRegionId(
       regionId,
       query,
       {
