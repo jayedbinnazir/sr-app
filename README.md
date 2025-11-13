@@ -1,5 +1,13 @@
 # SR App - Local Development Setup
 
+## Key Features
+
+- Bulk ETL importer handles up to ~1 million retailer rows via [`http://localhost:8080/static/import.html`](http://localhost:8080/static/import.html); upload the generated CSV and the pipeline (streams + `fast-csv` + `pg-copy-streams`) finishes in ~3–4 minutes.
+- Hierarchical bulk operations: assign ≤70 retailers to a sales rep per request and perform area→region or territory→area assignments with conflict checks, indexing, and consistent search/filter support.
+- Data performance layer: reusable transactional query helpers, strategic indexing, Redis caching on hot endpoints, BullMQ job queues on Redis, and socket-based notifications using the Redis adapter.
+- Container-first runtime: `docker-compose` manages Postgres, Redis, Kafka, and Nginx; the API runs as three replicas behind the bundled Nginx load balancer for local HA testing.
+- Hardened auth: JWT cookies + Bearer headers with optional refresh-token extension, giving both browser and API clients flexibility.
+
 This guide explains how to start the **SR App** project locally with all dependencies, including Docker services, Kafka, PostgreSQL, and Redis.
 
 ---
