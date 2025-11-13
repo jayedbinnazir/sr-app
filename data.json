@@ -1,0 +1,3033 @@
+{"data": [
+    {
+      "id": "c8c3ed5b-d5af-4b79-839c-bf8096895f0e",
+      "name": "Region 1",
+      "areas": [
+        {
+          "id": "72741089-45de-4a98-8e88-46ae6bfcd848",
+          "name": "Region 1 Area 1",
+          "territories": [
+            {
+              "id": "42f1fa46-c8f6-43cc-819a-e4a4daaa6147",
+              "name": "Region 1 Area 1 Territory 1"
+            },
+            {
+              "id": "5d2ce337-a4ce-48dd-9850-4e0139d6a9dc",
+              "name": "Region 1 Area 1 Territory 2"
+            },
+            {
+              "id": "bb92970a-980a-48b7-94a2-c8c539986759",
+              "name": "Region 1 Area 1 Territory 3"
+            },
+            {
+              "id": "fa311d89-076f-443e-b699-c45780ee8bb4",
+              "name": "Region 1 Area 1 Territory 4"
+            },
+            {
+              "id": "f1a0088f-9277-43bf-94b8-02259c071522",
+              "name": "Region 1 Area 1 Territory 5"
+            },
+            {
+              "id": "9dd10665-bf0b-4cac-a5e2-31b3c3642f46",
+              "name": "Region 1 Area 1 Territory 6"
+            },
+            {
+              "id": "86ca72a0-ed4f-41a6-b11f-4ea66acf01b4",
+              "name": "Region 1 Area 1 Territory 7"
+            },
+            {
+              "id": "5c0bd7c3-8330-4c3b-a76c-d19d6c0bd43f",
+              "name": "Region 1 Area 1 Territory 8"
+            },
+            {
+              "id": "5637cc97-ba02-43ef-a2ff-bcb1a2991b13",
+              "name": "Region 1 Area 1 Territory 9"
+            },
+            {
+              "id": "e1c99469-2fd9-4310-b02c-c3d2993b6110",
+              "name": "Region 1 Area 1 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "576f71a1-d21f-467a-bafd-6bf73f72a4da",
+              "name": "Region 1 Area 1 Distributor 1"
+            },
+            {
+              "id": "df6ee3a7-2544-4a4b-afe2-4308dd170d1f",
+              "name": "Region 1 Area 1 Distributor 2"
+            },
+            {
+              "id": "f96762be-6fde-487a-ad81-a2c46450f82a",
+              "name": "Region 1 Area 1 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "3c8da213-0245-49bb-8a48-c1b0b42e72a0",
+          "name": "Region 1 Area 2",
+          "territories": [
+            {
+              "id": "94a2b112-ac88-4521-bac8-2da01a633b65",
+              "name": "Region 1 Area 2 Territory 1"
+            },
+            {
+              "id": "74a63b2c-cb45-4cee-8a97-3786903369e5",
+              "name": "Region 1 Area 2 Territory 2"
+            },
+            {
+              "id": "596454e6-9bd6-4aa8-9424-2b810867c8f4",
+              "name": "Region 1 Area 2 Territory 3"
+            },
+            {
+              "id": "92fd966c-cd80-41f9-ae2a-7ce94c88c3e9",
+              "name": "Region 1 Area 2 Territory 4"
+            },
+            {
+              "id": "dd0f96be-22f4-4085-a9a9-2b005faaff56",
+              "name": "Region 1 Area 2 Territory 5"
+            },
+            {
+              "id": "45e3cb85-af7b-479b-9f15-a637c24fdebd",
+              "name": "Region 1 Area 2 Territory 6"
+            },
+            {
+              "id": "003833f9-640a-4828-986b-8be269cf249f",
+              "name": "Region 1 Area 2 Territory 7"
+            },
+            {
+              "id": "9b1300bb-2a41-4261-86c0-6a3369195a56",
+              "name": "Region 1 Area 2 Territory 8"
+            },
+            {
+              "id": "012ec957-f3e7-4f8d-8d9e-4c7e11ef6c39",
+              "name": "Region 1 Area 2 Territory 9"
+            },
+            {
+              "id": "63594cc8-36da-44a2-b85e-3806a040e927",
+              "name": "Region 1 Area 2 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "0c867e32-6b0b-4f1b-9630-5b6acfea9286",
+              "name": "Region 1 Area 2 Distributor 1"
+            },
+            {
+              "id": "99e0a45c-b093-42c8-ae7f-62f60db4f135",
+              "name": "Region 1 Area 2 Distributor 2"
+            },
+            {
+              "id": "b4aacbfa-cd49-4cea-8a82-e9a9d36ae021",
+              "name": "Region 1 Area 2 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "9d791ead-7530-45be-af1d-e2665665a9e0",
+          "name": "Region 1 Area 3",
+          "territories": [
+            {
+              "id": "4553f43b-699b-4524-a935-0e3950572bca",
+              "name": "Region 1 Area 3 Territory 1"
+            },
+            {
+              "id": "c511d9e9-2a61-4fc6-9075-0a4bacf5355e",
+              "name": "Region 1 Area 3 Territory 2"
+            },
+            {
+              "id": "072a1cbe-c611-4ed0-be1d-c7ca6c4c1f19",
+              "name": "Region 1 Area 3 Territory 3"
+            },
+            {
+              "id": "ffd312c5-e907-4190-8ec1-9ac90a05ab1a",
+              "name": "Region 1 Area 3 Territory 4"
+            },
+            {
+              "id": "bd6a5e08-aa30-4066-8ca2-6ce51afec60d",
+              "name": "Region 1 Area 3 Territory 5"
+            },
+            {
+              "id": "0c8f8be0-468f-4d0f-ba66-6ada02216de5",
+              "name": "Region 1 Area 3 Territory 6"
+            },
+            {
+              "id": "3894fda4-39b9-4e94-aa5c-364a92e6dc4b",
+              "name": "Region 1 Area 3 Territory 7"
+            },
+            {
+              "id": "a7a9290b-2c67-4eb8-8f7b-02662770e503",
+              "name": "Region 1 Area 3 Territory 8"
+            },
+            {
+              "id": "7dff2b6b-51e9-4064-9fa0-f813ef534908",
+              "name": "Region 1 Area 3 Territory 9"
+            },
+            {
+              "id": "b450124c-90fc-4f0c-bb76-af230522d86d",
+              "name": "Region 1 Area 3 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "2fdec619-cdaf-4b9f-b93f-6a5719f76de0",
+              "name": "Region 1 Area 3 Distributor 1"
+            },
+            {
+              "id": "a1815b0b-a372-40f6-b8c6-797f8e45c40f",
+              "name": "Region 1 Area 3 Distributor 2"
+            },
+            {
+              "id": "c9fbcbd3-1300-4cbf-b8a9-1894afa06367",
+              "name": "Region 1 Area 3 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "c3dd7e2a-5a3f-45c0-96e0-71c17bd9d05c",
+          "name": "Region 1 Area 4",
+          "territories": [
+            {
+              "id": "ae7bd84e-3d48-40b1-8cbb-2413cb06ca4d",
+              "name": "Region 1 Area 4 Territory 1"
+            },
+            {
+              "id": "c021eb77-a23a-4312-9c01-88a473b087c5",
+              "name": "Region 1 Area 4 Territory 2"
+            },
+            {
+              "id": "cc95ac1a-5115-470a-b397-6284c7ae0b67",
+              "name": "Region 1 Area 4 Territory 3"
+            },
+            {
+              "id": "c745efd5-4a4c-4678-a114-54464d2f266e",
+              "name": "Region 1 Area 4 Territory 4"
+            },
+            {
+              "id": "3e4d10bf-0911-4d10-af33-6ce38baf90a6",
+              "name": "Region 1 Area 4 Territory 5"
+            },
+            {
+              "id": "4b4df5dd-64f1-4ecc-883c-19f7b857718f",
+              "name": "Region 1 Area 4 Territory 6"
+            },
+            {
+              "id": "8697ec3f-934e-42cd-be98-16a546574688",
+              "name": "Region 1 Area 4 Territory 7"
+            },
+            {
+              "id": "304279d3-7bf0-4c42-af14-720077b11c26",
+              "name": "Region 1 Area 4 Territory 8"
+            },
+            {
+              "id": "5ce7bc09-ca1e-4ea7-8cd1-6fe02c0cf6c4",
+              "name": "Region 1 Area 4 Territory 9"
+            },
+            {
+              "id": "478bc31e-f1e3-4385-84f5-98830e13e836",
+              "name": "Region 1 Area 4 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "f75b1552-b9b1-4d74-963e-80e9e92e6a26",
+              "name": "Region 1 Area 4 Distributor 1"
+            },
+            {
+              "id": "2d1f0803-cd35-40e8-b567-8dd9406d1fd4",
+              "name": "Region 1 Area 4 Distributor 2"
+            },
+            {
+              "id": "1687d3c3-5c15-4711-9f0b-9f582917e62b",
+              "name": "Region 1 Area 4 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "b41d4a4c-ed09-45b7-aa2e-b90609a6e330",
+          "name": "Region 1 Area 5",
+          "territories": [
+            {
+              "id": "8a036a74-98f3-43f7-a819-9083349e9cb8",
+              "name": "Region 1 Area 5 Territory 1"
+            },
+            {
+              "id": "f221c377-dae4-4702-9388-cb4b6d6e1ec6",
+              "name": "Region 1 Area 5 Territory 2"
+            },
+            {
+              "id": "91c7ebce-fc8b-4965-963f-50d625d74cb7",
+              "name": "Region 1 Area 5 Territory 3"
+            },
+            {
+              "id": "b9e4a2c5-b876-4f69-8b40-50c3bb8e0522",
+              "name": "Region 1 Area 5 Territory 4"
+            },
+            {
+              "id": "95696b98-86c3-4d1d-b604-9aa5d0e425f2",
+              "name": "Region 1 Area 5 Territory 5"
+            },
+            {
+              "id": "dbb508e2-ddd8-42c1-982e-2c8eb93f586b",
+              "name": "Region 1 Area 5 Territory 6"
+            },
+            {
+              "id": "a7aa5120-6fff-4382-93ad-3ecad40671cb",
+              "name": "Region 1 Area 5 Territory 7"
+            },
+            {
+              "id": "60e32dd6-2f1b-4a68-b995-13e0fc564d87",
+              "name": "Region 1 Area 5 Territory 8"
+            },
+            {
+              "id": "77f93a0d-9991-4b37-9993-1ce329b1dde5",
+              "name": "Region 1 Area 5 Territory 9"
+            },
+            {
+              "id": "d0e90b65-cdd5-469f-8884-016c5d2fafce",
+              "name": "Region 1 Area 5 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "e5b0e9e4-c1d1-4d80-92e7-eb8a8dac7e79",
+              "name": "Region 1 Area 5 Distributor 1"
+            },
+            {
+              "id": "ce50bcdd-ce3b-4d0a-abb0-6197db3551b3",
+              "name": "Region 1 Area 5 Distributor 2"
+            },
+            {
+              "id": "8211d5ec-be4e-4b3e-804c-eb8d35fadcd2",
+              "name": "Region 1 Area 5 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "7382c079-8ec0-497f-9cd8-d59c3c734f28",
+          "name": "Region 1 Area 6",
+          "territories": [
+            {
+              "id": "92011bd1-3d6d-46e7-93d7-c0ab3580e25d",
+              "name": "Region 1 Area 6 Territory 1"
+            },
+            {
+              "id": "e0e052fd-4861-4a4d-bc6d-527a0d0a34b9",
+              "name": "Region 1 Area 6 Territory 2"
+            },
+            {
+              "id": "5fcbcf37-be69-4018-b85f-6d05339b4de4",
+              "name": "Region 1 Area 6 Territory 3"
+            },
+            {
+              "id": "440c4444-dd65-4267-92b2-8c3cb1f58d8c",
+              "name": "Region 1 Area 6 Territory 4"
+            },
+            {
+              "id": "5cba19dd-0e88-4db7-9fca-ac65c63b5553",
+              "name": "Region 1 Area 6 Territory 5"
+            },
+            {
+              "id": "a56acd43-667b-40dd-9cfb-76e06e5812a5",
+              "name": "Region 1 Area 6 Territory 6"
+            },
+            {
+              "id": "0839f3e7-31de-4e12-a68f-cc56fe51f867",
+              "name": "Region 1 Area 6 Territory 7"
+            },
+            {
+              "id": "65cc58e0-da12-4e20-b961-578c0185d49c",
+              "name": "Region 1 Area 6 Territory 8"
+            },
+            {
+              "id": "989e5df8-b1a9-4878-b7e1-e62579c15223",
+              "name": "Region 1 Area 6 Territory 9"
+            },
+            {
+              "id": "4bcffc24-e8d5-47ab-8882-61b65f26def1",
+              "name": "Region 1 Area 6 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "6a8eb8f3-52d8-4681-aa69-25b795733935",
+              "name": "Region 1 Area 6 Distributor 1"
+            },
+            {
+              "id": "b6be401c-fc20-44e8-b127-1383ac0d7a24",
+              "name": "Region 1 Area 6 Distributor 2"
+            },
+            {
+              "id": "efc09205-2049-40c0-89b1-6f9f08c577eb",
+              "name": "Region 1 Area 6 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "fbc50a6d-9a5a-4276-8dc1-b58127835057",
+          "name": "Region 1 Area 7",
+          "territories": [
+            {
+              "id": "da8ce5cf-e8a2-4c7f-b482-445d392378ad",
+              "name": "Region 1 Area 7 Territory 1"
+            },
+            {
+              "id": "f8d7a707-5032-4eb9-88db-bf2ed4da0fc5",
+              "name": "Region 1 Area 7 Territory 2"
+            },
+            {
+              "id": "45a725a8-ecc0-4d6d-b108-ea6012f8a515",
+              "name": "Region 1 Area 7 Territory 3"
+            },
+            {
+              "id": "1e008982-47f5-48e0-aa7d-83c626356d76",
+              "name": "Region 1 Area 7 Territory 4"
+            },
+            {
+              "id": "4c6fc159-acb3-49f8-8567-7dd06ee92561",
+              "name": "Region 1 Area 7 Territory 5"
+            },
+            {
+              "id": "e782fff3-64d1-4830-b3fd-6fb57eb827ab",
+              "name": "Region 1 Area 7 Territory 6"
+            },
+            {
+              "id": "f7201012-1665-4254-89f6-98d67200a42f",
+              "name": "Region 1 Area 7 Territory 7"
+            },
+            {
+              "id": "a17ed1e6-8308-4597-9fda-a7421fbf25a7",
+              "name": "Region 1 Area 7 Territory 8"
+            },
+            {
+              "id": "0e6029f1-4eca-4d2e-abeb-8c4ec5a56253",
+              "name": "Region 1 Area 7 Territory 9"
+            },
+            {
+              "id": "d8f8fd0c-66f0-43f6-896f-fca9fcb6c3bf",
+              "name": "Region 1 Area 7 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "478ebd8c-04ef-45ce-b64c-3e7feaeadfff",
+              "name": "Region 1 Area 7 Distributor 1"
+            },
+            {
+              "id": "ae70b8cb-697e-48ec-80b9-b5870753418c",
+              "name": "Region 1 Area 7 Distributor 2"
+            },
+            {
+              "id": "4b12cb61-f239-498e-9e9a-8a80157b2025",
+              "name": "Region 1 Area 7 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "873731b0-8a95-447f-b9c4-ee879d7ffea8",
+          "name": "Region 1 Area 8",
+          "territories": [
+            {
+              "id": "206a35b6-6fff-4dca-9e4e-ae3438536168",
+              "name": "Region 1 Area 8 Territory 1"
+            },
+            {
+              "id": "08bfe8e6-b68e-4406-907c-150c4fe699b3",
+              "name": "Region 1 Area 8 Territory 2"
+            },
+            {
+              "id": "60ab34ee-4509-49ff-bf45-f91863bfe48e",
+              "name": "Region 1 Area 8 Territory 3"
+            },
+            {
+              "id": "25b346d7-c925-47b9-9519-e95d034b85fe",
+              "name": "Region 1 Area 8 Territory 4"
+            },
+            {
+              "id": "130b1880-bed9-45b4-b251-2bdfb5381bce",
+              "name": "Region 1 Area 8 Territory 5"
+            },
+            {
+              "id": "47133931-9750-422a-9ed6-3318e333d3dc",
+              "name": "Region 1 Area 8 Territory 6"
+            },
+            {
+              "id": "1d1ed1a5-883a-442e-aca6-d968aab9f825",
+              "name": "Region 1 Area 8 Territory 7"
+            },
+            {
+              "id": "085034ef-0c64-4fe5-abcb-75b09143bca6",
+              "name": "Region 1 Area 8 Territory 8"
+            },
+            {
+              "id": "c8e53576-8717-4d87-a559-2a60b52c0a86",
+              "name": "Region 1 Area 8 Territory 9"
+            },
+            {
+              "id": "f2b125e4-216d-4d85-b0a9-2c619f77fb88",
+              "name": "Region 1 Area 8 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "4d8cc3c7-6cce-4bba-91de-a27e8257a7cc",
+              "name": "Region 1 Area 8 Distributor 1"
+            },
+            {
+              "id": "0ca05808-132b-473e-b111-136a9f1471c5",
+              "name": "Region 1 Area 8 Distributor 2"
+            },
+            {
+              "id": "0310fe15-08e5-4398-8a18-42ec446a3056",
+              "name": "Region 1 Area 8 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "7b7450bb-32d8-47a5-a77e-4a0fc243de6f",
+          "name": "Region 1 Area 9",
+          "territories": [
+            {
+              "id": "3d358fbb-7551-41c1-b162-195cd6f84f5b",
+              "name": "Region 1 Area 9 Territory 1"
+            },
+            {
+              "id": "7b3216e4-e1c0-4202-9b43-8d12b44ef417",
+              "name": "Region 1 Area 9 Territory 2"
+            },
+            {
+              "id": "bffc0c1e-46ff-4331-a73f-67ac78655661",
+              "name": "Region 1 Area 9 Territory 3"
+            },
+            {
+              "id": "4206bd01-5f07-49fe-96d2-d585eaba55e4",
+              "name": "Region 1 Area 9 Territory 4"
+            },
+            {
+              "id": "7c75a31f-b8a4-4f07-9765-f9e45a4899eb",
+              "name": "Region 1 Area 9 Territory 5"
+            },
+            {
+              "id": "cdabb69c-2234-49be-88e6-b72a70835c33",
+              "name": "Region 1 Area 9 Territory 6"
+            },
+            {
+              "id": "aa14a5e3-2d58-4d8f-b56f-d79c55888d7c",
+              "name": "Region 1 Area 9 Territory 7"
+            },
+            {
+              "id": "184bdef3-b8d4-4135-a0f9-94d1a482571a",
+              "name": "Region 1 Area 9 Territory 8"
+            },
+            {
+              "id": "0ecbc835-a4a5-4d3d-8504-29b0d853e33e",
+              "name": "Region 1 Area 9 Territory 9"
+            },
+            {
+              "id": "8e7024eb-a8ca-4ade-a4d3-e97be608719d",
+              "name": "Region 1 Area 9 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "c0738e53-dd3d-4831-98df-d2af3c9041a3",
+              "name": "Region 1 Area 9 Distributor 1"
+            },
+            {
+              "id": "a2e3ac3f-9f37-4a31-90a0-2fd6ab2baee2",
+              "name": "Region 1 Area 9 Distributor 2"
+            },
+            {
+              "id": "103a0224-f4b7-4592-97cf-fd8f81666d37",
+              "name": "Region 1 Area 9 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "48eecf04-9dbb-4ced-a7e6-6669513734d9",
+          "name": "Region 1 Area 10",
+          "territories": [
+            {
+              "id": "841a8328-b273-434c-9be6-143e9e2f9cb1",
+              "name": "Region 1 Area 10 Territory 1"
+            },
+            {
+              "id": "016644cf-874e-463d-b8e5-8a471feed4c4",
+              "name": "Region 1 Area 10 Territory 2"
+            },
+            {
+              "id": "819edd10-3146-42de-b24a-669600c932b1",
+              "name": "Region 1 Area 10 Territory 3"
+            },
+            {
+              "id": "59d383f8-016e-4e79-9358-307765fb1cbb",
+              "name": "Region 1 Area 10 Territory 4"
+            },
+            {
+              "id": "13bcdb86-ecf8-43c0-9947-4400ae969547",
+              "name": "Region 1 Area 10 Territory 5"
+            },
+            {
+              "id": "9c533b1e-14a4-4580-b43e-f7554a2948b6",
+              "name": "Region 1 Area 10 Territory 6"
+            },
+            {
+              "id": "351999e8-05dd-48c0-8df9-4ca41948e86b",
+              "name": "Region 1 Area 10 Territory 7"
+            },
+            {
+              "id": "5a379a69-0fa0-4ef9-a139-23cd1c344669",
+              "name": "Region 1 Area 10 Territory 8"
+            },
+            {
+              "id": "d52823fa-fe62-4181-b0c9-d212b574114d",
+              "name": "Region 1 Area 10 Territory 9"
+            },
+            {
+              "id": "30651f4f-6ed2-4dce-9b80-e656ad4144d4",
+              "name": "Region 1 Area 10 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "31781250-a78b-4a17-9a3f-55dd38d133f1",
+              "name": "Region 1 Area 10 Distributor 1"
+            },
+            {
+              "id": "36435a90-a686-443a-bb1b-0055671af357",
+              "name": "Region 1 Area 10 Distributor 2"
+            },
+            {
+              "id": "16d05af8-68bd-4784-b8a2-8da7356146bc",
+              "name": "Region 1 Area 10 Distributor 3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "441f4f6b-5cda-4239-904e-06ae22a6ef95",
+      "name": "Region 2",
+      "areas": [
+        {
+          "id": "f97f79e5-6503-4ae8-82ef-a3ca7bc40fb9",
+          "name": "Region 2 Area 1",
+          "territories": [
+            {
+              "id": "bae8b0d6-57ce-408d-9dc1-6d0870553927",
+              "name": "Region 2 Area 1 Territory 1"
+            },
+            {
+              "id": "a9673ea3-8e65-4663-851b-e63a2dcd11b0",
+              "name": "Region 2 Area 1 Territory 2"
+            },
+            {
+              "id": "835c05c0-4470-4b58-a82f-71f84f8401dc",
+              "name": "Region 2 Area 1 Territory 3"
+            },
+            {
+              "id": "a03adf16-791b-46a6-abe5-199777378063",
+              "name": "Region 2 Area 1 Territory 4"
+            },
+            {
+              "id": "fc633564-dbac-4170-9889-ecd3f19aa5db",
+              "name": "Region 2 Area 1 Territory 5"
+            },
+            {
+              "id": "c89f8ed0-9591-4c22-ac8a-00ce3cbfbf8f",
+              "name": "Region 2 Area 1 Territory 6"
+            },
+            {
+              "id": "2246b6cd-6c92-4d30-8cf5-36cdc22a8aaf",
+              "name": "Region 2 Area 1 Territory 7"
+            },
+            {
+              "id": "ee873e94-2a8a-4b2f-b33e-87e312bfe306",
+              "name": "Region 2 Area 1 Territory 8"
+            },
+            {
+              "id": "f2f58d2e-dc28-41ad-8e56-d7ba3eead10e",
+              "name": "Region 2 Area 1 Territory 9"
+            },
+            {
+              "id": "3841ca32-6378-4427-aac1-a96fd0b5c218",
+              "name": "Region 2 Area 1 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "410dcb12-d58b-4e35-b51c-47c2d5c58639",
+              "name": "Region 2 Area 1 Distributor 1"
+            },
+            {
+              "id": "f218b9b7-39f5-48e6-84c7-181af78ec096",
+              "name": "Region 2 Area 1 Distributor 2"
+            },
+            {
+              "id": "6ffe8e2f-fb07-41be-9041-4d1e9f211714",
+              "name": "Region 2 Area 1 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "a755c3f9-b1bd-4407-acb6-7d45191ac195",
+          "name": "Region 2 Area 2",
+          "territories": [
+            {
+              "id": "a7529a01-f06f-4aa3-9f45-3eed4be5abf7",
+              "name": "Region 2 Area 2 Territory 1"
+            },
+            {
+              "id": "29ecf44b-5e57-4d6a-af23-737f7c526e6f",
+              "name": "Region 2 Area 2 Territory 2"
+            },
+            {
+              "id": "f71554b1-2ab2-4d49-aa3e-5445497997a6",
+              "name": "Region 2 Area 2 Territory 3"
+            },
+            {
+              "id": "7fabaec1-8de2-4d5d-b017-94de4b68aa65",
+              "name": "Region 2 Area 2 Territory 4"
+            },
+            {
+              "id": "79948faf-d48b-45e2-945b-f193ac079537",
+              "name": "Region 2 Area 2 Territory 5"
+            },
+            {
+              "id": "36776b2b-e5d0-4c66-921f-d189d39e3680",
+              "name": "Region 2 Area 2 Territory 6"
+            },
+            {
+              "id": "00aaff22-3c6a-4f9d-a691-78f49e46dc2a",
+              "name": "Region 2 Area 2 Territory 7"
+            },
+            {
+              "id": "677b0790-814b-4b85-b12b-baf40a1be6c8",
+              "name": "Region 2 Area 2 Territory 8"
+            },
+            {
+              "id": "ae69857d-dfd7-46a8-890a-b000bd297fc2",
+              "name": "Region 2 Area 2 Territory 9"
+            },
+            {
+              "id": "28d7fea7-492f-4418-995e-53f84ffef471",
+              "name": "Region 2 Area 2 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "46cd930a-2ae4-461e-834b-2fdaa26efc26",
+              "name": "Region 2 Area 2 Distributor 1"
+            },
+            {
+              "id": "9e0bcb08-df96-4306-aa49-e837aaffa792",
+              "name": "Region 2 Area 2 Distributor 2"
+            },
+            {
+              "id": "e628bbe9-ec9a-42fd-a73a-9da4a4d4ebbc",
+              "name": "Region 2 Area 2 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "ff1c80dc-b41c-452d-ba48-f89d6cc876ce",
+          "name": "Region 2 Area 3",
+          "territories": [
+            {
+              "id": "80bfd918-b944-41ec-b691-60030e78f981",
+              "name": "Region 2 Area 3 Territory 1"
+            },
+            {
+              "id": "196b4b29-6227-42bd-af44-381f77583b86",
+              "name": "Region 2 Area 3 Territory 2"
+            },
+            {
+              "id": "d63bdaec-0fba-460b-bb4c-8d3089bb18a5",
+              "name": "Region 2 Area 3 Territory 3"
+            },
+            {
+              "id": "b3a4186b-380e-43e1-8c29-9d2ba32eef89",
+              "name": "Region 2 Area 3 Territory 4"
+            },
+            {
+              "id": "6c1c849f-c6f6-497c-a328-88767ef26c68",
+              "name": "Region 2 Area 3 Territory 5"
+            },
+            {
+              "id": "0d4bb6b3-8250-45c0-9ce3-b4394a19414e",
+              "name": "Region 2 Area 3 Territory 6"
+            },
+            {
+              "id": "b835e308-8343-49aa-8ca8-d252d2d4708c",
+              "name": "Region 2 Area 3 Territory 7"
+            },
+            {
+              "id": "a0759918-7f87-4c06-83ee-5943aae7c8c7",
+              "name": "Region 2 Area 3 Territory 8"
+            },
+            {
+              "id": "43070acb-1898-4156-b9d6-4e8fc216ec9f",
+              "name": "Region 2 Area 3 Territory 9"
+            },
+            {
+              "id": "7077b0e1-aa28-49c3-b528-80b354ff55ec",
+              "name": "Region 2 Area 3 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "4325278f-a3fa-4b8f-ba23-ca2a7d17f057",
+              "name": "Region 2 Area 3 Distributor 1"
+            },
+            {
+              "id": "e7e48afc-a22e-4d1a-8e81-8d563995b173",
+              "name": "Region 2 Area 3 Distributor 2"
+            },
+            {
+              "id": "376e7998-4885-4303-8d57-045af01f2d1d",
+              "name": "Region 2 Area 3 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "3fd2bdb4-3778-47c2-a7ba-bc489159b339",
+          "name": "Region 2 Area 4",
+          "territories": [
+            {
+              "id": "d177af4c-7615-45c3-a350-51a074eb57d3",
+              "name": "Region 2 Area 4 Territory 1"
+            },
+            {
+              "id": "bbe0596d-1f85-4a89-bc24-a8d0cef14cc7",
+              "name": "Region 2 Area 4 Territory 2"
+            },
+            {
+              "id": "bb5fbcd2-a9b0-4c8c-9318-c2abf98c8f23",
+              "name": "Region 2 Area 4 Territory 3"
+            },
+            {
+              "id": "8e5a3b99-6d44-4319-b79b-8b1a786a4ec2",
+              "name": "Region 2 Area 4 Territory 4"
+            },
+            {
+              "id": "8f9bf7db-586b-407c-ba3b-9addaf0eeefa",
+              "name": "Region 2 Area 4 Territory 5"
+            },
+            {
+              "id": "f3374bf4-7b7c-44c7-ba8f-7880f7871351",
+              "name": "Region 2 Area 4 Territory 6"
+            },
+            {
+              "id": "edaf53c0-34a3-4197-b432-8c5c87cfcd47",
+              "name": "Region 2 Area 4 Territory 7"
+            },
+            {
+              "id": "df9bfe01-8389-4a32-82f8-94ab6e50fe9e",
+              "name": "Region 2 Area 4 Territory 8"
+            },
+            {
+              "id": "3635b3c6-a1e3-49ca-9bfa-3270e185d87b",
+              "name": "Region 2 Area 4 Territory 9"
+            },
+            {
+              "id": "6c3b7cee-4b4e-4b19-bd16-78aa92fe5d64",
+              "name": "Region 2 Area 4 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "b51b2c0c-58f6-4b3d-bdfd-5d8751edfc49",
+              "name": "Region 2 Area 4 Distributor 1"
+            },
+            {
+              "id": "cc5d9a04-a8bc-490b-b3e3-8da13588836a",
+              "name": "Region 2 Area 4 Distributor 2"
+            },
+            {
+              "id": "3effbb36-4262-4cc6-b12d-eb99d840c9ba",
+              "name": "Region 2 Area 4 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "1b86aa7f-dd2c-4752-a0ad-c23239c6eeb9",
+          "name": "Region 2 Area 5",
+          "territories": [
+            {
+              "id": "bd27aa6e-bd8d-483f-ba90-f5671e28d4e1",
+              "name": "Region 2 Area 5 Territory 1"
+            },
+            {
+              "id": "4fd1eccd-b247-42f7-877b-3645f35bf140",
+              "name": "Region 2 Area 5 Territory 2"
+            },
+            {
+              "id": "845ec88b-4759-40a9-8675-bb069757e4df",
+              "name": "Region 2 Area 5 Territory 3"
+            },
+            {
+              "id": "479a73ba-1fcf-4a85-be65-972819a3c43d",
+              "name": "Region 2 Area 5 Territory 4"
+            },
+            {
+              "id": "a279d27c-b73f-4100-b5f7-19ebc4beb209",
+              "name": "Region 2 Area 5 Territory 5"
+            },
+            {
+              "id": "47f78413-4653-41d8-b7ab-6f718bb11940",
+              "name": "Region 2 Area 5 Territory 6"
+            },
+            {
+              "id": "0ee5fd19-efaf-425a-84d5-09fa4b1f9ef8",
+              "name": "Region 2 Area 5 Territory 7"
+            },
+            {
+              "id": "b1f15b6f-b018-4165-a43f-7b0c28b780d8",
+              "name": "Region 2 Area 5 Territory 8"
+            },
+            {
+              "id": "2b09d9f1-2bd2-4f37-af98-1ba5cf56e392",
+              "name": "Region 2 Area 5 Territory 9"
+            },
+            {
+              "id": "c4766599-19dc-4ba3-a2d1-ffbbfa1aa32c",
+              "name": "Region 2 Area 5 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "769d78cc-cefa-4ce5-9682-cc9c9382be5c",
+              "name": "Region 2 Area 5 Distributor 1"
+            },
+            {
+              "id": "4a3cb162-ffce-46d7-94fa-bc62259174b0",
+              "name": "Region 2 Area 5 Distributor 2"
+            },
+            {
+              "id": "0bd9d74d-314a-45c7-bbd9-58c4f1379cdd",
+              "name": "Region 2 Area 5 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "2be7c59c-f5ef-4ce3-87fc-93418afabc5e",
+          "name": "Region 2 Area 6",
+          "territories": [
+            {
+              "id": "1ec3bfc4-0262-4239-bd7d-45447a112ff1",
+              "name": "Region 2 Area 6 Territory 1"
+            },
+            {
+              "id": "8f102895-0b85-4949-9720-89b48022d753",
+              "name": "Region 2 Area 6 Territory 2"
+            },
+            {
+              "id": "946c3f23-63fd-45d0-901b-0e91ba66d013",
+              "name": "Region 2 Area 6 Territory 3"
+            },
+            {
+              "id": "790c45f7-b1f6-4fe5-a9ef-a406e127eabc",
+              "name": "Region 2 Area 6 Territory 4"
+            },
+            {
+              "id": "48cbe263-99b1-4b2f-b305-2ab76d9a9b39",
+              "name": "Region 2 Area 6 Territory 5"
+            },
+            {
+              "id": "4d23e010-5941-42df-8c29-de4bac03292e",
+              "name": "Region 2 Area 6 Territory 6"
+            },
+            {
+              "id": "de88bb46-6451-42cd-b8e9-720b335f9656",
+              "name": "Region 2 Area 6 Territory 7"
+            },
+            {
+              "id": "7b51df21-5e79-47d9-8829-cd790488d4bf",
+              "name": "Region 2 Area 6 Territory 8"
+            },
+            {
+              "id": "3d6f3cac-c1e6-4c0c-9960-ed70e00f88ed",
+              "name": "Region 2 Area 6 Territory 9"
+            },
+            {
+              "id": "303e6674-ee19-4631-8ef6-852256224de4",
+              "name": "Region 2 Area 6 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "5c3cbb2e-f377-47bf-83af-230834749ed1",
+              "name": "Region 2 Area 6 Distributor 1"
+            },
+            {
+              "id": "c62a812d-d7e0-4ef0-93bd-ee9360e7ec2e",
+              "name": "Region 2 Area 6 Distributor 2"
+            },
+            {
+              "id": "2ddfecfd-70cb-441d-81da-dc0742a10d05",
+              "name": "Region 2 Area 6 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "e142c691-25e8-4783-8f61-5b6a127b08ae",
+          "name": "Region 2 Area 7",
+          "territories": [
+            {
+              "id": "8243ae36-a21d-46d2-ab70-4eec7684f333",
+              "name": "Region 2 Area 7 Territory 1"
+            },
+            {
+              "id": "8f788451-4371-4ba1-9f61-2e294b4f50b7",
+              "name": "Region 2 Area 7 Territory 2"
+            },
+            {
+              "id": "60cba099-b339-4657-be69-f7993e93d84b",
+              "name": "Region 2 Area 7 Territory 3"
+            },
+            {
+              "id": "fb432f29-3782-46c9-a42d-2fdc1cb959d3",
+              "name": "Region 2 Area 7 Territory 4"
+            },
+            {
+              "id": "de6341fc-53e7-4781-b009-aba12f166612",
+              "name": "Region 2 Area 7 Territory 5"
+            },
+            {
+              "id": "141d21ab-7e91-4210-b099-fdec97242a58",
+              "name": "Region 2 Area 7 Territory 6"
+            },
+            {
+              "id": "ab4c7b5a-af2a-41e6-b7a4-64939e425d85",
+              "name": "Region 2 Area 7 Territory 7"
+            },
+            {
+              "id": "faa0203a-a28a-4129-89a6-86c61884d347",
+              "name": "Region 2 Area 7 Territory 8"
+            },
+            {
+              "id": "fea8092c-c905-4718-8d4c-5e31aec0c3e1",
+              "name": "Region 2 Area 7 Territory 9"
+            },
+            {
+              "id": "74fdcfc6-2e86-4aaa-af5f-8bd04d7741b0",
+              "name": "Region 2 Area 7 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "3fb5c4b2-e206-448d-970e-e579fc22e069",
+              "name": "Region 2 Area 7 Distributor 1"
+            },
+            {
+              "id": "76ac3a65-6686-4ff8-b9f4-6e1242b0d30c",
+              "name": "Region 2 Area 7 Distributor 2"
+            },
+            {
+              "id": "47999adb-61b0-4178-ba24-71a6d38e2eeb",
+              "name": "Region 2 Area 7 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "1b96cbf4-6319-4af1-a33f-7da7a06e4152",
+          "name": "Region 2 Area 8",
+          "territories": [
+            {
+              "id": "749dc08a-de9c-42bc-bacf-8ae11da48a6a",
+              "name": "Region 2 Area 8 Territory 1"
+            },
+            {
+              "id": "bde15c43-3b21-4437-ba6b-951d2421c8cc",
+              "name": "Region 2 Area 8 Territory 2"
+            },
+            {
+              "id": "ccb0206a-ae6b-4d67-9d08-359063e7686b",
+              "name": "Region 2 Area 8 Territory 3"
+            },
+            {
+              "id": "e6b67107-7491-4903-be34-ed9f26cdd8f5",
+              "name": "Region 2 Area 8 Territory 4"
+            },
+            {
+              "id": "4c4f6a14-7115-4905-98e6-05cb17f84937",
+              "name": "Region 2 Area 8 Territory 5"
+            },
+            {
+              "id": "25f4b8cf-2ab6-4c40-b96f-af54c118f9f9",
+              "name": "Region 2 Area 8 Territory 6"
+            },
+            {
+              "id": "c4abae60-6423-4c4b-95c9-edff8234a06c",
+              "name": "Region 2 Area 8 Territory 7"
+            },
+            {
+              "id": "56c924ca-3f03-4e71-aca9-dcb394d94ead",
+              "name": "Region 2 Area 8 Territory 8"
+            },
+            {
+              "id": "60c2442f-0d69-46f4-ab6b-018cd37fa44c",
+              "name": "Region 2 Area 8 Territory 9"
+            },
+            {
+              "id": "dd87ca46-97e2-4d3a-94e4-51d93c9bb4d2",
+              "name": "Region 2 Area 8 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "9e3fc3dd-c96a-4596-b004-5fba267f0848",
+              "name": "Region 2 Area 8 Distributor 1"
+            },
+            {
+              "id": "a2fd8f0d-7270-4518-a8f1-fbef70235a1d",
+              "name": "Region 2 Area 8 Distributor 2"
+            },
+            {
+              "id": "8e10af34-d7ee-41be-933b-ce25a9dcae99",
+              "name": "Region 2 Area 8 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "fe356b3f-c5e2-4c5d-adc0-5868a4e24ea7",
+          "name": "Region 2 Area 9",
+          "territories": [
+            {
+              "id": "7ff1f111-4d6c-4130-84b2-7136f70fd221",
+              "name": "Region 2 Area 9 Territory 1"
+            },
+            {
+              "id": "b2940eaf-51b7-4882-9699-82ec1437cae0",
+              "name": "Region 2 Area 9 Territory 2"
+            },
+            {
+              "id": "4764acce-78d0-4c34-91f5-561ffa862ebf",
+              "name": "Region 2 Area 9 Territory 3"
+            },
+            {
+              "id": "afc1f1c2-8339-4365-9fe2-a55284f53ec0",
+              "name": "Region 2 Area 9 Territory 4"
+            },
+            {
+              "id": "46f43218-63ee-4e7e-9da5-023733e372a9",
+              "name": "Region 2 Area 9 Territory 5"
+            },
+            {
+              "id": "b924fa7c-fbe9-4610-9601-0f9cb27bbd73",
+              "name": "Region 2 Area 9 Territory 6"
+            },
+            {
+              "id": "8532a5ec-bca1-4bb4-95c3-19fbadb66e58",
+              "name": "Region 2 Area 9 Territory 7"
+            },
+            {
+              "id": "5cd798e5-e5b3-4830-8030-2f06378b024b",
+              "name": "Region 2 Area 9 Territory 8"
+            },
+            {
+              "id": "85639250-bb66-4ae2-94a8-b33d33ae4743",
+              "name": "Region 2 Area 9 Territory 9"
+            },
+            {
+              "id": "8a3962e0-4f30-4f81-9c07-7593c162881a",
+              "name": "Region 2 Area 9 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "cdb888ba-a926-47b0-93c3-066982db708f",
+              "name": "Region 2 Area 9 Distributor 1"
+            },
+            {
+              "id": "041a8caa-003c-4d6a-a519-273021a9f49e",
+              "name": "Region 2 Area 9 Distributor 2"
+            },
+            {
+              "id": "77bfa8f6-1e52-4867-98a1-e7d9d5e6df18",
+              "name": "Region 2 Area 9 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "a387c092-6204-4cd6-aeda-21f35eb92a29",
+          "name": "Region 2 Area 10",
+          "territories": [
+            {
+              "id": "c0c59582-712e-4e42-a029-cc28b73f9ad7",
+              "name": "Region 2 Area 10 Territory 1"
+            },
+            {
+              "id": "3f2eae3e-2161-4bf8-a53c-bfb9f7596193",
+              "name": "Region 2 Area 10 Territory 2"
+            },
+            {
+              "id": "f45729a8-e14c-42f2-895c-4fb93c0fd78d",
+              "name": "Region 2 Area 10 Territory 3"
+            },
+            {
+              "id": "2b4819e3-467e-4c4f-8a63-795c163942c8",
+              "name": "Region 2 Area 10 Territory 4"
+            },
+            {
+              "id": "077da224-9b09-4753-ad85-e92cd7214454",
+              "name": "Region 2 Area 10 Territory 5"
+            },
+            {
+              "id": "73409d7e-4577-4f50-b373-9342c242d95c",
+              "name": "Region 2 Area 10 Territory 6"
+            },
+            {
+              "id": "46c906ec-2028-4954-bb8a-8178fbeb7e85",
+              "name": "Region 2 Area 10 Territory 7"
+            },
+            {
+              "id": "700392ac-fce3-468c-8d6b-8fa353cb2a35",
+              "name": "Region 2 Area 10 Territory 8"
+            },
+            {
+              "id": "0099cd27-a22b-4594-870f-e8c698b89e33",
+              "name": "Region 2 Area 10 Territory 9"
+            },
+            {
+              "id": "40c685ec-a9f1-48c1-a676-ae32e3373733",
+              "name": "Region 2 Area 10 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "c742d691-563a-4a78-b261-f924efcd259f",
+              "name": "Region 2 Area 10 Distributor 1"
+            },
+            {
+              "id": "a3cfb134-6b32-4049-88b9-b3f9c710993d",
+              "name": "Region 2 Area 10 Distributor 2"
+            },
+            {
+              "id": "f425d717-ced5-4692-b577-f4de804ded94",
+              "name": "Region 2 Area 10 Distributor 3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "75797df2-e7d7-4fd5-9898-e8be90c3147a",
+      "name": "Region 3",
+      "areas": [
+        {
+          "id": "9a8d1858-7f38-4641-8616-31a058af9ed8",
+          "name": "Region 3 Area 1",
+          "territories": [
+            {
+              "id": "d3449762-8ef8-4586-a92e-fe209fcfa740",
+              "name": "Region 3 Area 1 Territory 1"
+            },
+            {
+              "id": "0f53dc56-bd7e-4651-83ba-4fe7fc016d99",
+              "name": "Region 3 Area 1 Territory 2"
+            },
+            {
+              "id": "c1aea9f2-2e49-4728-9bbd-834e6cc4081f",
+              "name": "Region 3 Area 1 Territory 3"
+            },
+            {
+              "id": "deb398ae-8faf-42e4-8ded-24fdd04e3978",
+              "name": "Region 3 Area 1 Territory 4"
+            },
+            {
+              "id": "65030e29-1b27-4f32-a2c0-4d62d8da6005",
+              "name": "Region 3 Area 1 Territory 5"
+            },
+            {
+              "id": "c8cf0101-17ad-4270-b255-33bde90e8580",
+              "name": "Region 3 Area 1 Territory 6"
+            },
+            {
+              "id": "0ca9fd5b-3f23-4e6e-9e61-f9b6e5147623",
+              "name": "Region 3 Area 1 Territory 7"
+            },
+            {
+              "id": "f9ded8a4-6901-44db-a27f-14f66f10def9",
+              "name": "Region 3 Area 1 Territory 8"
+            },
+            {
+              "id": "51142194-d41f-45c0-9a5d-09048f040f62",
+              "name": "Region 3 Area 1 Territory 9"
+            },
+            {
+              "id": "2ba4fe17-d834-436c-9924-f58cb15897c7",
+              "name": "Region 3 Area 1 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "7dbdc28c-0767-4a0f-8003-32f6677e61a9",
+              "name": "Region 3 Area 1 Distributor 1"
+            },
+            {
+              "id": "1369ead5-22b3-4de9-842b-28973af80c62",
+              "name": "Region 3 Area 1 Distributor 2"
+            },
+            {
+              "id": "8d3c0ce4-1d23-4fe0-8a69-253be1b5b080",
+              "name": "Region 3 Area 1 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "6b449895-18ec-463c-9d63-0ac100dd81b0",
+          "name": "Region 3 Area 2",
+          "territories": [
+            {
+              "id": "ef09feca-adec-4c8d-937a-5ddb12479c8a",
+              "name": "Region 3 Area 2 Territory 1"
+            },
+            {
+              "id": "89baa462-1d9b-46b0-9fb5-bf403a7a4727",
+              "name": "Region 3 Area 2 Territory 2"
+            },
+            {
+              "id": "fb5eda67-5cfc-466e-826c-27ea6579ac3c",
+              "name": "Region 3 Area 2 Territory 3"
+            },
+            {
+              "id": "7c6c16ea-64af-4786-a625-407f11c928d3",
+              "name": "Region 3 Area 2 Territory 4"
+            },
+            {
+              "id": "a7095627-8ec2-4e19-8af8-ddcf7e37b1ed",
+              "name": "Region 3 Area 2 Territory 5"
+            },
+            {
+              "id": "dfa6cd2e-4a0b-4047-8faa-714fb251e374",
+              "name": "Region 3 Area 2 Territory 6"
+            },
+            {
+              "id": "e1fa2382-067d-4548-9b7e-aed1b3776255",
+              "name": "Region 3 Area 2 Territory 7"
+            },
+            {
+              "id": "863f996e-99b4-41e5-9037-6b4cc9245f22",
+              "name": "Region 3 Area 2 Territory 8"
+            },
+            {
+              "id": "7fc7b78f-3903-4aa0-a654-0cce06d7df19",
+              "name": "Region 3 Area 2 Territory 9"
+            },
+            {
+              "id": "4d760a13-ccaa-4ec1-a1cc-fb2e1ee480a8",
+              "name": "Region 3 Area 2 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "e2a69938-7265-43a3-bbf6-e487ebf1ed19",
+              "name": "Region 3 Area 2 Distributor 1"
+            },
+            {
+              "id": "dbbde4a1-a1d4-42de-9a23-db3f682eb7ea",
+              "name": "Region 3 Area 2 Distributor 2"
+            },
+            {
+              "id": "f43bba84-f510-4c4b-a8b9-4794abe349ad",
+              "name": "Region 3 Area 2 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "a6651b70-51fb-4ab9-84fb-0d84e6d0e80d",
+          "name": "Region 3 Area 3",
+          "territories": [
+            {
+              "id": "4bc94af4-86d9-436b-bb3c-c9d789d8d587",
+              "name": "Region 3 Area 3 Territory 1"
+            },
+            {
+              "id": "8e0401cc-61ed-4c33-bcbd-06235561f550",
+              "name": "Region 3 Area 3 Territory 2"
+            },
+            {
+              "id": "08c4ec39-5976-40b5-b69b-28f993b392b5",
+              "name": "Region 3 Area 3 Territory 3"
+            },
+            {
+              "id": "eca3cf89-6a09-4b9f-8045-65f9e12ab7ca",
+              "name": "Region 3 Area 3 Territory 4"
+            },
+            {
+              "id": "99fb0fb4-2dd1-4ea6-89e2-12f8dcca40db",
+              "name": "Region 3 Area 3 Territory 5"
+            },
+            {
+              "id": "73c14451-a1be-4b1a-9aef-5625548ba1d5",
+              "name": "Region 3 Area 3 Territory 6"
+            },
+            {
+              "id": "2ee4b946-033b-4065-82f7-ec61f46ec281",
+              "name": "Region 3 Area 3 Territory 7"
+            },
+            {
+              "id": "821aa3c9-f15a-450d-a491-d41b2e4e2b4c",
+              "name": "Region 3 Area 3 Territory 8"
+            },
+            {
+              "id": "15338d44-b9a9-4d06-ace1-d9663bf31b2b",
+              "name": "Region 3 Area 3 Territory 9"
+            },
+            {
+              "id": "ef130830-1196-4567-8302-e10d6095ca68",
+              "name": "Region 3 Area 3 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "dfdd73c1-1dad-44a1-be20-25a08a8798dc",
+              "name": "Region 3 Area 3 Distributor 1"
+            },
+            {
+              "id": "1cf56c30-ceba-47a7-9371-69bbefd18c51",
+              "name": "Region 3 Area 3 Distributor 2"
+            },
+            {
+              "id": "2b287d5b-0e17-4c53-99e0-6dc0c34a1127",
+              "name": "Region 3 Area 3 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "69744276-e7a6-42e8-b738-52dc21f9bf40",
+          "name": "Region 3 Area 4",
+          "territories": [
+            {
+              "id": "3692be6c-cd7d-481a-a854-98f6e10a39db",
+              "name": "Region 3 Area 4 Territory 1"
+            },
+            {
+              "id": "86ae47fc-540f-429c-903a-7fc91532f64d",
+              "name": "Region 3 Area 4 Territory 2"
+            },
+            {
+              "id": "bb109adb-0bb3-4d79-ba25-a8ddf188f828",
+              "name": "Region 3 Area 4 Territory 3"
+            },
+            {
+              "id": "a34d9664-a2fa-4a95-ad3d-ff4c519055f0",
+              "name": "Region 3 Area 4 Territory 4"
+            },
+            {
+              "id": "deaf8987-9e96-41c2-8c4d-bfd255578fd9",
+              "name": "Region 3 Area 4 Territory 5"
+            },
+            {
+              "id": "e5fb77a3-60a2-4ea7-82f7-8b0871e60774",
+              "name": "Region 3 Area 4 Territory 6"
+            },
+            {
+              "id": "7123db18-5a9e-44ae-b85c-67194c734d49",
+              "name": "Region 3 Area 4 Territory 7"
+            },
+            {
+              "id": "a23b13f4-c978-4d88-940b-5d121141ab44",
+              "name": "Region 3 Area 4 Territory 8"
+            },
+            {
+              "id": "2fc7a3b5-18be-4f68-bfce-7fa006565fbf",
+              "name": "Region 3 Area 4 Territory 9"
+            },
+            {
+              "id": "5a026160-74a4-49a3-b676-3e6c1c0912a9",
+              "name": "Region 3 Area 4 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "b65d6cc7-135e-4702-96a1-5cb8d5cf5b4c",
+              "name": "Region 3 Area 4 Distributor 1"
+            },
+            {
+              "id": "18d323f8-ab5f-4f51-8969-346c6c06b87d",
+              "name": "Region 3 Area 4 Distributor 2"
+            },
+            {
+              "id": "55e58b23-4aed-4958-ac0c-da5a06461a1e",
+              "name": "Region 3 Area 4 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "f2a3d163-4e85-459c-b819-e9eeae00f3d9",
+          "name": "Region 3 Area 5",
+          "territories": [
+            {
+              "id": "b9f663cf-1a27-4989-a8f5-9acacdc25d76",
+              "name": "Region 3 Area 5 Territory 1"
+            },
+            {
+              "id": "f9814449-995e-4c9f-9488-41773033e99c",
+              "name": "Region 3 Area 5 Territory 2"
+            },
+            {
+              "id": "cc0188b9-47f6-4ab9-9c6a-d27272757bc5",
+              "name": "Region 3 Area 5 Territory 3"
+            },
+            {
+              "id": "d0ff2752-8cdc-4470-8e1a-dc1e5500be2c",
+              "name": "Region 3 Area 5 Territory 4"
+            },
+            {
+              "id": "c3f92f9a-ae40-45ec-a1d0-47ab6689357c",
+              "name": "Region 3 Area 5 Territory 5"
+            },
+            {
+              "id": "51836c25-26c8-4ade-ab4b-1c9424a609dc",
+              "name": "Region 3 Area 5 Territory 6"
+            },
+            {
+              "id": "f563727f-6431-4449-932e-757b1e935e40",
+              "name": "Region 3 Area 5 Territory 7"
+            },
+            {
+              "id": "1a25d5ca-d2d6-465c-8167-949b2d446448",
+              "name": "Region 3 Area 5 Territory 8"
+            },
+            {
+              "id": "60d6002d-c3d9-47e7-b183-160ff99de4bf",
+              "name": "Region 3 Area 5 Territory 9"
+            },
+            {
+              "id": "e2b1db7a-4da2-46dc-b051-786d71dd0321",
+              "name": "Region 3 Area 5 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "baafd670-e040-4774-88ec-60e8b0fc6818",
+              "name": "Region 3 Area 5 Distributor 1"
+            },
+            {
+              "id": "3afbc41d-c036-460c-b87d-a6ac5fd2d004",
+              "name": "Region 3 Area 5 Distributor 2"
+            },
+            {
+              "id": "65a89877-fe19-4664-8759-5b17adce8dcb",
+              "name": "Region 3 Area 5 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "61a60d9c-c169-44e9-bd51-9b32cd1c59f0",
+          "name": "Region 3 Area 6",
+          "territories": [
+            {
+              "id": "3cc85193-5580-447a-bf8e-21699e4e3243",
+              "name": "Region 3 Area 6 Territory 1"
+            },
+            {
+              "id": "fd6d6486-969b-4dc7-8b15-af2364e9dc63",
+              "name": "Region 3 Area 6 Territory 2"
+            },
+            {
+              "id": "462ea29e-11c9-4e36-8d47-8721e8123b77",
+              "name": "Region 3 Area 6 Territory 3"
+            },
+            {
+              "id": "4e569e94-9c4b-4a5a-b31c-62da8f22d888",
+              "name": "Region 3 Area 6 Territory 4"
+            },
+            {
+              "id": "09978068-c27c-4418-b4df-06162d03e8d1",
+              "name": "Region 3 Area 6 Territory 5"
+            },
+            {
+              "id": "29e0a838-bc92-4da3-9cd5-ab2c25af89fc",
+              "name": "Region 3 Area 6 Territory 6"
+            },
+            {
+              "id": "3e73f12e-5c05-4569-ac51-361d2d2b719c",
+              "name": "Region 3 Area 6 Territory 7"
+            },
+            {
+              "id": "3ae82e93-5c1b-4dee-80e7-cbf13b944bdb",
+              "name": "Region 3 Area 6 Territory 8"
+            },
+            {
+              "id": "e45881f6-9289-4fc2-863e-464ab3bc4e99",
+              "name": "Region 3 Area 6 Territory 9"
+            },
+            {
+              "id": "cd5d2ff3-ec54-48bf-ad79-cb6161ba6e36",
+              "name": "Region 3 Area 6 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "804fb2d7-dff7-45be-8488-82cf10f2923d",
+              "name": "Region 3 Area 6 Distributor 1"
+            },
+            {
+              "id": "b6256783-8961-42ea-98a5-74c1e74ada05",
+              "name": "Region 3 Area 6 Distributor 2"
+            },
+            {
+              "id": "6aa2723a-cf3b-48b7-951d-fb4a436be289",
+              "name": "Region 3 Area 6 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "50c18383-1337-437b-8c67-c93f3a610558",
+          "name": "Region 3 Area 7",
+          "territories": [
+            {
+              "id": "9b660004-9c85-465f-b7ae-6938a1838ed5",
+              "name": "Region 3 Area 7 Territory 1"
+            },
+            {
+              "id": "f0a58988-7b84-4e63-a0c7-3775d2f1e151",
+              "name": "Region 3 Area 7 Territory 2"
+            },
+            {
+              "id": "33815a34-a4a2-4110-b8d9-5dc3aae0f4cc",
+              "name": "Region 3 Area 7 Territory 3"
+            },
+            {
+              "id": "c4c2994f-3479-485f-890c-8c9248e91f12",
+              "name": "Region 3 Area 7 Territory 4"
+            },
+            {
+              "id": "1fa958f1-a78d-40a7-8a55-1839b42e9363",
+              "name": "Region 3 Area 7 Territory 5"
+            },
+            {
+              "id": "9ce6606b-fd44-47e1-b7ec-ad508de0b98a",
+              "name": "Region 3 Area 7 Territory 6"
+            },
+            {
+              "id": "5ba7552d-e6aa-4b1a-a74a-ed387d330c17",
+              "name": "Region 3 Area 7 Territory 7"
+            },
+            {
+              "id": "358d541d-17ef-43ad-852b-2cbaa8fa9951",
+              "name": "Region 3 Area 7 Territory 8"
+            },
+            {
+              "id": "b378aca8-8522-4acd-97ba-03a591e1c7ee",
+              "name": "Region 3 Area 7 Territory 9"
+            },
+            {
+              "id": "902bedd8-c27c-4303-b9d1-5ce2dfee3ebe",
+              "name": "Region 3 Area 7 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "82923042-7015-488b-9772-958814649754",
+              "name": "Region 3 Area 7 Distributor 1"
+            },
+            {
+              "id": "9c037f36-c718-4cf8-946c-1d6570f03019",
+              "name": "Region 3 Area 7 Distributor 2"
+            },
+            {
+              "id": "515f419a-adc3-4a0f-8873-0a3ba3277fd5",
+              "name": "Region 3 Area 7 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "51d64028-82f0-4aba-87bb-104e53e56f82",
+          "name": "Region 3 Area 8",
+          "territories": [
+            {
+              "id": "ae2025bf-b58b-42c1-b2f0-e161c2c89051",
+              "name": "Region 3 Area 8 Territory 1"
+            },
+            {
+              "id": "84d27d74-5823-48c4-9c2e-c59578d260fb",
+              "name": "Region 3 Area 8 Territory 2"
+            },
+            {
+              "id": "ca82ba87-e23f-4d6e-a9fc-ef2cc41930ee",
+              "name": "Region 3 Area 8 Territory 3"
+            },
+            {
+              "id": "0d2983e2-3ea9-4edc-be89-2bbe527de353",
+              "name": "Region 3 Area 8 Territory 4"
+            },
+            {
+              "id": "107b4d1a-59b2-4dc5-8107-f798cb325314",
+              "name": "Region 3 Area 8 Territory 5"
+            },
+            {
+              "id": "8b91caf5-d11f-4cb4-8bf4-3498fc8dad5c",
+              "name": "Region 3 Area 8 Territory 6"
+            },
+            {
+              "id": "4af13276-0998-4031-ba59-f6518c5a3095",
+              "name": "Region 3 Area 8 Territory 7"
+            },
+            {
+              "id": "6b4bead9-867c-4f2c-83f1-2b1e3d2a0128",
+              "name": "Region 3 Area 8 Territory 8"
+            },
+            {
+              "id": "e79aaa1b-22fa-4a23-92b0-25435079ea5f",
+              "name": "Region 3 Area 8 Territory 9"
+            },
+            {
+              "id": "115bbb0e-5f03-4cc9-b49b-e74dca5919d1",
+              "name": "Region 3 Area 8 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "3f843233-6c4f-4813-bbe9-d340137a3b54",
+              "name": "Region 3 Area 8 Distributor 1"
+            },
+            {
+              "id": "00fa8e51-8f94-4c97-b42c-23ed1bd41dfe",
+              "name": "Region 3 Area 8 Distributor 2"
+            },
+            {
+              "id": "6bfb6d5c-8fbe-4ee9-aedd-ed1ceb28759b",
+              "name": "Region 3 Area 8 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "e5dd8e5f-c83c-465b-8b31-787c8e9c4b93",
+          "name": "Region 3 Area 9",
+          "territories": [
+            {
+              "id": "e9f22a42-dc83-4308-9e59-a8daaf152e0c",
+              "name": "Region 3 Area 9 Territory 1"
+            },
+            {
+              "id": "833b02eb-19e0-44a5-8a2f-e9e3fbe25471",
+              "name": "Region 3 Area 9 Territory 2"
+            },
+            {
+              "id": "5e40fc09-31fa-4c79-bb3f-fbbb5a8cbad7",
+              "name": "Region 3 Area 9 Territory 3"
+            },
+            {
+              "id": "2cc55be6-cea8-425b-8522-6c2dc5c40c80",
+              "name": "Region 3 Area 9 Territory 4"
+            },
+            {
+              "id": "f61012fd-4b6b-4878-a59d-49d609fc3a87",
+              "name": "Region 3 Area 9 Territory 5"
+            },
+            {
+              "id": "27183ce8-6492-4973-8b06-4efd783b8e96",
+              "name": "Region 3 Area 9 Territory 6"
+            },
+            {
+              "id": "18840305-f76f-45b6-b61e-ffa22996265c",
+              "name": "Region 3 Area 9 Territory 7"
+            },
+            {
+              "id": "44a9874c-f984-408d-a3d3-97a56a073898",
+              "name": "Region 3 Area 9 Territory 8"
+            },
+            {
+              "id": "8f8f9598-2d6c-44f5-8abc-dd2ddf745c08",
+              "name": "Region 3 Area 9 Territory 9"
+            },
+            {
+              "id": "97efce48-7934-45a8-ab31-929281512844",
+              "name": "Region 3 Area 9 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "8260ffee-df21-4023-815d-140983cb3aaf",
+              "name": "Region 3 Area 9 Distributor 1"
+            },
+            {
+              "id": "4a65feb4-c72a-4b0b-8fa6-9551ea05a8ec",
+              "name": "Region 3 Area 9 Distributor 2"
+            },
+            {
+              "id": "faac8314-0671-4b62-9edc-64985cbaae52",
+              "name": "Region 3 Area 9 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "af3bd072-e95b-4b83-b866-7790039fdf79",
+          "name": "Region 3 Area 10",
+          "territories": [
+            {
+              "id": "bf28ef6d-7113-468c-8901-286f5f2b439a",
+              "name": "Region 3 Area 10 Territory 1"
+            },
+            {
+              "id": "4f74192a-4cfa-49ed-abf9-cde79804dae6",
+              "name": "Region 3 Area 10 Territory 2"
+            },
+            {
+              "id": "17c3c1de-bf42-47ec-bb66-f2361e5d4ae2",
+              "name": "Region 3 Area 10 Territory 3"
+            },
+            {
+              "id": "4f9af394-de1c-4a2d-8496-93729d3bf346",
+              "name": "Region 3 Area 10 Territory 4"
+            },
+            {
+              "id": "dffd0f12-57e8-406f-9b95-7c755be2b9d0",
+              "name": "Region 3 Area 10 Territory 5"
+            },
+            {
+              "id": "ea0db040-6e49-486f-a0ba-39e3088ad815",
+              "name": "Region 3 Area 10 Territory 6"
+            },
+            {
+              "id": "cd467c56-81f0-4a51-aa1b-8c0283514f86",
+              "name": "Region 3 Area 10 Territory 7"
+            },
+            {
+              "id": "0a0a6254-9def-45e0-bed8-3a971ebf49f4",
+              "name": "Region 3 Area 10 Territory 8"
+            },
+            {
+              "id": "57901b45-d7fc-4e14-8236-c83f9b64d938",
+              "name": "Region 3 Area 10 Territory 9"
+            },
+            {
+              "id": "7c384291-9146-400e-b02d-6b8207bfafc1",
+              "name": "Region 3 Area 10 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "a24f9de5-741e-4078-965a-b9a15d9aefa6",
+              "name": "Region 3 Area 10 Distributor 1"
+            },
+            {
+              "id": "b755c4b1-4ffa-43e3-bcbc-4b7105429ca5",
+              "name": "Region 3 Area 10 Distributor 2"
+            },
+            {
+              "id": "077e4f34-8af8-4104-a572-6a2ef92b1962",
+              "name": "Region 3 Area 10 Distributor 3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "da906ecc-74f8-4bf0-a2b2-30a7e941baf4",
+      "name": "Region 4",
+      "areas": [
+        {
+          "id": "0ea0db00-9bd8-46e2-8b30-423d9ae802b6",
+          "name": "Region 4 Area 1",
+          "territories": [
+            {
+              "id": "e7799e10-bec9-4e8a-8433-e776a67d686e",
+              "name": "Region 4 Area 1 Territory 1"
+            },
+            {
+              "id": "ef899d71-321b-477b-8a9b-66f80b792361",
+              "name": "Region 4 Area 1 Territory 2"
+            },
+            {
+              "id": "afff548d-9d35-4cb5-ac7e-ab8a0078b143",
+              "name": "Region 4 Area 1 Territory 3"
+            },
+            {
+              "id": "68611acf-ff38-48cb-b324-8c4bb521e0f9",
+              "name": "Region 4 Area 1 Territory 4"
+            },
+            {
+              "id": "a1a8a625-e730-463d-a47a-9c66a5090b2d",
+              "name": "Region 4 Area 1 Territory 5"
+            },
+            {
+              "id": "206c537e-a8c2-49c9-bdf9-2ddf0a139590",
+              "name": "Region 4 Area 1 Territory 6"
+            },
+            {
+              "id": "ddb48f6c-61b2-432b-babb-0c820c21106f",
+              "name": "Region 4 Area 1 Territory 7"
+            },
+            {
+              "id": "df0c65eb-239e-4864-a607-13358943977e",
+              "name": "Region 4 Area 1 Territory 8"
+            },
+            {
+              "id": "d3454879-4b3a-461f-b808-6be903864fed",
+              "name": "Region 4 Area 1 Territory 9"
+            },
+            {
+              "id": "06a7e248-0980-4b60-84a7-310702d667e1",
+              "name": "Region 4 Area 1 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "122afe4a-1f30-48ea-84a1-c8767e4ce8d1",
+              "name": "Region 4 Area 1 Distributor 1"
+            },
+            {
+              "id": "0fde87ff-452b-43ee-8a98-136f313f233d",
+              "name": "Region 4 Area 1 Distributor 2"
+            },
+            {
+              "id": "19f1999b-784e-41e8-8f9a-878b4d1eb36c",
+              "name": "Region 4 Area 1 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "42c097d8-7426-4066-92ca-e8ea1d1115aa",
+          "name": "Region 4 Area 2",
+          "territories": [
+            {
+              "id": "f76700a2-dafc-49c4-a334-5e60cb4eb21d",
+              "name": "Region 4 Area 2 Territory 1"
+            },
+            {
+              "id": "2b642a9c-eab1-44bc-bafc-ac986d60a859",
+              "name": "Region 4 Area 2 Territory 2"
+            },
+            {
+              "id": "b0773864-140b-4437-9df6-a3567a1b9f49",
+              "name": "Region 4 Area 2 Territory 3"
+            },
+            {
+              "id": "335c9c55-9a74-4c65-ac6e-965ffbcfbe9b",
+              "name": "Region 4 Area 2 Territory 4"
+            },
+            {
+              "id": "11d23ee3-aca9-42ac-bb1e-2d1b73e90bc0",
+              "name": "Region 4 Area 2 Territory 5"
+            },
+            {
+              "id": "8132a579-ab19-490d-8981-20b88a386a67",
+              "name": "Region 4 Area 2 Territory 6"
+            },
+            {
+              "id": "15d58f3e-a4c6-4e59-be4c-6a1a841c5f02",
+              "name": "Region 4 Area 2 Territory 7"
+            },
+            {
+              "id": "7d1e7e0e-b708-48de-b297-91e8f490f621",
+              "name": "Region 4 Area 2 Territory 8"
+            },
+            {
+              "id": "a87ef052-17c4-48e6-ad1a-bc288ccf472c",
+              "name": "Region 4 Area 2 Territory 9"
+            },
+            {
+              "id": "84dde661-0731-44c6-9f5f-7b11d1e79685",
+              "name": "Region 4 Area 2 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "d21b24e8-f2cb-4c94-a4eb-5883d07cc430",
+              "name": "Region 4 Area 2 Distributor 1"
+            },
+            {
+              "id": "124fb204-3289-4c32-9e4f-bf16e906ca09",
+              "name": "Region 4 Area 2 Distributor 2"
+            },
+            {
+              "id": "9f097e5a-ded9-44b4-8b0d-6f33acc4267b",
+              "name": "Region 4 Area 2 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "eea31f07-6cf8-40fc-84cb-6fdc9a892e6a",
+          "name": "Region 4 Area 3",
+          "territories": [
+            {
+              "id": "2bb903db-204b-4b62-8b35-689fea044f92",
+              "name": "Region 4 Area 3 Territory 1"
+            },
+            {
+              "id": "9b13df65-2adb-4a65-9fd9-57ddc6177d01",
+              "name": "Region 4 Area 3 Territory 2"
+            },
+            {
+              "id": "a25dbe4b-aeec-4bbf-8def-f027509a0069",
+              "name": "Region 4 Area 3 Territory 3"
+            },
+            {
+              "id": "0e71cce6-15cc-4036-b39b-dd24fa2d6f39",
+              "name": "Region 4 Area 3 Territory 4"
+            },
+            {
+              "id": "2f9d6bf3-5621-4421-96d2-09080b3dc992",
+              "name": "Region 4 Area 3 Territory 5"
+            },
+            {
+              "id": "6a2b2dfb-00e6-4baa-a1d5-c90503b1049a",
+              "name": "Region 4 Area 3 Territory 6"
+            },
+            {
+              "id": "561d989f-e192-4920-93cf-a638a3eb1bd1",
+              "name": "Region 4 Area 3 Territory 7"
+            },
+            {
+              "id": "3891cecd-e498-45c2-99d0-957ce8b2fade",
+              "name": "Region 4 Area 3 Territory 8"
+            },
+            {
+              "id": "9c84cd1f-e14b-410e-85ce-2c2e67655ac3",
+              "name": "Region 4 Area 3 Territory 9"
+            },
+            {
+              "id": "54f84b66-c9ea-4098-a3d7-4cdef88fa914",
+              "name": "Region 4 Area 3 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "8ea2dd19-0511-4d9e-9efa-068a27cc562d",
+              "name": "Region 4 Area 3 Distributor 1"
+            },
+            {
+              "id": "10e65d18-9f5c-4ef3-8dd6-04a8bccc89cb",
+              "name": "Region 4 Area 3 Distributor 2"
+            },
+            {
+              "id": "43da33bc-7bcc-4482-8f1b-749ec4f2d7a7",
+              "name": "Region 4 Area 3 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "cf772988-d9b2-43e0-b5e8-b395f6bb32ab",
+          "name": "Region 4 Area 4",
+          "territories": [
+            {
+              "id": "8156fb29-a30a-4cba-868b-7bced75bdeb4",
+              "name": "Region 4 Area 4 Territory 1"
+            },
+            {
+              "id": "6fa466c8-2f27-4338-8319-fb4fe9973c14",
+              "name": "Region 4 Area 4 Territory 2"
+            },
+            {
+              "id": "319279ad-282c-4d89-b802-0b8b7aaedff5",
+              "name": "Region 4 Area 4 Territory 3"
+            },
+            {
+              "id": "520e5f50-a3dd-4e7e-bde0-225bbd7e3d4a",
+              "name": "Region 4 Area 4 Territory 4"
+            },
+            {
+              "id": "1161ce3c-6f4b-49db-90e5-3cf0b2d2270c",
+              "name": "Region 4 Area 4 Territory 5"
+            },
+            {
+              "id": "9490ff81-c5e9-4b1c-b20c-9d148def1580",
+              "name": "Region 4 Area 4 Territory 6"
+            },
+            {
+              "id": "15b83b1c-32a6-44df-872c-4c2558659434",
+              "name": "Region 4 Area 4 Territory 7"
+            },
+            {
+              "id": "a69f48eb-db19-4d2a-b671-08eb6d7f3220",
+              "name": "Region 4 Area 4 Territory 8"
+            },
+            {
+              "id": "fd2a9a01-489c-499a-a3b0-f877f6f9b72c",
+              "name": "Region 4 Area 4 Territory 9"
+            },
+            {
+              "id": "210683c3-e07c-4cf1-8f98-4c814d154996",
+              "name": "Region 4 Area 4 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "02ddc05c-7e66-4014-8895-373d6f45b753",
+              "name": "Region 4 Area 4 Distributor 1"
+            },
+            {
+              "id": "552177b6-503f-4335-b18d-061e94bcd980",
+              "name": "Region 4 Area 4 Distributor 2"
+            },
+            {
+              "id": "7fba81d8-a39e-4a4f-9283-a496d816bf74",
+              "name": "Region 4 Area 4 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "59068bba-64ad-47d8-8710-70209c3e8b77",
+          "name": "Region 4 Area 5",
+          "territories": [
+            {
+              "id": "70a64702-2b02-4d86-9f12-335971f4e901",
+              "name": "Region 4 Area 5 Territory 1"
+            },
+            {
+              "id": "bbb0aa13-48dc-4ee2-9704-a354710d0707",
+              "name": "Region 4 Area 5 Territory 2"
+            },
+            {
+              "id": "287bce37-4fe4-42a9-aebf-1b6704557fb3",
+              "name": "Region 4 Area 5 Territory 3"
+            },
+            {
+              "id": "3aff2cae-ccd2-4952-a029-51d660e2efb2",
+              "name": "Region 4 Area 5 Territory 4"
+            },
+            {
+              "id": "cdd0a112-1362-4bf8-b942-f022f1dc3d63",
+              "name": "Region 4 Area 5 Territory 5"
+            },
+            {
+              "id": "1a8c277c-1085-4993-a411-f468dde17f0b",
+              "name": "Region 4 Area 5 Territory 6"
+            },
+            {
+              "id": "dc1e9a63-42c6-4111-b7f8-ca8474a96858",
+              "name": "Region 4 Area 5 Territory 7"
+            },
+            {
+              "id": "9721863b-57d0-4ec7-acff-e506f6387111",
+              "name": "Region 4 Area 5 Territory 8"
+            },
+            {
+              "id": "4c944594-1c59-4b21-9582-dde74c978b40",
+              "name": "Region 4 Area 5 Territory 9"
+            },
+            {
+              "id": "125232ee-938e-4731-9616-5e793bb53ea7",
+              "name": "Region 4 Area 5 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "593740ee-2a85-48e2-81a2-c8c3e5bcd68a",
+              "name": "Region 4 Area 5 Distributor 1"
+            },
+            {
+              "id": "b52ddfc2-14bf-433f-b1cc-dd6f4880de57",
+              "name": "Region 4 Area 5 Distributor 2"
+            },
+            {
+              "id": "96f34155-ca28-459e-a4f0-6887134ef85d",
+              "name": "Region 4 Area 5 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "36147896-2dc6-4bc2-be93-a5ba6c57d656",
+          "name": "Region 4 Area 6",
+          "territories": [
+            {
+              "id": "844dd052-52d0-4bb1-86c1-916234e8d638",
+              "name": "Region 4 Area 6 Territory 1"
+            },
+            {
+              "id": "fdbd76b2-c24a-493e-a641-a84a8fa66375",
+              "name": "Region 4 Area 6 Territory 2"
+            },
+            {
+              "id": "c99e473d-930d-4c70-98a2-efebaa5d9e99",
+              "name": "Region 4 Area 6 Territory 3"
+            },
+            {
+              "id": "ba9d0ea6-631e-476a-ae95-1711c77f9a45",
+              "name": "Region 4 Area 6 Territory 4"
+            },
+            {
+              "id": "74457fdc-f6f3-411d-a0a8-8ef1936c466e",
+              "name": "Region 4 Area 6 Territory 5"
+            },
+            {
+              "id": "2171797d-672f-4977-a9ab-1cafe8f511ff",
+              "name": "Region 4 Area 6 Territory 6"
+            },
+            {
+              "id": "570cc2de-ecc8-42e9-b09a-191cab3beb26",
+              "name": "Region 4 Area 6 Territory 7"
+            },
+            {
+              "id": "020efb65-9e17-4163-9f4c-5e9338c6a33c",
+              "name": "Region 4 Area 6 Territory 8"
+            },
+            {
+              "id": "7f459b6b-c774-42b1-87af-2400df6dddab",
+              "name": "Region 4 Area 6 Territory 9"
+            },
+            {
+              "id": "2e68dfa4-72cd-4b12-b463-d3401a2fb0c7",
+              "name": "Region 4 Area 6 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "29b1de04-efb6-4480-bbd3-cd888d29d7d8",
+              "name": "Region 4 Area 6 Distributor 1"
+            },
+            {
+              "id": "5129524d-8b9f-4d52-bfa2-d56a0a73937c",
+              "name": "Region 4 Area 6 Distributor 2"
+            },
+            {
+              "id": "7e109726-8a8b-43c7-a24f-5d8e1e4b5142",
+              "name": "Region 4 Area 6 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "950d3586-dffd-4157-b029-c8ab891af55f",
+          "name": "Region 4 Area 7",
+          "territories": [
+            {
+              "id": "c93b0dc1-7a15-4c21-b1d2-a496da0eafe0",
+              "name": "Region 4 Area 7 Territory 1"
+            },
+            {
+              "id": "c99913fa-e087-4cc4-9b4d-dd622f1a7d73",
+              "name": "Region 4 Area 7 Territory 2"
+            },
+            {
+              "id": "bd7565e4-c886-4e9b-8cf2-dbffdc616117",
+              "name": "Region 4 Area 7 Territory 3"
+            },
+            {
+              "id": "56a5831c-a131-43dd-aee9-8b8ab6cc93ad",
+              "name": "Region 4 Area 7 Territory 4"
+            },
+            {
+              "id": "f4f0c7b0-3709-4d58-8e73-448b8570af4b",
+              "name": "Region 4 Area 7 Territory 5"
+            },
+            {
+              "id": "43cade26-6816-4c38-98b0-4b5651d2b513",
+              "name": "Region 4 Area 7 Territory 6"
+            },
+            {
+              "id": "958dda3b-b04f-43d6-bcc6-230f5590e30b",
+              "name": "Region 4 Area 7 Territory 7"
+            },
+            {
+              "id": "904bfff3-64e6-4c13-ba3c-793fe96964ca",
+              "name": "Region 4 Area 7 Territory 8"
+            },
+            {
+              "id": "822d1815-d8ce-4367-956d-c8ac729603ae",
+              "name": "Region 4 Area 7 Territory 9"
+            },
+            {
+              "id": "0b4626cb-ea11-46f2-b472-24933e0b0e3b",
+              "name": "Region 4 Area 7 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "3742fbf6-0186-40a6-aef9-94ee02efc95c",
+              "name": "Region 4 Area 7 Distributor 1"
+            },
+            {
+              "id": "17f4938b-b733-4143-b2ef-74ba272d2f5a",
+              "name": "Region 4 Area 7 Distributor 2"
+            },
+            {
+              "id": "9caf1fe7-0d5b-45c4-8c08-c3f9dd27d43f",
+              "name": "Region 4 Area 7 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "37f8442e-3db5-4460-a6d5-7256c3dfdaaf",
+          "name": "Region 4 Area 8",
+          "territories": [
+            {
+              "id": "849c41ec-2a59-4644-afc7-96d0186baf9f",
+              "name": "Region 4 Area 8 Territory 1"
+            },
+            {
+              "id": "d8e3dd1f-5792-4cbd-a265-669f7739d535",
+              "name": "Region 4 Area 8 Territory 2"
+            },
+            {
+              "id": "f4261c83-5f38-4e39-b4ce-eba7f8ff5dfa",
+              "name": "Region 4 Area 8 Territory 3"
+            },
+            {
+              "id": "46b124b6-cfcf-4809-873e-38e5c13acaf7",
+              "name": "Region 4 Area 8 Territory 4"
+            },
+            {
+              "id": "ba9160a9-22c1-43ee-b4c3-00dbf6bd37cd",
+              "name": "Region 4 Area 8 Territory 5"
+            },
+            {
+              "id": "fc119c0c-3f33-4234-9956-c03fc92f9343",
+              "name": "Region 4 Area 8 Territory 6"
+            },
+            {
+              "id": "93b98473-ba3f-4fd8-90af-c73cefe8337b",
+              "name": "Region 4 Area 8 Territory 7"
+            },
+            {
+              "id": "579b611c-1348-42b0-a5ae-3064d3b33b18",
+              "name": "Region 4 Area 8 Territory 8"
+            },
+            {
+              "id": "0a6d7832-b77e-4f57-84a6-396fdb9f2a89",
+              "name": "Region 4 Area 8 Territory 9"
+            },
+            {
+              "id": "9ec00734-000d-409d-be40-e791ae8de051",
+              "name": "Region 4 Area 8 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "173fded1-5383-4e00-82b4-a0bbcb1a549b",
+              "name": "Region 4 Area 8 Distributor 1"
+            },
+            {
+              "id": "0d880fc0-d04f-4295-878d-f1908c02be6d",
+              "name": "Region 4 Area 8 Distributor 2"
+            },
+            {
+              "id": "401ee54c-e762-4ba2-baf5-9db17f3fd2fa",
+              "name": "Region 4 Area 8 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "95c0b283-f773-47d2-a6a9-c0ef14cef285",
+          "name": "Region 4 Area 9",
+          "territories": [
+            {
+              "id": "0734b8d4-41b9-4496-9b36-5599bd5a4145",
+              "name": "Region 4 Area 9 Territory 1"
+            },
+            {
+              "id": "ac9c9f93-581a-4ee7-ae34-e959433433ee",
+              "name": "Region 4 Area 9 Territory 2"
+            },
+            {
+              "id": "3d55872a-fef2-4ec4-b16b-a639def1e033",
+              "name": "Region 4 Area 9 Territory 3"
+            },
+            {
+              "id": "f0346c58-3860-4197-82ba-72b80278a1bb",
+              "name": "Region 4 Area 9 Territory 4"
+            },
+            {
+              "id": "b8a35ff7-8840-42d7-9fb8-5be131595c06",
+              "name": "Region 4 Area 9 Territory 5"
+            },
+            {
+              "id": "716d81df-d135-48ce-b76f-81ecad34d757",
+              "name": "Region 4 Area 9 Territory 6"
+            },
+            {
+              "id": "526de346-4e52-4634-a885-31f965c38213",
+              "name": "Region 4 Area 9 Territory 7"
+            },
+            {
+              "id": "fd8c0708-3de9-4b3e-be2e-d5a0c4e1e454",
+              "name": "Region 4 Area 9 Territory 8"
+            },
+            {
+              "id": "951e9101-4607-4152-9ae0-493ebe2461b9",
+              "name": "Region 4 Area 9 Territory 9"
+            },
+            {
+              "id": "efdcef0f-2f46-4f1a-982f-0859801a2238",
+              "name": "Region 4 Area 9 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "44def7b4-73a7-41f9-95b5-fa52c3b2ffa2",
+              "name": "Region 4 Area 9 Distributor 1"
+            },
+            {
+              "id": "6e2baaad-493c-4e10-b211-56d42d42c9af",
+              "name": "Region 4 Area 9 Distributor 2"
+            },
+            {
+              "id": "312e070c-4110-49c6-89a2-64ef698e181a",
+              "name": "Region 4 Area 9 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "7a1c0bfa-a6c1-45e2-ae86-b301dcf5e312",
+          "name": "Region 4 Area 10",
+          "territories": [
+            {
+              "id": "71de535b-124d-4684-884a-24fb917fae99",
+              "name": "Region 4 Area 10 Territory 1"
+            },
+            {
+              "id": "e51c6c5a-6375-426a-ba8f-6b41ff74cba0",
+              "name": "Region 4 Area 10 Territory 2"
+            },
+            {
+              "id": "2c05da4a-320f-48d9-8eda-e7283110730a",
+              "name": "Region 4 Area 10 Territory 3"
+            },
+            {
+              "id": "6d4516e8-6896-494f-b2fa-4016c4e49d96",
+              "name": "Region 4 Area 10 Territory 4"
+            },
+            {
+              "id": "c750c446-274c-4bfe-8b66-ee8a55b262bd",
+              "name": "Region 4 Area 10 Territory 5"
+            },
+            {
+              "id": "107ced7c-d9eb-4a25-98aa-a495ff013fa2",
+              "name": "Region 4 Area 10 Territory 6"
+            },
+            {
+              "id": "7e74d825-0be4-4117-b447-0e3ae32ab48e",
+              "name": "Region 4 Area 10 Territory 7"
+            },
+            {
+              "id": "d1310d81-52fc-48d7-8ad2-79d8c52dbafe",
+              "name": "Region 4 Area 10 Territory 8"
+            },
+            {
+              "id": "d28c9efd-5c0b-4e29-a457-7a11f5f4c308",
+              "name": "Region 4 Area 10 Territory 9"
+            },
+            {
+              "id": "0d4d9973-b757-4ffd-82ff-4233edb2da16",
+              "name": "Region 4 Area 10 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "4bcc7048-84f5-4a78-addd-b8522009e3e4",
+              "name": "Region 4 Area 10 Distributor 1"
+            },
+            {
+              "id": "84a52801-2bb5-47f5-8b08-692e22081a06",
+              "name": "Region 4 Area 10 Distributor 2"
+            },
+            {
+              "id": "3ab3e977-07c6-4f78-91e4-be0efb6a0039",
+              "name": "Region 4 Area 10 Distributor 3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "34576b97-c01a-41ae-ab48-159e282355d6",
+      "name": "Region 5",
+      "areas": [
+        {
+          "id": "a490d468-9d83-46ac-8f22-db8d464ec77f",
+          "name": "Region 5 Area 1",
+          "territories": [
+            {
+              "id": "71a3f96e-4945-43da-bbc5-673e9ae08332",
+              "name": "Region 5 Area 1 Territory 1"
+            },
+            {
+              "id": "63bc23be-6731-4d9b-83e3-aec37c1bba24",
+              "name": "Region 5 Area 1 Territory 2"
+            },
+            {
+              "id": "e348cffb-35d0-4eac-a80d-4802939caf55",
+              "name": "Region 5 Area 1 Territory 3"
+            },
+            {
+              "id": "3395a9f8-d6e4-46fa-93ca-7e5112541bed",
+              "name": "Region 5 Area 1 Territory 4"
+            },
+            {
+              "id": "b1ae35cf-eebc-4bee-af03-e0222e0cb2f2",
+              "name": "Region 5 Area 1 Territory 5"
+            },
+            {
+              "id": "b55e293f-aa99-49c0-9380-dad0b1ab8fca",
+              "name": "Region 5 Area 1 Territory 6"
+            },
+            {
+              "id": "adbf546b-6506-4fab-b0be-0fa9561cf3a0",
+              "name": "Region 5 Area 1 Territory 7"
+            },
+            {
+              "id": "11cd8be8-780f-44f7-971e-6d385a48fd75",
+              "name": "Region 5 Area 1 Territory 8"
+            },
+            {
+              "id": "731b257c-14ae-4500-b0e8-0204713a1c3c",
+              "name": "Region 5 Area 1 Territory 9"
+            },
+            {
+              "id": "f74d8386-b85a-4fc0-ab21-f19b32f56790",
+              "name": "Region 5 Area 1 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "33a26d80-6eea-4c66-8716-9e1caa4f9a46",
+              "name": "Region 5 Area 1 Distributor 1"
+            },
+            {
+              "id": "3cd178e3-3846-41f2-9227-15b9507b2d75",
+              "name": "Region 5 Area 1 Distributor 2"
+            },
+            {
+              "id": "ffd97181-f879-4a18-aa3c-b419ba082d91",
+              "name": "Region 5 Area 1 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "b2f551f3-5bc3-45fc-b2f0-c593430f9103",
+          "name": "Region 5 Area 2",
+          "territories": [
+            {
+              "id": "29615977-57f2-4bd4-b3a3-5f716d001433",
+              "name": "Region 5 Area 2 Territory 1"
+            },
+            {
+              "id": "a96ce998-8abc-4b84-9f4f-fd28c7f0646d",
+              "name": "Region 5 Area 2 Territory 2"
+            },
+            {
+              "id": "cab94690-3029-42f9-bbaf-e29eba7aee8f",
+              "name": "Region 5 Area 2 Territory 3"
+            },
+            {
+              "id": "b08fa9e5-82a0-446c-b4aa-a5440ca4c9e1",
+              "name": "Region 5 Area 2 Territory 4"
+            },
+            {
+              "id": "772f82e8-57f9-44e8-895a-2fc6f01f42cd",
+              "name": "Region 5 Area 2 Territory 5"
+            },
+            {
+              "id": "ec27d4b7-6c58-4065-a604-158f0f359bb4",
+              "name": "Region 5 Area 2 Territory 6"
+            },
+            {
+              "id": "8abc2b48-3d48-43d2-ad41-bea008dc944e",
+              "name": "Region 5 Area 2 Territory 7"
+            },
+            {
+              "id": "a67d333f-6a03-41ca-8ba7-8a2250c0bb7a",
+              "name": "Region 5 Area 2 Territory 8"
+            },
+            {
+              "id": "50a1e7c1-c17c-4a84-a164-9871909cb16e",
+              "name": "Region 5 Area 2 Territory 9"
+            },
+            {
+              "id": "7caa998d-2063-4053-9bb5-558d03429473",
+              "name": "Region 5 Area 2 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "40e3af14-b1d2-46cb-ac65-66c92ffb76b4",
+              "name": "Region 5 Area 2 Distributor 1"
+            },
+            {
+              "id": "d6b9c92b-251a-4fbf-91bd-3ab460fc1af9",
+              "name": "Region 5 Area 2 Distributor 2"
+            },
+            {
+              "id": "f52bc883-eacf-4ec7-96b6-c314b5bed30b",
+              "name": "Region 5 Area 2 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "9647a110-3588-4e15-bf3f-2ce143d8e921",
+          "name": "Region 5 Area 3",
+          "territories": [
+            {
+              "id": "539c9b92-99d0-4825-9d20-d16ba4738c0f",
+              "name": "Region 5 Area 3 Territory 1"
+            },
+            {
+              "id": "1e3ea28b-1a8b-4529-baf0-e2584fd34e2a",
+              "name": "Region 5 Area 3 Territory 2"
+            },
+            {
+              "id": "2776d5e0-1c6f-4059-aa0e-e507344d9a43",
+              "name": "Region 5 Area 3 Territory 3"
+            },
+            {
+              "id": "9953566d-9ad8-4946-a5d0-2f46b0b41575",
+              "name": "Region 5 Area 3 Territory 4"
+            },
+            {
+              "id": "9ac69b36-f2e3-4b08-b53d-8f520a8634dd",
+              "name": "Region 5 Area 3 Territory 5"
+            },
+            {
+              "id": "726308d4-da5a-491e-880d-281d3d3f9e01",
+              "name": "Region 5 Area 3 Territory 6"
+            },
+            {
+              "id": "87125cf7-b761-474b-a5ff-012c2503f968",
+              "name": "Region 5 Area 3 Territory 7"
+            },
+            {
+              "id": "e474aa15-043e-4e72-b799-7285cecf9307",
+              "name": "Region 5 Area 3 Territory 8"
+            },
+            {
+              "id": "b8c37f04-9e59-4297-b212-4ae483244949",
+              "name": "Region 5 Area 3 Territory 9"
+            },
+            {
+              "id": "0029e87a-b0c9-4cef-9090-b661b47db9da",
+              "name": "Region 5 Area 3 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "31607975-eedd-4d76-91d4-f58ccc94cbac",
+              "name": "Region 5 Area 3 Distributor 1"
+            },
+            {
+              "id": "d483bbe8-6079-4d87-8645-d64ecbf6972e",
+              "name": "Region 5 Area 3 Distributor 2"
+            },
+            {
+              "id": "99a50c87-2959-4847-8906-5aa3838a0a35",
+              "name": "Region 5 Area 3 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "95073de4-808f-4193-a177-099459226adf",
+          "name": "Region 5 Area 4",
+          "territories": [
+            {
+              "id": "83881a4e-93f0-4fc4-861f-25bc563c5502",
+              "name": "Region 5 Area 4 Territory 1"
+            },
+            {
+              "id": "31c3361e-b346-44e8-a24a-89517a146a26",
+              "name": "Region 5 Area 4 Territory 2"
+            },
+            {
+              "id": "4fc693ef-d565-4c81-9b83-bb44217f7bbd",
+              "name": "Region 5 Area 4 Territory 3"
+            },
+            {
+              "id": "a9a30dff-16cd-47e2-a746-0ce9bfb1b114",
+              "name": "Region 5 Area 4 Territory 4"
+            },
+            {
+              "id": "b32ca205-fbe3-438c-9b0b-87e6f82a58ff",
+              "name": "Region 5 Area 4 Territory 5"
+            },
+            {
+              "id": "684130dd-2e05-4984-9117-723cfbbf479a",
+              "name": "Region 5 Area 4 Territory 6"
+            },
+            {
+              "id": "a02d268e-bade-49fc-854a-271e59fbb300",
+              "name": "Region 5 Area 4 Territory 7"
+            },
+            {
+              "id": "604a266e-23b8-4e0b-b868-a015566ae7c4",
+              "name": "Region 5 Area 4 Territory 8"
+            },
+            {
+              "id": "7597c908-fb71-4f3a-911c-4da6be504368",
+              "name": "Region 5 Area 4 Territory 9"
+            },
+            {
+              "id": "df1c0b0c-184f-4c80-8ece-ef5a644d4766",
+              "name": "Region 5 Area 4 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "7497f8b3-124c-460c-9f26-4cce506a3fce",
+              "name": "Region 5 Area 4 Distributor 1"
+            },
+            {
+              "id": "ff77ab57-9a4a-4ec9-89e4-b7e3a87996af",
+              "name": "Region 5 Area 4 Distributor 2"
+            },
+            {
+              "id": "a8713932-f68d-4da1-a80e-7ffd64d120bd",
+              "name": "Region 5 Area 4 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "a6102d68-4ce5-4986-9615-f8d1e75d832e",
+          "name": "Region 5 Area 5",
+          "territories": [
+            {
+              "id": "85801731-d68b-4dcf-a7ab-b7840abc57a3",
+              "name": "Region 5 Area 5 Territory 1"
+            },
+            {
+              "id": "e69d341e-1ead-4b79-90ec-f6942de384f3",
+              "name": "Region 5 Area 5 Territory 2"
+            },
+            {
+              "id": "fcf23e63-913c-4b99-ac19-846955cf7131",
+              "name": "Region 5 Area 5 Territory 3"
+            },
+            {
+              "id": "6e7ffbbe-8821-4f66-8201-85cedf8f9f81",
+              "name": "Region 5 Area 5 Territory 4"
+            },
+            {
+              "id": "79b9c229-e74b-4b22-8291-fcb87b5d49b1",
+              "name": "Region 5 Area 5 Territory 5"
+            },
+            {
+              "id": "d6ded2d1-ff1a-49c0-875f-6f1a37b4e829",
+              "name": "Region 5 Area 5 Territory 6"
+            },
+            {
+              "id": "bd90e42e-95ec-40a8-b541-f6d467503726",
+              "name": "Region 5 Area 5 Territory 7"
+            },
+            {
+              "id": "c76af70e-5b9b-4c9b-9e51-ddb9709c04aa",
+              "name": "Region 5 Area 5 Territory 8"
+            },
+            {
+              "id": "6af51b72-e9f8-4796-8e97-305365446c62",
+              "name": "Region 5 Area 5 Territory 9"
+            },
+            {
+              "id": "d6315572-9c3c-4dab-bc25-d799e178d3a3",
+              "name": "Region 5 Area 5 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "b54088cd-b797-4931-b0b8-b11621a4c877",
+              "name": "Region 5 Area 5 Distributor 1"
+            },
+            {
+              "id": "322bae42-d028-4291-94b3-202cc818153f",
+              "name": "Region 5 Area 5 Distributor 2"
+            },
+            {
+              "id": "d4c87592-54c9-4eea-bae6-291c60c6642b",
+              "name": "Region 5 Area 5 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "07aa8017-42f6-4e4f-91c4-83cb39b121bc",
+          "name": "Region 5 Area 6",
+          "territories": [
+            {
+              "id": "560329c4-ff89-4134-9ae2-565d4678d14b",
+              "name": "Region 5 Area 6 Territory 1"
+            },
+            {
+              "id": "4c6f408e-ec25-4b17-9927-4822a30a1622",
+              "name": "Region 5 Area 6 Territory 2"
+            },
+            {
+              "id": "f6e2815b-582a-48c2-a07a-06e6735242b7",
+              "name": "Region 5 Area 6 Territory 3"
+            },
+            {
+              "id": "52a23284-124c-4695-8363-dc22d1fc5f3a",
+              "name": "Region 5 Area 6 Territory 4"
+            },
+            {
+              "id": "c851ede3-44a6-463b-a51f-92a92e7031fb",
+              "name": "Region 5 Area 6 Territory 5"
+            },
+            {
+              "id": "d98e5a7a-b4e0-4ec7-8abc-e328be19fe2d",
+              "name": "Region 5 Area 6 Territory 6"
+            },
+            {
+              "id": "88adf1da-9e24-4440-90c9-2dfcedbb0733",
+              "name": "Region 5 Area 6 Territory 7"
+            },
+            {
+              "id": "ae8a39d7-2cd4-4447-b2cc-a9d1020840b3",
+              "name": "Region 5 Area 6 Territory 8"
+            },
+            {
+              "id": "824937ff-c6e6-4d23-a5bb-397c44228a6e",
+              "name": "Region 5 Area 6 Territory 9"
+            },
+            {
+              "id": "34909005-85d2-4aa5-863f-291f8b4775a6",
+              "name": "Region 5 Area 6 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "db7df55e-0e68-46f0-859e-00cef09a1401",
+              "name": "Region 5 Area 6 Distributor 1"
+            },
+            {
+              "id": "46b12843-d1a7-4a1a-8e3b-b92c2be0bd1a",
+              "name": "Region 5 Area 6 Distributor 2"
+            },
+            {
+              "id": "bf3f1aa1-011f-4683-b60c-c21475b61d6c",
+              "name": "Region 5 Area 6 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "5b13b396-fac1-4c77-be8f-3887b8175a60",
+          "name": "Region 5 Area 7",
+          "territories": [
+            {
+              "id": "c47eb0bc-4b7a-409f-b2c9-e85658c05ad5",
+              "name": "Region 5 Area 7 Territory 1"
+            },
+            {
+              "id": "32df28b0-3139-4ecb-928e-953bb81643b8",
+              "name": "Region 5 Area 7 Territory 2"
+            },
+            {
+              "id": "0db69c8f-34a4-4529-b0ef-fac1c5a92370",
+              "name": "Region 5 Area 7 Territory 3"
+            },
+            {
+              "id": "c8c754d9-a075-4964-8eaf-0cdf4919dc52",
+              "name": "Region 5 Area 7 Territory 4"
+            },
+            {
+              "id": "fab67b56-36ac-4721-bd34-6d24c4fbc90b",
+              "name": "Region 5 Area 7 Territory 5"
+            },
+            {
+              "id": "0075d6ce-d11f-4887-8115-5247c0f3e811",
+              "name": "Region 5 Area 7 Territory 6"
+            },
+            {
+              "id": "87cb8668-321c-4567-b8c2-ce316b0ce0e5",
+              "name": "Region 5 Area 7 Territory 7"
+            },
+            {
+              "id": "dc08ae84-255e-4ebb-9d86-9d609f067d23",
+              "name": "Region 5 Area 7 Territory 8"
+            },
+            {
+              "id": "10abeab0-0f6b-46a5-a956-ce1c36e1b518",
+              "name": "Region 5 Area 7 Territory 9"
+            },
+            {
+              "id": "21e346db-936d-4405-8497-c00391a5e32b",
+              "name": "Region 5 Area 7 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "84fe127a-fdbe-43a0-a2c9-de7005fd6fc8",
+              "name": "Region 5 Area 7 Distributor 1"
+            },
+            {
+              "id": "a9e726fe-783f-487b-b11d-43f3eb003e7e",
+              "name": "Region 5 Area 7 Distributor 2"
+            },
+            {
+              "id": "d143eafa-64a4-4923-af54-e559fbee04b8",
+              "name": "Region 5 Area 7 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "384dfdd6-e741-4177-a05a-db8ebd5d3951",
+          "name": "Region 5 Area 8",
+          "territories": [
+            {
+              "id": "e54e0dcc-77fb-4d10-b0ac-e285fc40f5e5",
+              "name": "Region 5 Area 8 Territory 1"
+            },
+            {
+              "id": "1ff153d6-0e97-4ae6-ae81-614ada83e071",
+              "name": "Region 5 Area 8 Territory 2"
+            },
+            {
+              "id": "dd60f560-2e1c-4e47-a480-4cc572d4de65",
+              "name": "Region 5 Area 8 Territory 3"
+            },
+            {
+              "id": "6a5b6d2b-3d1c-4959-b1e2-07c956494912",
+              "name": "Region 5 Area 8 Territory 4"
+            },
+            {
+              "id": "04ed7896-5f13-418b-925a-cbaeaf52daaa",
+              "name": "Region 5 Area 8 Territory 5"
+            },
+            {
+              "id": "f7d9aace-a5d0-40e0-8098-95219373ae4c",
+              "name": "Region 5 Area 8 Territory 6"
+            },
+            {
+              "id": "d2a3d4d7-b773-4794-a529-e0837b64dbe6",
+              "name": "Region 5 Area 8 Territory 7"
+            },
+            {
+              "id": "d6cd749e-b508-4bc8-b5e1-e3c98ac22b05",
+              "name": "Region 5 Area 8 Territory 8"
+            },
+            {
+              "id": "677c88d3-4084-44fe-a9b0-2cf1ea10700c",
+              "name": "Region 5 Area 8 Territory 9"
+            },
+            {
+              "id": "5fcc766b-b6e2-40cd-8ec3-e72d49b8dc00",
+              "name": "Region 5 Area 8 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "c646c4e6-276b-490a-8714-f8f6bbd98f0d",
+              "name": "Region 5 Area 8 Distributor 1"
+            },
+            {
+              "id": "3833a2ed-ca00-4506-80bd-4efe62a1438d",
+              "name": "Region 5 Area 8 Distributor 2"
+            },
+            {
+              "id": "d70a6817-005c-4935-b6da-19bfda199093",
+              "name": "Region 5 Area 8 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "92f1707b-67a2-492a-9094-47e19094de98",
+          "name": "Region 5 Area 9",
+          "territories": [
+            {
+              "id": "79af9aa2-0ef9-4205-96ed-bf9bcc389c16",
+              "name": "Region 5 Area 9 Territory 1"
+            },
+            {
+              "id": "72b9bac2-e8ad-4ddc-bd9f-5f8c3ecb376d",
+              "name": "Region 5 Area 9 Territory 2"
+            },
+            {
+              "id": "725bb16b-1490-425f-8cbc-5db8c1affcd3",
+              "name": "Region 5 Area 9 Territory 3"
+            },
+            {
+              "id": "cfd2e53a-50e6-40a9-a3e2-ecb409853d93",
+              "name": "Region 5 Area 9 Territory 4"
+            },
+            {
+              "id": "eb8c9854-2b60-43cc-a484-29b34e994b1f",
+              "name": "Region 5 Area 9 Territory 5"
+            },
+            {
+              "id": "5b026e16-c3d2-43e8-87a1-97576ecf929d",
+              "name": "Region 5 Area 9 Territory 6"
+            },
+            {
+              "id": "861144c1-e2fd-4738-a979-c04421eccfed",
+              "name": "Region 5 Area 9 Territory 7"
+            },
+            {
+              "id": "63d43501-7757-4321-8ff6-45d93adb1439",
+              "name": "Region 5 Area 9 Territory 8"
+            },
+            {
+              "id": "a4e0d77f-c9fb-403d-b76d-175fab773657",
+              "name": "Region 5 Area 9 Territory 9"
+            },
+            {
+              "id": "ce8b43fc-0295-4a99-9f9a-3b3084f0a892",
+              "name": "Region 5 Area 9 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "b16f8f5b-1a29-4f39-9d19-fcf1c6121aba",
+              "name": "Region 5 Area 9 Distributor 1"
+            },
+            {
+              "id": "62f0bda2-f394-4b9a-8c27-e840f236ed16",
+              "name": "Region 5 Area 9 Distributor 2"
+            },
+            {
+              "id": "d48fb021-5dfd-425b-b4ed-5855e18d0a23",
+              "name": "Region 5 Area 9 Distributor 3"
+            }
+          ]
+        },
+        {
+          "id": "38945890-6cae-469a-bdb1-fb7adb9720d8",
+          "name": "Region 5 Area 10",
+          "territories": [
+            {
+              "id": "90b00497-d1ce-49b6-a4c7-049f1f5e06ba",
+              "name": "Region 5 Area 10 Territory 1"
+            },
+            {
+              "id": "f36d7fa9-cccd-4631-a0af-b9a44ff87146",
+              "name": "Region 5 Area 10 Territory 2"
+            },
+            {
+              "id": "b5708ff1-4188-4b02-80c8-692e46264b05",
+              "name": "Region 5 Area 10 Territory 3"
+            },
+            {
+              "id": "e31ec2c8-d7b2-47b7-8ce7-39df465a6dff",
+              "name": "Region 5 Area 10 Territory 4"
+            },
+            {
+              "id": "63c3aae8-23e7-4ce1-9692-2d6c5ef03fae",
+              "name": "Region 5 Area 10 Territory 5"
+            },
+            {
+              "id": "01489525-4817-4b29-911d-e7309abac457",
+              "name": "Region 5 Area 10 Territory 6"
+            },
+            {
+              "id": "1c65aa01-0d5d-4d8a-9c9c-7c43b5fba251",
+              "name": "Region 5 Area 10 Territory 7"
+            },
+            {
+              "id": "efb6858c-1805-4dd3-a8fd-babdb4a7664a",
+              "name": "Region 5 Area 10 Territory 8"
+            },
+            {
+              "id": "2e0158da-4070-45e3-b9ee-1a1231b595f5",
+              "name": "Region 5 Area 10 Territory 9"
+            },
+            {
+              "id": "e840dcf1-8005-458f-be73-e643de7aa29b",
+              "name": "Region 5 Area 10 Territory 10"
+            }
+          ],
+          "distributors": [
+            {
+              "id": "8ed457d6-ad3c-470a-9627-d331075ecb06",
+              "name": "Region 5 Area 10 Distributor 1"
+            },
+            {
+              "id": "ae1998df-1bc4-49c9-adec-62d3d0e05af2",
+              "name": "Region 5 Area 10 Distributor 2"
+            },
+            {
+              "id": "43493fc0-c0e4-4958-94ed-9a98a3f66468",
+              "name": "Region 5 Area 10 Distributor 3"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -46,7 +46,7 @@ export class SalesRepController {
   constructor(private readonly salesRepService: SalesRepService) {}
 
   @Get()
-  @ApiOperation({ summary: 'List assigned retailers for the current sales rep' })
+  @ApiOperation({ summary: 'List paginated assigned retailers for the current sales rep' })
   @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
   @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
   @ApiOkResponse({
@@ -59,6 +59,7 @@ export class SalesRepController {
             uid: 'RT-2025-0001',
             name: 'Abir General Store',
             phone: '+8801711000000',
+            isAssigned: true,
           },
         ],
         meta: {
@@ -85,7 +86,7 @@ export class SalesRepController {
   @ApiQuery({
     name: 'search',
     description: 'Search by retailer name, phone, or UID',
-    example: 'abir',
+    example: 'Retailer 1-4-7-3',
   })
   @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
   @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
@@ -99,6 +100,7 @@ export class SalesRepController {
             uid: 'RT-2025-0001',
             name: 'Abir General Store',
             phone: '+8801711000000',
+            isAssigned: true,
           },
         ],
         meta: {
@@ -128,7 +130,7 @@ export class SalesRepController {
     required: false,
     description:
       'JSON string describing filters. Example: {"regionId":"7d1d0c03-4c7f-4a3f-a4c1-4c6e4d15ef99"}',
-    example: '{"regionId":"7d1d0c03-4c7f-4a3f-a4c1-4c6e4d15ef99"}',
+    example: '{"regionId":"70d6f74d-e33f-474b-8202-27bee14e6133"}',
   })
   @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
   @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
@@ -142,10 +144,11 @@ export class SalesRepController {
             uid: 'RT-2025-0001',
             name: 'Abir General Store',
             phone: '+8801711000000',
-            region: { name: 'Dhaka Region' },
-            area: { name: 'Gulshan' },
-            distributor: { name: 'ABC Distributors' },
-            territory: { name: 'Gulshan North' },
+            isAssigned: true,
+            region: {id:'70d6f74d-e33f-474b-8202-27bee14e6133', name: 'Dhaka Region' },
+            area: { id:'7d1d0c03-4c7f-4a3f-a4c1-4c6e4d15ef99', name: 'Gulshan' },
+            distributor: { id:'2a3f0d12-1234-4455-9e0f-7c1b02ddcdef', name: 'ABC Distributors' },
+            territory: { id:'9f1d0c03-4c7f-4a3f-a4c1-4c6e4d15ef90', name: 'Gulshan North' },
           },
         ],
         meta: {
@@ -195,10 +198,14 @@ export class SalesRepController {
         uid: 'RT-2025-0001',
         name: 'Abir General Store',
         phone: '+8801711000000',
-        region: { name: 'Dhaka Region' },
-        area: { name: 'Gulshan' },
-        distributor: { name: 'ABC Distributors' },
-        territory: { name: 'Gulshan North' },
+        isAssigned: true,
+        points: 85,
+        routes: 'Route-A > Route-B',
+        notes: 'Follow up monthly',
+        region: { id:'70d6f74d-e33f-474b-8202-27bee14e6133', name: 'Dhaka Region' },
+        area: { id:'7d1d0c03-4c7f-4a3f-a4c1-4c6e4d15ef99', name: 'Gulshan' },
+        distributor: { id:'2a3f0d12-1234-4455-9e0f-7c1b02ddcdef', name: 'ABC Distributors' },
+        territory: { id:'9f1d0c03-4c7f-4a3f-a4c1-4c6e4d15ef90', name: 'Gulshan North' },
       },
     },
   })
@@ -239,6 +246,7 @@ export class SalesRepController {
         id: '0c9d2be8-2d40-4315-9d35-640ebd4ad9cd',
         uid: 'RT-2025-0001',
         name: 'Abir General Store',
+        isAssigned: true,
         points: 120,
         routes: 'Route-A > Route-B',
         notes: 'Follow up next Monday',

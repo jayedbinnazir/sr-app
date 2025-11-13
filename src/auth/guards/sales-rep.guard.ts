@@ -17,7 +17,9 @@ export class SalesRepGuard implements CanActivate {
 
     return (
       user.role === AuthRole.SalesRep ||
-      user.type === AuthRole.SalesRep
+      user.type === AuthRole.SalesRep ||
+      user.role === AuthRole.Admin ||
+      user.type === AuthRole.Admin
     );
   }
 }

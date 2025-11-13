@@ -14,6 +14,8 @@ http {
     server {
         listen 80;
         server_name localhost;
+        client_max_body_size 2g;
+        proxy_request_buffering off;
 
         location / {
             proxy_pass http://my_nest_app;

@@ -194,7 +194,7 @@ export class SalesRepService {
         .leftJoinAndSelect('retailer.area', 'area')
         .leftJoinAndSelect('retailer.distributor', 'distributor')
         .leftJoinAndSelect('retailer.territory', 'territory')
-        .select(['retailer.id', 'retailer.uid', 'retailer.name', 'retailer.phone', 'retailer.isAssigned', 'region.name', 'area.name', 'distributor.name', 'territory.name'])
+        .select(['retailer.id', 'retailer.uid', 'retailer.name', 'retailer.phone', 'retailer.routes', 'retailer.notes', 'retailer.isAssigned', 'retailer.points', 'region.id', 'region.name', 'area.id', 'area.name', 'distributor.id', 'distributor.name', 'territory.id', 'territory.name'])
         .where('retailer.id = :retailerId', { retailerId })
         .getOne();
       if (!retailer) {
@@ -553,9 +553,13 @@ export class SalesRepService {
           'retailer.name',
           'retailer.phone',
           'retailer.isAssigned',
+          'region.id',
           'region.name',
+          'area.id',
           'area.name',
+          'distributor.id',
           'distributor.name',
+          'territory.id',
           'territory.name',
         ])
         .where('retailer.deleted_at IS NULL'); // always filter out deleted
@@ -654,7 +658,7 @@ export class SalesRepService {
     return { summary: result };
   }
 
-  
+
   async assignRetailersToSalesRep(
     salesRepId: string,
     retailerIds: string[],

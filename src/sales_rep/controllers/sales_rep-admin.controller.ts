@@ -75,6 +75,7 @@ export class SalesRepAdminController {
             uid: 'RT-2025-0001',
             name: 'Abir General Store',
             phone: '+8801711000000',
+            isAssigned: true,
           },
         ],
         meta: {
@@ -112,6 +113,7 @@ export class SalesRepAdminController {
             uid: 'RT-2025-0099',
             name: 'New Horizon Shop',
             phone: '+8801814000000',
+            isAssigned: false,
           },
         ],
         meta: {
@@ -148,6 +150,7 @@ export class SalesRepAdminController {
             uid: 'RT-2025-0099',
             name: 'New Horizon Shop',
             phone: '+8801814000000',
+            isAssigned: true,
           },
         ],
         meta: {
@@ -186,10 +189,11 @@ export class SalesRepAdminController {
             uid: 'RT-2025-0099',
             name: 'New Horizon Shop',
             phone: '+8801814000000',
-            region: { name: 'Dhaka Region' },
-            area: { name: 'Gulshan' },
-            distributor: { name: 'ABC Distributors' },
-            territory: { name: 'Gulshan North' },
+            isAssigned: true,
+            region: { id: '70d6f74d-e33f-474b-8202-27bee14e6133', name: 'Dhaka Region' },
+            area: { id: '7d1d0c03-4c7f-4a3f-a4c1-4c6e4d15ef99', name: 'Gulshan' },
+            distributor: { id: '2a3f0d12-1234-4455-9e0f-7c1b02ddcdef', name: 'ABC Distributors' },
+            territory: { id: '9f1d0c03-4c7f-4a3f-a4c1-4c6e4d15ef90', name: 'Gulshan North' },
           },
         ],
         meta: {
@@ -303,10 +307,14 @@ export class SalesRepAdminController {
         uid: 'RT-2025-0001',
         name: 'Abir General Store',
         phone: '+8801711000000',
-        region: { name: 'Dhaka Region' },
-        area: { name: 'Gulshan' },
-        distributor: { name: 'ABC Distributors' },
-        territory: { name: 'Gulshan North' },
+        isAssigned: true,
+        points: 85,
+        routes: 'Route-A > Route-B',
+        notes: 'Follow up monthly',
+        region: { id: '70d6f74d-e33f-474b-8202-27bee14e6133', name: 'Dhaka Region' },
+        area: { id: '7d1d0c03-4c7f-4a3f-a4c1-4c6e4d15ef99', name: 'Gulshan' },
+        distributor: { id: '2a3f0d12-1234-4455-9e0f-7c1b02ddcdef', name: 'ABC Distributors' },
+        territory: { id: '9f1d0c03-4c7f-4a3f-a4c1-4c6e4d15ef90', name: 'Gulshan North' },
       },
     },
   })
@@ -363,7 +371,7 @@ export class SalesRepAdminController {
   @ApiParam({
     name: 'salesRepId',
     description: 'Sales representative identifier',
-    example: '9f0e35a6-6c2c-4ad1-bc8c-86a130c97b6b',
+    example: '746736ff-d241-4ff8-97f6-b64bd1f22906',
   })
   @ApiBody({
     type: BulkAssignRetailersDto,
@@ -372,8 +380,9 @@ export class SalesRepAdminController {
         summary: 'Bulk assignment payload',
         value: {
           retailers: [
-            { retailer_id: '0c9d2be8-2d40-4315-9d35-640ebd4ad9cd' },
-            { retailer_id: '23974db4-9804-43f5-b361-5cc9af43e993' },
+            { retailer_id: '0045ebce-6116-4c74-96a7-b89d5364522d' },
+            { retailer_id: '00525674-8285-451e-8929-a970c9c18f09' },
+            { retailer_id: '00a78956-77e3-403c-bebd-751b62ac2b8e' },
           ],
         },
       },
